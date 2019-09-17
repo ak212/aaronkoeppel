@@ -1,16 +1,15 @@
-import React from 'react';
-import './App.css';
+import './App.css'
+
+import React from 'react'
+
+import AppRouter from './AppRouter'
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <h2>
-          Welcome to Aaron Koeppel's website.
-        </h2>
-      </header>
+      <AppRouter />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
