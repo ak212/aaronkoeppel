@@ -7,4 +7,6 @@
   height: 70px;
   font-weight: 700;
   border-radius: 6px;
+  border-color: black;
+  border-width: 3px;
 }

@@ -1,6 +1,5 @@
 import './Calculator.css'
 
-import { isNumber } from 'lodash'
 import React from 'react'
 
 interface Props {}
@@ -12,6 +11,11 @@ interface State {
 }
 
 const regexp = /([-]?(\d+\.$|\d+\.\d+|\d+))+/
+
+const ADD = "+"
+const SUBTRACT = "-"
+const DIVIDE = "÷"
+const MULTIPLY = "×"
 
 class Calculator extends React.Component<Props, State> {
   public constructor(props: Props) {
@@ -131,13 +135,29 @@ class Calculator extends React.Component<Props, State> {
     val2: number,
     op: string
   ): number => {
-    return op === "/"
+    return op === DIVIDE
       ? val1 / val2
-      : op === "x"
+      : op === MULTIPLY
       ? val1 * val2
-      : op === "-"
+      : op === SUBTRACT
       ? val1 - val2
       : val1 + val2
+  }
+
+  private createNumericalButton = (number: string): JSX.Element => {
+    return (
+      <button className="calc-button" onClick={e => this.appendNumber(number)}>
+        {number}
+      </button>
+    )
+  }
+
+  private createModifierButton = (mod: string): JSX.Element => {
+    return (
+      <button className="calc-button" onClick={e => this.setModifier(mod)}>
+        {mod}
+      </button>
+    )
   }
 
   public render = () => {
@@ -152,7 +172,7 @@ class Calculator extends React.Component<Props, State> {
         style={{
           width: "320px",
           display: "inline-block",
-          marginTop: "30%"
+          marginTop: "5%"
         }}
       >
         <div
@@ -169,7 +189,9 @@ class Calculator extends React.Component<Props, State> {
                 height: "60px",
                 fontSize: "44px",
                 wordWrap: "break-word",
-                overflow: "hidden"
+                overflow: "hidden",
+                borderColor: "#FFFFFF",
+                borderWidth: "5px"
               }}
             >
               {displayString}
@@ -205,30 +227,10 @@ class Calculator extends React.Component<Props, State> {
                   justifyContent: "right"
                 }}
               >
-                <button
-                  className="calc-button"
-                  onClick={e => this.appendNumber("7")}
-                >
-                  7
-                </button>
-                <button
-                  className="calc-button"
-                  onClick={e => this.appendNumber("8")}
-                >
-                  8
-                </button>
-                <button
-                  className="calc-button"
-                  onClick={e => this.appendNumber("9")}
-                >
-                  9
-                </button>
-                <button
-                  className="calc-button"
-                  onClick={e => this.setModifier("/")}
-                >
-                  ÷
-                </button>
+                {this.createNumericalButton("7")}
+                {this.createNumericalButton("8")}
+                {this.createNumericalButton("9")}
+                {this.createModifierButton(DIVIDE)}
               </div>
               <div
                 style={{
@@ -238,30 +240,10 @@ class Calculator extends React.Component<Props, State> {
                   justifyContent: "right"
                 }}
               >
-                <button
-                  className="calc-button"
-                  onClick={e => this.appendNumber("4")}
-                >
-                  4
-                </button>
-                <button
-                  className="calc-button"
-                  onClick={e => this.appendNumber("5")}
-                >
-                  5
-                </button>
-                <button
-                  className="calc-button"
-                  onClick={e => this.appendNumber("6")}
-                >
-                  6
-                </button>
-                <button
-                  className="calc-button"
-                  onClick={e => this.setModifier("x")}
-                >
-                  ×
-                </button>
+                {this.createNumericalButton("4")}
+                {this.createNumericalButton("5")}
+                {this.createNumericalButton("6")}
+                {this.createModifierButton(MULTIPLY)}
               </div>
               <div
                 style={{
@@ -271,30 +253,10 @@ class Calculator extends React.Component<Props, State> {
                   justifyContent: "right"
                 }}
               >
-                <button
-                  className="calc-button"
-                  onClick={e => this.appendNumber("1")}
-                >
-                  1
-                </button>
-                <button
-                  className="calc-button"
-                  onClick={e => this.appendNumber("2")}
-                >
-                  2
-                </button>
-                <button
-                  className="calc-button"
-                  onClick={e => this.appendNumber("3")}
-                >
-                  3
-                </button>
-                <button
-                  className="calc-button"
-                  onClick={e => this.setModifier("-")}
-                >
-                  -
-                </button>
+                {this.createNumericalButton("1")}
+                {this.createNumericalButton("2")}
+                {this.createNumericalButton("3")}
+                {this.createModifierButton(SUBTRACT)}
               </div>
               <div
                 style={{
@@ -304,27 +266,12 @@ class Calculator extends React.Component<Props, State> {
                   justifyContent: "right"
                 }}
               >
-                <button
-                  className="calc-button"
-                  onClick={e => this.appendNumber("0")}
-                >
-                  0
-                </button>
-                <button
-                  className="calc-button"
-                  onClick={e => this.appendNumber(".")}
-                >
-                  .
-                </button>
+                {this.createNumericalButton("0")}
+                {this.createNumericalButton(".")}
                 <button className="calc-button" onClick={this.calculate()}>
                   =
                 </button>
-                <button
-                  className="calc-button"
-                  onClick={e => this.setModifier("+")}
-                >
-                  +
-                </button>
+                {this.createModifierButton(ADD)}
               </div>
             </div>
           </div>
