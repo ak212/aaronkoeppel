@@ -1,6 +1,0 @@
-/*
-Cache-Control: public, max-age=360000 
-X-XSS-Protection: 1; mode=block
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-#Content-Security-Policy: default-src 'self'; 
