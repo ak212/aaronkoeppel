@@ -21,15 +21,15 @@ export const nameActions = {
    setName: (name: string) => {
       return { type: SET_NAME, name }
    },
-   nameIsAaron: () => {
-      return { type: NAME_IS_AARON, isAaron: true }
+   nameIsAaron: (isAaron: boolean) => {
+      return { type: NAME_IS_AARON, isAaron }
    }
 }
 
 export const nameReducer: Reducer<Name> = (state = initialNameState, action): Name => {
    switch (action.type) {
       case SET_NAME:
-         return action.name
+         return { ...state, name: action.name }
       case NAME_IS_AARON:
          return { ...state, isAaron: action.isAaron }
       case CLEAR_NAME:
@@ -42,5 +42,8 @@ export const nameReducer: Reducer<Name> = (state = initialNameState, action): Na
 export const nameSelectors = {
    getName(state: State) {
       return state.name.name
+   },
+   isNameAaron(state: State) {
+      return state.name.isAaron
    }
 }
