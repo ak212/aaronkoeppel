@@ -17,7 +17,7 @@ const SUBTRACT = "-"
 const DIVIDE = "÷"
 const MULTIPLY = "×"
 
-class Calculator extends React.Component<Props, State> {
+export default class Calculator extends React.Component<Props, State> {
    public constructor(props: Props) {
       super(props)
       this.state = {
@@ -235,5 +235,3 @@ class Calculator extends React.Component<Props, State> {
       )
    }
 }
-
-export default Calculator
