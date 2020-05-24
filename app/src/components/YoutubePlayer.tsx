@@ -20,7 +20,7 @@ export default class YoutubePlayer extends React.Component<Props, State> {
    }
 
    private onForwardClick = () => {
-      this.setState(prevState => {
+      this.setState((prevState) => {
          let index = 0
          if (prevState.youtubeIdIndex !== YOUTUBE_IDS.length - 1) {
             index = prevState.youtubeIdIndex + 1
@@ -33,7 +33,7 @@ export default class YoutubePlayer extends React.Component<Props, State> {
    }
 
    private onPreviousClick = () => {
-      this.setState(prevState => {
+      this.setState((prevState) => {
          let index = 0
          if (prevState.youtubeIdIndex !== 0) {
             index = prevState.youtubeIdIndex - 1
@@ -71,7 +71,7 @@ export default class YoutubePlayer extends React.Component<Props, State> {
                   />
                   <button
                      className='video-progression-button'
-                     style={{ left: "95%" }}
+                     style={{ left: "91%" }}
                      onClick={this.onForwardClick}
                   >
                      {">"}

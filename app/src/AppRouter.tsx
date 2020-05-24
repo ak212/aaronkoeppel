@@ -3,9 +3,9 @@ import { slide as Menu } from 'react-burger-menu'
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
 
 import Calculator from './components/Calculator'
+import MainPage from './components/MainPage'
 import { ConnectedReduxTest } from './components/ReduxTest'
 import YoutubePlayer from './components/YoutubePlayer'
-import MainPage from './MainPage'
 
 class AppRouter extends React.Component {
    public render = () => {
