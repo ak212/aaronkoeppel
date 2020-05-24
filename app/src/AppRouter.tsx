@@ -3,6 +3,7 @@ import { slide as Menu } from 'react-burger-menu'
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
 
 import Calculator from './components/Calculator'
+import Footer from './components/Footer'
 import MainPage from './components/MainPage'
 import { ConnectedReduxTest } from './components/ReduxTest'
 import YoutubePlayer from './components/YoutubePlayer'
@@ -24,6 +25,7 @@ class AppRouter extends React.Component {
                <Route path='/drone-videos/' component={YoutubePlayer} />
                <Route path='/redux-test/' component={ConnectedReduxTest} />
             </div>
+            <Footer />
          </Router>
       )
    }

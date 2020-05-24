@@ -24,4 +24,5 @@
 .video {
    height: 0;
    overflow: hidden;
+   min-height: 100vh;
 }

@@ -41,7 +41,7 @@ export default class Calculator extends React.Component<Props, State> {
    }
 
    private backspace = () => {
-      this.setState(prevState => {
+      this.setState((prevState) => {
          return {
             value:
                prevState.value.length === 1
@@ -75,13 +75,13 @@ export default class Calculator extends React.Component<Props, State> {
 
    private appendNumber = (num: string) => {
       if (this.state.modifier) {
-         this.setState(prevState => {
+         this.setState((prevState) => {
             return {
                secondValue: this.getNewNumber(prevState.secondValue, num)
             }
          })
       } else {
-         this.setState(prevState => {
+         this.setState((prevState) => {
             return {
                value: this.getNewNumber(prevState.value, num)!
             }
@@ -109,7 +109,7 @@ export default class Calculator extends React.Component<Props, State> {
    }
 
    private calculate = (nextModifier?: string) => (): void => {
-      this.setState(prevState => {
+      this.setState((prevState) => {
          let value = parseFloat(prevState.value)
          const mod = prevState.modifier
          if (mod && !prevState.secondValue) {
@@ -138,7 +138,7 @@ export default class Calculator extends React.Component<Props, State> {
 
    private createNumericalButton = (number: string): JSX.Element => {
       return (
-         <button className='calc-button' onClick={e => this.appendNumber(number)}>
+         <button className='calc-button' onClick={(e) => this.appendNumber(number)}>
             {number}
          </button>
       )
@@ -146,7 +146,7 @@ export default class Calculator extends React.Component<Props, State> {
 
    private createModifierButton = (mod: string): JSX.Element => {
       return (
-         <button className='calc-button' onClick={e => this.setModifier(mod)}>
+         <button className='calc-button' onClick={(e) => this.setModifier(mod)}>
             {mod}
          </button>
       )
@@ -158,34 +158,10 @@ export default class Calculator extends React.Component<Props, State> {
       const displayString = `${this.state.value}${mod}${secondValue}`
 
       return (
-         <div
-            style={{
-               width: "320px",
-               display: "inline-block",
-               marginTop: "5%"
-            }}
-         >
-            <div
-               style={{
-                  borderStyle: "solid",
-                  borderWidth: "4px",
-                  background: "#122030"
-               }}
-            >
+         <div className={"calc"}>
+            <div className={"calc-background"}>
                <div style={{ margin: "10px" }}>
-                  <h2
-                     style={{
-                        background: "white",
-                        height: "60px",
-                        fontSize: "44px",
-                        wordWrap: "break-word",
-                        overflow: "hidden",
-                        borderColor: "#FFFFFF",
-                        borderWidth: "5px"
-                     }}
-                  >
-                     {displayString}
-                  </h2>
+                  <h2 className={"calc-value-display"}> {displayString} </h2>
                   <div
                      style={{
                         display: "flex",

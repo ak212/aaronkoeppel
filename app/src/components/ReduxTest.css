@@ -5,3 +5,8 @@
 .isNotAaron {
    color: red;
 }
+
+.reduxTest {
+   min-height: 100vh;
+   overflow: hidden;
+}
