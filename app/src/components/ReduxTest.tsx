@@ -31,9 +31,7 @@ class ReduxTest extends React.Component<Props> {
    public render = () => {
       return (
          <div className={"reduxTest"}>
-            <h1 className={`${this.props.isAaron ? "isAaron" : "isNotAaron"}`}>
-               Hello {this.props.name}
-            </h1>
+            <h1 className={`${this.props.isAaron ? "isAaron" : "isNotAaron"}`}>Hello {this.props.name}</h1>
             <input onChange={this.setName} />
          </div>
       )

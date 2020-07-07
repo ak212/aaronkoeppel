@@ -50,28 +50,18 @@ export default class YoutubePlayer extends React.Component<Props, State> {
    public render = () => {
       return (
          <div className='video'>
-            <button
-               className='video-progression-button'
-               style={{ left: "1%" }}
-               onClick={this.onPreviousClick}
-            >
+            <button className='video-progression-button' style={{ left: "1%" }} onClick={this.onPreviousClick}>
                {"<"}
             </button>
             <iframe
                title={"youtube videos"}
                className='video-frame'
-               src={`https://www.youtube-nocookie.com/embed/${
-                  YOUTUBE_IDS[this.state.youtubeIdIndex]
-               }`}
+               src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_IDS[this.state.youtubeIdIndex]}`}
                frameBorder='0'
                allow='autoplay; encrypted-media'
                allowFullScreen={true}
             />
-            <button
-               className='video-progression-button'
-               style={{ left: "91%" }}
-               onClick={this.onForwardClick}
-            >
+            <button className='video-progression-button' style={{ left: "91%" }} onClick={this.onForwardClick}>
                {">"}
             </button>
          </div>

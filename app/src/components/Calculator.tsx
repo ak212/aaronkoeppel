@@ -43,10 +43,7 @@ export default class Calculator extends React.Component<Props, State> {
    private backspace = () => {
       this.setState((prevState) => {
          return {
-            value:
-               prevState.value.length === 1
-                  ? "0"
-                  : prevState.value.slice(0, prevState.value.length - 1)
+            value: prevState.value.length === 1 ? "0" : prevState.value.slice(0, prevState.value.length - 1)
          }
       })
    }
@@ -127,13 +124,7 @@ export default class Calculator extends React.Component<Props, State> {
    }
 
    private performOperation = (val1: number, val2: number, op: string): number => {
-      return op === DIVIDE
-         ? val1 / val2
-         : op === MULTIPLY
-         ? val1 * val2
-         : op === SUBTRACT
-         ? val1 - val2
-         : val1 + val2
+      return op === DIVIDE ? val1 / val2 : op === MULTIPLY ? val1 * val2 : op === SUBTRACT ? val1 - val2 : val1 + val2
    }
 
    private createNumericalButton = (number: string): JSX.Element => {

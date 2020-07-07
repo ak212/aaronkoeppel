@@ -1,0 +1,25 @@
+#date-picker,
+#recreation-areas {
+   color: white;
+}
+
+.MuiSvgIcon-root {
+   color: #275fda;
+}
+
+#recreation-areas-label,
+#date-picker-label {
+   color: #4178ee;
+}
+
+.MuiOutlinedInput-notchedOutline {
+   border-color: white;
+}
+
+.camping {
+   height: 0;
+   overflow: hidden;
+   min-height: 97vh;
+   padding-top: 3vh;
+   color: white;
+}
