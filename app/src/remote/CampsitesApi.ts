@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 import moment from 'moment'
 
 import { Campsite } from '../reducers/Campsites'
