@@ -93,7 +93,6 @@ const CampsiteDates: React.FunctionComponent<DateProps> = (props: DateProps) => 
                KeyboardButtonProps={{
                   "aria-label": "change date"
                }}
-               style={{ justifySelf: "end" }}
             />
             {/* <Button variant='contained' color='primary' style={{ height: "48px" }}>
                Advanced
@@ -176,11 +175,11 @@ export default class Campsites extends React.PureComponent<Props, State> {
 
    private campgroundAvailabilityTable = (campgrounds: Campground[]) => {
       if (this.props.loading) {
-         return <Skeleton variant='rect' height={`${33 * (campgrounds.length + 1)}px`} />
+         return <Skeleton variant='rect' className='campgroundTable' height={`${33 * (campgrounds.length + 1)}px`} />
       } else if (this.props.campgrounds.length > 0) {
          return (
             <TableContainer component={Paper} className='campgroundTable'>
-               <Table size='small' aria-label='a dense table'>
+               <Table size='small'>
                   <TableHead>
                      <TableRow>
                         <TableCell>Campground</TableCell>
@@ -201,7 +200,7 @@ export default class Campsites extends React.PureComponent<Props, State> {
 
                               {Array.from(this.campsitesAvailabilityRange(campground).values()).map((available) => (
                                  <TableCell key={uniqueId()}>
-                                    {campground.campsites ? `${available} / ${campground.campsites.length}` : "Lottery"}
+                                    {campground.campsites ? `${available}/${campground.campsites.length}` : "Lottery"}
                                  </TableCell>
                               ))}
                            </TableRow>

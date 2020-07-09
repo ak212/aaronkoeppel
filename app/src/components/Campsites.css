@@ -25,7 +25,6 @@
 
 .camping {
    height: 0;
-   overflow: hidden;
    min-height: 97vh;
    padding-top: 3vh;
    color: white;
@@ -40,6 +39,10 @@
 .dateRow {
    display: grid;
    align-items: center;
+}
+
+.campgroundTable {
+   margin-top: 2vh;
 }
 
 @media (max-width: 800px) {
