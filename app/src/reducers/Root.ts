@@ -4,22 +4,18 @@ import createSagaMiddleware from 'redux-saga'
 
 import { Campsites, campsitesReducer, initialCampsitesState } from './Campsites'
 import { initialLoading, Loading, loadingReducer } from './Loading'
-import { initialNameState, Name, nameReducer } from './Name'
 
 export type State = {
-   readonly name: Name
    readonly campsites: Campsites
    readonly loading: Loading
 }
 
 export const initialState: State = {
-   name: initialNameState,
    campsites: initialCampsitesState,
    loading: initialLoading
 }
 
 export const rootReducer: Reducer<State> = combineReducers<State>({
-   name: nameReducer,
    campsites: campsitesReducer,
    loading: loadingReducer
 })

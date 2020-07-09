@@ -20,9 +20,3 @@
    height: 70vh;
    padding-top: 3%;
 }
-
-.video {
-   height: 0;
-   overflow: hidden;
-   min-height: 100vh;
-}

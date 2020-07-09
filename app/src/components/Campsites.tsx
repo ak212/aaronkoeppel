@@ -217,7 +217,7 @@ export default class Campsites extends React.PureComponent<Props, State> {
 
    public render = () => {
       return (
-         <div className='camping'>
+         <div>
             <div className='interactive'>
                <Autocomplete
                   freeSolo

@@ -49,7 +49,7 @@ export default class YoutubePlayer extends React.Component<Props, State> {
 
    public render = () => {
       return (
-         <div className='video'>
+         <div>
             <button className='video-progression-button' style={{ left: "1%" }} onClick={this.onPreviousClick}>
                {"<"}
             </button>
