@@ -17,7 +17,7 @@ import Autocomplete, { AutocompleteInputChangeReason } from '@material-ui/lab/Au
 import Skeleton from '@material-ui/lab/Skeleton'
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
-import { uniqueId } from 'lodash'
+import { startCase, uniqueId } from 'lodash'
 import moment from 'moment'
 import React, { Dispatch } from 'react'
 import { connect } from 'react-redux'
@@ -61,12 +61,13 @@ interface DateProps {
 const CampsiteDates: React.FunctionComponent<DateProps> = (props: DateProps) => {
    return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-         <div style={{ display: "grid", gridTemplateColumns: "12.5vw 12.5vw" }}>
+         <div className='dateRow'>
             <KeyboardDatePicker
                disableToolbar
                variant='inline'
                format='MM/dd/yyyy'
                margin='normal'
+               className='date-picker'
                id='date-picker'
                label='Start Date'
                minDate={moment()}
@@ -82,6 +83,7 @@ const CampsiteDates: React.FunctionComponent<DateProps> = (props: DateProps) => 
                variant='inline'
                format='MM/dd/yyyy'
                margin='normal'
+               className='date-picker'
                id='date-picker'
                label='End Date'
                minDate={moment().add(1, "days")}
@@ -91,13 +93,17 @@ const CampsiteDates: React.FunctionComponent<DateProps> = (props: DateProps) => 
                KeyboardButtonProps={{
                   "aria-label": "change date"
                }}
+               style={{ justifySelf: "end" }}
             />
+            {/* <Button variant='contained' color='primary' style={{ height: "48px" }}>
+               Advanced
+            </Button> */}
          </div>
       </MuiPickersUtilsProvider>
    )
 }
 
-export default class Campsites extends React.Component<Props, State> {
+export default class Campsites extends React.PureComponent<Props, State> {
    public constructor(props: Props) {
       super(props)
 
@@ -117,7 +123,7 @@ export default class Campsites extends React.Component<Props, State> {
    private onInputChange = (event: React.ChangeEvent<{}>, value: string, reason: AutocompleteInputChangeReason) => {
       this.setState({
          autoCompleteText: value,
-         selectedRecArea: this.props.autocompleteValues.find((ra) => ra.name === value)
+         selectedRecArea: this.props.autocompleteValues.find((ra) => ra.name.toLowerCase() === value.toLowerCase())
       })
       this.props.getAutoComplete(value)
    }
@@ -169,60 +175,57 @@ export default class Campsites extends React.Component<Props, State> {
    }
 
    private campgroundAvailabilityTable = (campgrounds: Campground[]) => {
-      return this.props.loading ? (
-         <Skeleton variant='rect' height={`${33 * (campgrounds.length + 1)}px`} />
-      ) : (
-         <TableContainer component={Paper}>
-            <Table size='small' aria-label='a dense table'>
-               <TableHead>
-                  <TableRow>
-                     <TableCell>Campground</TableCell>
-                     {this.getDates().map((date) => (
-                        <TableCell key={uniqueId()}>
-                           {moment(date.replace("T00:00:00Z", "")).format("DD MMM YYYY")}
-                        </TableCell>
-                     ))}
-                  </TableRow>
-               </TableHead>
-               <TableBody>
-                  {campgrounds.map((campground) => {
-                     return (
-                        <TableRow key={uniqueId()}>
-                           <TableCell component='th' scope='row'>
-                              {campground.facility_name}
+      if (this.props.loading) {
+         return <Skeleton variant='rect' height={`${33 * (campgrounds.length + 1)}px`} />
+      } else if (this.props.campgrounds.length > 0) {
+         return (
+            <TableContainer component={Paper} className='campgroundTable'>
+               <Table size='small' aria-label='a dense table'>
+                  <TableHead>
+                     <TableRow>
+                        <TableCell>Campground</TableCell>
+                        {this.getDates().map((date) => (
+                           <TableCell key={uniqueId()}>
+                              {moment(date.replace("T00:00:00Z", "")).format("DD MMM YYYY")}
                            </TableCell>
-
-                           {Array.from(this.campsitesAvailabilityRange(campground).values()).map((available) => (
-                              <TableCell key={uniqueId()}>
-                                 {campground.campsites ? `${available} / ${campground.campsites.length}` : "Lottery"}
+                        ))}
+                     </TableRow>
+                  </TableHead>
+                  <TableBody>
+                     {campgrounds.map((campground) => {
+                        return (
+                           <TableRow key={uniqueId()}>
+                              <TableCell component='th' scope='row'>
+                                 {startCase(campground.facility_name.toLowerCase())}
                               </TableCell>
-                           ))}
-                        </TableRow>
-                     )
-                  })}
-               </TableBody>
-            </Table>
-         </TableContainer>
-      )
+
+                              {Array.from(this.campsitesAvailabilityRange(campground).values()).map((available) => (
+                                 <TableCell key={uniqueId()}>
+                                    {campground.campsites ? `${available} / ${campground.campsites.length}` : "Lottery"}
+                                 </TableCell>
+                              ))}
+                           </TableRow>
+                        )
+                     })}
+                  </TableBody>
+               </Table>
+            </TableContainer>
+         )
+      } else {
+         return undefined
+      }
    }
 
    public render = () => {
       return (
          <div className='camping'>
-            <div
-               style={{
-                  display: "grid",
-                  gridTemplateColumns: "25vw",
-                  gridGap: "1vw",
-                  justifyContent: "center"
-               }}
-            >
+            <div className='interactive'>
                <Autocomplete
                   freeSolo
                   id='recreation-areas'
                   options={this.props.autocompleteValues
                      .filter((ra) => [EntityType.REC_AREA, EntityType.CAMPGROUND].indexOf(ra.entity_type) !== -1)
-                     .map((option) => option.name)}
+                     .map((option) => startCase(option.name.toLowerCase()))}
                   onInputChange={this.onInputChange}
                   renderInput={(params) => (
                      <TextField
@@ -232,7 +235,7 @@ export default class Campsites extends React.Component<Props, State> {
                         variant='outlined'
                         InputProps={{ ...params.InputProps, type: "search" }}
                         value={this.state.autoCompleteText}
-                        style={{ width: "25vw" }}
+                        className='interactive'
                      />
                   )}
                />
@@ -248,16 +251,14 @@ export default class Campsites extends React.Component<Props, State> {
                   color='primary'
                   disabled={this.state.selectedRecArea === undefined}
                   onClick={this.getCampsitesOnClick}
-                  style={{ width: "25vw" }}
                >
                   Get campsites
                </Button>
-               {this.props.campgrounds.length > 0 &&
-                  this.campgroundAvailabilityTable(
-                     this.props.campgrounds.sort((a: Campground, b: Campground) =>
-                        a.facility_name > b.facility_name ? 1 : -1
-                     )
-                  )}
+               {this.campgroundAvailabilityTable(
+                  this.props.campgrounds.sort((a: Campground, b: Campground) =>
+                     a.facility_name > b.facility_name ? 1 : -1
+                  )
+               )}
             </div>
          </div>
       )

@@ -44,6 +44,7 @@ function* getCampsiteAvailability({
    } else {
       const campgrounds = yield call(CampsitesApi.getCampgroundsForRecArea, recreationArea.entity_id)
       const campgroundValues: CampgroundRA[] = campgrounds["results"]
+      yield put(campsiteActions.setCampgrounds(campgroundValues.map(mapCampgroundRAtoCampground)))
       for (let campground of campgroundValues) {
          const campsitesObj = yield call(CampsitesApi.getCampsiteAvailablity, campground.entity_id, startDate)
          const campsiteMap = campsitesObj["campsites"]

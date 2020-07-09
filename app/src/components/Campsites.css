@@ -1,4 +1,11 @@
-#date-picker,
+#date-picker {
+   color: white;
+}
+
+.date-picker {
+   max-width: 300px;
+}
+
 #recreation-areas {
    color: white;
 }
@@ -22,4 +29,35 @@
    min-height: 97vh;
    padding-top: 3vh;
    color: white;
+}
+
+.interactive {
+   display: grid;
+   grid-gap: 1vw;
+   justify-content: center;
+}
+
+.dateRow {
+   display: grid;
+   align-items: center;
+}
+
+@media (max-width: 800px) {
+   .interactive {
+      grid-template-columns: 80vw;
+   }
+}
+
+@media (min-width: 801px) {
+   .interactive {
+      grid-template-columns: 50vw;
+   }
+
+   .dateRow {
+      grid-template-columns: 25vw 25vw;
+   }
+
+   .campgroundTable {
+      grid-template-columns: 80vw;
+   }
 }

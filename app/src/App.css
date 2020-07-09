@@ -54,12 +54,25 @@ body {
 /* The rest copied directly from react-burger-menu docs */
 
 /* Position and sizing of burger button */
-.bm-burger-button {
-   position: fixed;
-   width: 36px;
-   height: 30px;
-   left: 36px;
-   top: 36px;
+
+@media (min-width: 801px) {
+   .bm-burger-button {
+      position: fixed;
+      width: 36px;
+      height: 30px;
+      left: 36px;
+      top: 36px;
+   }
+}
+
+@media (max-width: 800px) {
+   .bm-burger-button {
+      position: fixed;
+      width: 23px;
+      height: 18px;
+      left: 18px;
+      top: 18px;
+   }
 }
 
 /* Color/shape of burger icon bars */
