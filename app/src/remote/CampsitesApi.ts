@@ -39,7 +39,7 @@ export default class CampsitesApi {
       return rest.get("search/suggest", config)
    }
 
-   public static async getCampsiteAvailablity(entity_id: string, startDate: number): Promise<Campsite[]> {
+   public static async getCampgroundAvailablity(entity_id: string, startDate: number): Promise<Campsite[]> {
       return rest.get(
          `camps/availability/campground/${entity_id}/month?start_date=${moment(startDate)
             .format("YYYY-MM-01")

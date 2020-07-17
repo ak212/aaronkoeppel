@@ -1,0 +1,48 @@
+.weekdayGrid {
+   display: grid;
+   grid-gap: 1vw;
+   padding-top: 2vh;
+}
+
+.weekdayButton > .MuiButton-label {
+   color: white;
+}
+
+@media (max-width: 800px) {
+   .weekdayGrid {
+      grid-template-columns: 5vw 5vw 5vw 5vw 5vw 5vw 5vw;
+      grid-gap: 4vw;
+   }
+
+   .weekdayGrid > .MuiButton-root {
+      min-width: 64px;
+   }
+}
+
+@media (max-width: 600px) {
+   .weekdayGrid {
+      grid-template-columns: 5vw 5vw 5vw 5vw 5vw 5vw 5vw;
+      grid-gap: 5vw;
+   }
+
+   .weekdayGrid > .MuiButton-root {
+      min-width: 40px;
+   }
+}
+
+@media (max-width: 400px) {
+   .weekdayGrid {
+      grid-template-columns: 5vw 5vw 5vw 5vw 5vw 5vw 5vw;
+      grid-gap: 6vw;
+   }
+
+   .weekdayGrid > .MuiButton-root {
+      min-width: 32px;
+   }
+}
+
+@media (min-width: 801px) {
+   .weekdayGrid {
+      grid-template-columns: 6vw 6vw 6vw 6vw 6vw 6vw 6vw;
+   }
+}

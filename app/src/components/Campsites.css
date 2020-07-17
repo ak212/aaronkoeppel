@@ -6,6 +6,14 @@
    max-width: 300px;
 }
 
+.map-container {
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   right: 0;
+}
+
 #recreation-areas {
    color: white;
 }
@@ -27,11 +35,13 @@
    display: grid;
    grid-gap: 1vw;
    justify-content: center;
+   color: white;
 }
 
 .dateRow {
    display: grid;
    align-items: center;
+   padding-bottom: 2vh;
 }
 
 .campgroundTable {
@@ -50,7 +60,7 @@
    }
 
    .dateRow {
-      grid-template-columns: 25vw 25vw;
+      grid-template-columns: 20vw 20vw 10vw;
    }
 
    .campgroundTable {

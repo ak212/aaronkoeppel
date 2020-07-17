@@ -8,22 +8,13 @@
       "@material-ui/icons": "^4.9.1",
       "@material-ui/lab": "^4.0.0-alpha.55",
       "@material-ui/pickers": "^3.2.10",
-      "@types/jest": "24.0.18",
-      "@types/lodash": "^4.14.155",
-      "@types/node": "12.7.2",
-      "@types/react": "16.9.2",
-      "@types/react-burger-menu": "^2.6.1",
-      "@types/react-dom": "16.9.0",
-      "@types/react-redux": "^7.1.9",
-      "@types/react-router-dom": "^4.3.5",
       "axios": "^0.19.2",
       "date-fns": "^2.14.0",
-      "lodash": "^4.17.15",
+      "lodash": "^4.17.19",
       "moment": "^2.26.0",
       "react": "^16.13.1",
       "react-burger-menu": "^2.6.14",
       "react-dom": "^16.13.1",
-      "react-new-window": "^0.1.2",
       "react-redux": "^7.1.1",
       "react-redux-typescript": "^3.0.0-rc.3",
       "react-router-dom": "^5.2.0",
@@ -31,8 +22,7 @@
       "redux": "^4.0.4",
       "redux-immutable-state-invariant": "^2.1.0",
       "redux-logger": "^3.0.6",
-      "redux-saga": "^1.1.1",
-      "typescript": "3.6.2"
+      "redux-saga": "^1.1.1"
    },
    "scripts": {
       "start": "react-scripts start",
@@ -56,6 +46,15 @@
       ]
    },
    "devDependencies": {
-      "redux-devtools-extension": "^2.13.8"
+      "@types/jest": "24.0.18",
+      "@types/lodash": "^4.14.155",
+      "@types/node": "12.7.2",
+      "@types/react": "16.9.2",
+      "@types/react-burger-menu": "^2.6.1",
+      "@types/react-dom": "16.9.0",
+      "@types/react-redux": "^7.1.9",
+      "@types/react-router-dom": "^4.3.5",
+      "redux-devtools-extension": "^2.13.8",
+      "typescript": "3.6.2"
    }
 }

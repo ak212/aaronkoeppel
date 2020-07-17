@@ -6,8 +6,8 @@ import { State } from './Root'
 export const GET_CAMPSITES = "GET_CAMPSITES"
 export const GET_CAMPSITES_SUCCESS = "GET_CAMPSITES_SUCCESS"
 export const SET_CAMPSITES = "SET_CAMPSITES"
-export const GET_CAMPSITE_AVAILABILITY = "GET_CAMPSITE_AVAILABILITY"
-export const GET_CAMPSITE_AVAILABILITY_SUCCESS = "GET_CAMPSITE_AVAILABILITY_SUCCESS"
+export const GET_CAMPGROUND_AVAILABILITY = "GET_CAMPGROUND_AVAILABILITY"
+export const GET_CAMPGROUND_AVAILABILITY_SUCCESS = "GET_CAMPGROUND_AVAILABILITY_SUCCESS"
 export const GET_AUTOCOMPLETE = "GET_AUTOCOMPLETE"
 export const GET_AUTOCOMPLETE_SUCCESS = "GET_AUTOCOMPLETE_SUCCESS"
 
@@ -150,6 +150,61 @@ export type Address = {
    street_address3: string
 }
 
+export type DaysOfWeek = {
+   sunday: boolean
+   monday: boolean
+   tuesday: boolean
+   wednesday: boolean
+   thursday: boolean
+   friday: boolean
+   saturday: boolean
+}
+
+export enum DayOfWeek {
+   SUNDAY = "Sunday",
+   MONDAY = "Monday",
+   TUESDAY = "Tuesday",
+   WEDNESDAY = "Wednesday",
+   THURSDAY = "Thursday",
+   FRIDAY = "Friday",
+   SATURDAY = "Saturday"
+}
+
+export function showDayOfWeek(daysOfWeek: DaysOfWeek, day: number): boolean {
+   switch (day) {
+      case 0:
+         return daysOfWeek.sunday
+      case 1:
+         return daysOfWeek.monday
+      case 2:
+         return daysOfWeek.tuesday
+      case 3:
+         return daysOfWeek.wednesday
+      case 4:
+         return daysOfWeek.thursday
+      case 5:
+         return daysOfWeek.friday
+      case 6:
+         return daysOfWeek.saturday
+      default:
+         return false
+   }
+}
+
+export function numDaysSelected(daysOfWeek: DaysOfWeek): number {
+   return Object.values(daysOfWeek).reduce((a, b) => (b ? ++a : a), 0)
+}
+
+export const initialDaysOfWeek = {
+   sunday: false,
+   monday: false,
+   tuesday: false,
+   wednesday: false,
+   thursday: false,
+   friday: false,
+   saturday: false
+}
+
 export const initialCampsitesState = {
    autocompleteValues: [],
    campgrounds: []
@@ -165,11 +220,11 @@ export const campsiteActions = {
    setCampgrounds: (values: Campground[]) => {
       return { type: SET_CAMPSITES, values }
    },
-   getCampsiteAvailability: (recreationArea: RecreationArea, startDate: number, endDate: number) => {
-      return { type: GET_CAMPSITE_AVAILABILITY, recreationArea, startDate, endDate }
+   getCampgroundAvailability: (recreationArea: RecreationArea, startDate: number, endDate: number) => {
+      return { type: GET_CAMPGROUND_AVAILABILITY, recreationArea, startDate, endDate }
    },
-   getCampsiteAvailabilitySuccess: (values: any[]) => {
-      return { type: GET_CAMPSITE_AVAILABILITY_SUCCESS, values }
+   getCampgroundAvailabilitySuccess: (values: any[]) => {
+      return { type: GET_CAMPGROUND_AVAILABILITY_SUCCESS, values }
    },
    getAutocomplete: (query: string) => {
       return { type: GET_AUTOCOMPLETE, query }
