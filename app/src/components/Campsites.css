@@ -1,7 +1,3 @@
-#date-picker {
-   color: white;
-}
-
 .date-picker {
    max-width: 300px;
 }
@@ -14,12 +10,20 @@
    right: 0;
 }
 
-#recreation-areas {
+#date-picker,
+#recreation-areas,
+.MuiChip-label {
    color: white;
 }
 
 .MuiSvgIcon-root {
    color: #275fda;
+}
+.MuiChip-deleteIcon {
+   color: #275fda;
+}
+#mat-chip {
+   border-color: rgb(21, 34, 70);
 }
 
 #recreation-areas-label,

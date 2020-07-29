@@ -30,6 +30,10 @@ export type RecreationArea = {
    state_code: string
 }
 
+export function isRecreationArea(obj: unknown): obj is RecreationArea {
+   return (obj as RecreationArea).entity_id !== undefined
+}
+
 export enum EntityType {
    CAMPGROUND = "campground",
    FACILITY = "facility",
@@ -220,8 +224,8 @@ export const campsiteActions = {
    setCampgrounds: (values: Campground[]) => {
       return { type: SET_CAMPSITES, values }
    },
-   getCampgroundAvailability: (recreationArea: RecreationArea, startDate: number, endDate: number) => {
-      return { type: GET_CAMPGROUND_AVAILABILITY, recreationArea, startDate, endDate }
+   getCampgroundAvailability: (recreationAreas: RecreationArea[], startDate: number, endDate: number) => {
+      return { type: GET_CAMPGROUND_AVAILABILITY, recreationAreas, startDate, endDate }
    },
    getCampgroundAvailabilitySuccess: (values: any[]) => {
       return { type: GET_CAMPGROUND_AVAILABILITY_SUCCESS, values }
