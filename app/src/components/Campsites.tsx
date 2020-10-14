@@ -42,6 +42,7 @@ import {
 } from '../reducers/Campsites'
 import { loadingSelectors } from '../reducers/Loading'
 import { State as RootState } from '../reducers/Root'
+import CampgroundMap from './CampgroundMap'
 import WeekdayPicker from './common/WeekdayPicker'
 import { CampgroundIcon } from './icons/CampgroundIcon'
 import { RecreationAreaIcon } from './icons/RecreationAreaIcon'
@@ -62,6 +63,7 @@ interface Props {
    getCampsites(entity_id: string): void
    getCampsiteAvailability(recreationAreas: RecreationArea[], startDate: number, endDate: number): void
    getAutoComplete(query: string): void
+   setRecreationAreas(recAreas: RecreationArea[]): void
 }
 
 interface DateProps {
@@ -129,7 +131,7 @@ const CampgroundDates: React.FunctionComponent<DateProps> = (props: DateProps) =
    )
 }
 
-export default class Campsites extends React.PureComponent<Props, State> {
+class Campsites extends React.PureComponent<Props, State> {
    public constructor(props: Props) {
       super(props)
 
@@ -155,7 +157,8 @@ export default class Campsites extends React.PureComponent<Props, State> {
    }
 
    private onChange = (event: React.ChangeEvent<{}>, value: (string | RecreationArea)[]) => {
-      if (value.every((val) => isRecreationArea(val))) {
+      if (value.every((val) => isRecreationArea(val)) || value.length === 0) {
+         this.props.setRecreationAreas(value as RecreationArea[])
          this.setState({ selectedRecAreas: value as RecreationArea[] })
       }
    }
@@ -217,7 +220,6 @@ export default class Campsites extends React.PureComponent<Props, State> {
    }
 
    private handleStartDateChange = (date: MaterialUiPickersDate, value?: string | null | undefined) => {
-      // TODO check if the startdate is in the set of available dates if there are availability results
       let startDate: number | undefined
       let endDate: number | undefined = this.state.endDate
       if (this.state.endDate && date && moment(date).isSameOrAfter(this.state.endDate, "day")) {
@@ -279,10 +281,48 @@ export default class Campsites extends React.PureComponent<Props, State> {
       return availabilities
    }
 
+   private campgroundToTableRow = (campground: Campground) => {
+      const campgroundAvailability: Map<string, number> = this.campsitesAvailabilityRange(campground)
+      if (this.state.advancedDate) {
+         for (let k of campgroundAvailability.keys()) {
+            if (!showDayOfWeek(this.state.daysOfWeek, moment(k).day())) {
+               campgroundAvailability.delete(k)
+            }
+         }
+      }
+      return (
+         <TableRow key={uniqueId()}>
+            <TableCell component='th' scope='row'>
+               <Typography>
+                  <Link
+                     href={`https://www.recreation.gov/camping/campgrounds/${campground.facility_id}`}
+                     target='_blank'
+                     color='inherit'
+                  >
+                     {startCase(campground.facility_name.toLowerCase())}
+                  </Link>
+               </Typography>
+            </TableCell>
+
+            {Array.from(campgroundAvailability.values()).map((available) => (
+               <TableCell key={uniqueId()}>
+                  {campground.campsites
+                     ? campground.campsites.length === 0
+                        ? "Unavailable"
+                        : campground.facility_type === ReservationType.CAMPING_LOTTERY
+                        ? "Lottery"
+                        : `${available}/${campground.campsites.length}`
+                     : "Unknown"}
+               </TableCell>
+            ))}
+         </TableRow>
+      )
+   }
+
    private campgroundAvailabilityTable = (campgrounds: Campground[]) => {
       if (this.props.loading) {
          return <Skeleton variant='rect' className='campgroundTable' height={`${33 * (campgrounds.length + 1)}px`} />
-      } else if (this.props.campgrounds.length > 0) {
+      } else if (campgrounds.length > 0) {
          return (
             <TableContainer component={Paper} className='campgroundTable'>
                <Table size='small'>
@@ -302,45 +342,7 @@ export default class Campsites extends React.PureComponent<Props, State> {
                            ))}
                      </TableRow>
                   </TableHead>
-                  <TableBody>
-                     {campgrounds.map((campground) => {
-                        const campgroundAvailability: Map<string, number> = this.campsitesAvailabilityRange(campground)
-                        if (this.state.advancedDate) {
-                           for (let k of campgroundAvailability.keys()) {
-                              if (!showDayOfWeek(this.state.daysOfWeek, moment(k).day())) {
-                                 campgroundAvailability.delete(k)
-                              }
-                           }
-                        }
-                        return (
-                           <TableRow key={uniqueId()}>
-                              <TableCell component='th' scope='row'>
-                                 <Typography>
-                                    <Link
-                                       href={`https://www.recreation.gov/camping/campgrounds/${campground.facility_id}`}
-                                       target='_blank'
-                                       color='inherit'
-                                    >
-                                       {startCase(campground.facility_name.toLowerCase())}
-                                    </Link>
-                                 </Typography>
-                              </TableCell>
-
-                              {Array.from(campgroundAvailability.values()).map((available) => (
-                                 <TableCell key={uniqueId()}>
-                                    {campground.campsites
-                                       ? campground.campsites.length === 0
-                                          ? "Unavailable"
-                                          : campground.facility_type === ReservationType.CAMPING_LOTTERY
-                                          ? "Lottery"
-                                          : `${available}/${campground.campsites.length}`
-                                       : "Unknown"}
-                                 </TableCell>
-                              ))}
-                           </TableRow>
-                        )
-                     })}
-                  </TableBody>
+                  <TableBody>{campgrounds.map(this.campgroundToTableRow)}</TableBody>
                </Table>
             </TableContainer>
          )
@@ -413,6 +415,7 @@ export default class Campsites extends React.PureComponent<Props, State> {
                      a.facility_name > b.facility_name ? 1 : -1
                   )
                )}
+               <CampgroundMap campgrounds={this.props.campgrounds} />
             </div>
          </div>
       )
@@ -434,6 +437,9 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
    },
    getAutoComplete(name: string) {
       dispatch(campsiteActions.getAutocomplete(name))
+   },
+   setRecreationAreas(recAreas: RecreationArea[]) {
+      dispatch(campsiteActions.setRecreationAreas(recAreas))
    }
 })
 

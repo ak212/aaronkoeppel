@@ -16,10 +16,13 @@ import {
    mapCampgroundRAtoCampground,
    RecreationArea,
    ReservationStatus,
-   ReservationType
+   ReservationType,
+   SET_RECREATION_AREAS
 } from '../reducers/Campsites'
 import { loadingActions } from '../reducers/Loading'
 import CampsitesApi from '../remote/CampsitesApi'
+
+const emptyRecreationAreas: RecreationArea[] = []
 
 function* getCampsites({ entity_id }: ReturnType<typeof campsiteActions.getCampsites>) {
    const campsites = yield call(CampsitesApi.getCampgroundsForRecArea, entity_id)
@@ -130,8 +133,6 @@ function* getCampsitesAvailability(campsites: Campsite[], entity_id: string, sta
    }
 }
 
-const emptyRecreationAreas: RecreationArea[] = []
-
 function* getAutocomplete({ query }: ReturnType<typeof campsiteActions.getAutocomplete>) {
    yield delay(250)
    if (query === "") {
@@ -143,10 +144,23 @@ function* getAutocomplete({ query }: ReturnType<typeof campsiteActions.getAutoco
    }
 }
 
+function* setRecreationAreas({ recAreas }: ReturnType<typeof campsiteActions.setRecreationAreas>) {
+   const campgrounds: Campground[] = yield select(campsitesSelectors.getCampgrounds)
+   const filteredCampgrounds = campgrounds.filter((campground) =>
+      recAreas.some(
+         (recArea) => recArea.entity_id === campground.facility_id || recArea.entity_id === campground.parent_id
+      )
+   )
+   if (campgrounds.length !== filteredCampgrounds.length) {
+      yield put(campsiteActions.setCampgrounds(filteredCampgrounds))
+   }
+}
+
 export function* campsitesSaga() {
    yield all([
       takeEvery(GET_CAMPSITES, getCampsites),
       takeEvery(GET_CAMPGROUND_AVAILABILITY, getCampsiteAvailability),
-      takeLatest(GET_AUTOCOMPLETE, getAutocomplete)
+      takeLatest(GET_AUTOCOMPLETE, getAutocomplete),
+      takeEvery(SET_RECREATION_AREAS, setRecreationAreas)
    ])
 }

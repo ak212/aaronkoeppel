@@ -1,3 +1,5 @@
+import { FitBoundsOptions } from 'leaflet'
+import { MapProps } from 'react-leaflet'
 import { Reducer } from 'redux'
 
 import { State } from './Root'
@@ -5,7 +7,8 @@ import { State } from './Root'
 /* Action Definition */
 export const GET_CAMPSITES = "GET_CAMPSITES"
 export const GET_CAMPSITES_SUCCESS = "GET_CAMPSITES_SUCCESS"
-export const SET_CAMPSITES = "SET_CAMPSITES"
+export const SET_CAMPGROUNDS = "SET_CAMPSITES"
+export const SET_RECREATION_AREAS = "SET_RECREATION_AREAS"
 export const GET_CAMPGROUND_AVAILABILITY = "GET_CAMPGROUND_AVAILABILITY"
 export const GET_CAMPGROUND_AVAILABILITY_SUCCESS = "GET_CAMPGROUND_AVAILABILITY_SUCCESS"
 export const GET_AUTOCOMPLETE = "GET_AUTOCOMPLETE"
@@ -67,6 +70,8 @@ export type CampgroundRA = {
    description: string
    entity_id: string
    entity_type: string
+   latitude: number
+   longitude: number
    name: string
    notices: string[]
    number_of_ratings: number
@@ -90,10 +95,13 @@ export type CampgroundRA = {
 export function mapCampgroundRAtoCampground(campgroundRA: CampgroundRA) {
    const campground: Campground = {
       addresses: campgroundRA.addresses,
+      campsites: campgroundRA.campsites,
       facility_id: campgroundRA.entity_id,
+      facility_latitude: campgroundRA.latitude,
+      facility_longitude: campgroundRA.longitude,
       facility_name: campgroundRA.name,
       facility_type: campgroundRA.type,
-      campsites: campgroundRA.campsites
+      parent_id: campgroundRA.parent_id
    }
 
    return campground
@@ -101,10 +109,13 @@ export function mapCampgroundRAtoCampground(campgroundRA: CampgroundRA) {
 
 export type Campground = {
    addresses: Address[]
+   campsites?: Campsite[]
    facility_id: string
+   facility_latitude: number
+   facility_longitude: number
    facility_name: string
    facility_type: ReservationType
-   campsites?: Campsite[]
+   parent_id: string
 }
 
 export enum CampsiteType {
@@ -174,6 +185,46 @@ export enum DayOfWeek {
    SATURDAY = "Saturday"
 }
 
+export type Location = [number, number]
+
+const maxReducer = (acc: number | null, next: number) => (acc ? (next > acc ? next : acc) : next)
+
+const minReducer = (acc: number | null, next: number) => (acc ? (next < acc ? next : acc) : next)
+
+export const campgroundsToLocations = (campgrounds: Campground[]): Location[] => {
+   return campgrounds.map((campground) => [campground.facility_latitude, campground.facility_longitude])
+}
+
+export const getBounds = (locations: Location[]) => {
+   const latitudes = locations.map((location) => location[0])
+   const longitudes = locations.map((location) => location[1])
+
+   const maxLat = latitudes.reduce(maxReducer, 0)
+   const minLat = latitudes.reduce(minReducer, 0)
+   const maxLong = longitudes.reduce(maxReducer, 0)
+   const minLong = longitudes.reduce(minReducer, 0)
+
+   if (maxLat && minLat && maxLong && minLong) {
+      const topLeftCorner: Location = [minLat, maxLong]
+      const bottomRightCorner: Location = [maxLat, minLong]
+      return [topLeftCorner, bottomRightCorner]
+   }
+   return undefined
+}
+
+export const getLeafletProps = (locations: Location[]): Partial<MapProps> => {
+   const oneLocation = locations.length === 1 ? locations[0] : undefined
+
+   if (oneLocation) {
+      return { center: oneLocation, zoom: 12 }
+   }
+
+   const bounds = getBounds(locations)
+   const boundsOptions: FitBoundsOptions = { padding: [45, 45] }
+
+   return { bounds, boundsOptions }
+}
+
 export function showDayOfWeek(daysOfWeek: DaysOfWeek, day: number): boolean {
    switch (day) {
       case 0:
@@ -221,8 +272,11 @@ export const campsiteActions = {
    getCampsitesSuccess: (values: CampgroundRA[]) => {
       return { type: GET_CAMPSITES_SUCCESS, values }
    },
-   setCampgrounds: (values: Campground[]) => {
-      return { type: SET_CAMPSITES, values }
+   setCampgrounds: (campgrounds: Campground[]) => {
+      return { type: SET_CAMPGROUNDS, campgrounds }
+   },
+   setRecreationAreas: (recAreas: RecreationArea[]) => {
+      return { type: SET_RECREATION_AREAS, recAreas }
    },
    getCampgroundAvailability: (recreationAreas: RecreationArea[], startDate: number, endDate: number) => {
       return { type: GET_CAMPGROUND_AVAILABILITY, recreationAreas, startDate, endDate }
@@ -242,8 +296,8 @@ export const campsitesReducer: Reducer<Campsites> = (state = initialCampsitesSta
    switch (action.type) {
       case GET_AUTOCOMPLETE_SUCCESS:
          return { ...state, autocompleteValues: action.values }
-      case SET_CAMPSITES:
-         return { ...state, campgrounds: action.values }
+      case SET_CAMPGROUNDS:
+         return { ...state, campgrounds: action.campgrounds }
       default:
          return state
    }
