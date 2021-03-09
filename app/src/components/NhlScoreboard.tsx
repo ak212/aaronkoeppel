@@ -2,7 +2,7 @@ import Fade from '@material-ui/core/Fade'
 import Grid from '@material-ui/core/Grid'
 import Snackbar from '@material-ui/core/Snackbar'
 import moment from 'moment'
-import React, { Dispatch, useEffect } from 'react'
+import React, { Dispatch, useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AnyAction } from 'redux'
 
@@ -13,13 +13,13 @@ import { NhlGameScore } from './NhlGameScore'
 
 export const NhlScoreboard = () => {
    const dispatch: Dispatch<AnyAction> = useDispatch()
-   const getGames = () => {
+   const getGames = useCallback(() => {
       dispatch(nhlScoreboardActions.getGames())
-   }
+   }, [dispatch])
 
    useEffect(() => {
       getGames()
-   }, [])
+   }, [getGames])
 
    useEffect(() => {
       const interval = setInterval(() => {

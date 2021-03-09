@@ -4,7 +4,7 @@ import { loadingActions } from '../reducers/Loading'
 import { GET_GAMES, NhlGame, nhlScoreboardActions } from '../reducers/NhlScoreboard'
 import NhlScoreboardApi from '../remote/NhlScoreboardApi'
 
-function* getGames({ }: ReturnType<typeof nhlScoreboardActions.getGames>) {
+function* getGames() {
   yield put(loadingActions.startLoading('nhlScores'))
 
   const scoreboard: { dates: any[] } = yield call(NhlScoreboardApi.getGames)
