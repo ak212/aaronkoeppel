@@ -205,7 +205,7 @@ class Campsites extends React.PureComponent<Props, State> {
          const statusMap: Map<string, ReservationStatus> = new Map(
             Object.entries(this.props.campgrounds[0].campsites[0].availabilities)
          )
-         for (const key of statusMap.keys()) {
+         for (const key of Array.from(statusMap.keys())) {
             monthRange = monthRange.filter((month) => month !== moment(key).get("month"))
          }
 

@@ -4,20 +4,24 @@ import createSagaMiddleware from 'redux-saga'
 
 import { Campsites, campsitesReducer, initialCampsitesState } from './Campsites'
 import { initialLoading, Loading, loadingReducer } from './Loading'
+import { initialScoreboardState, NhlScoreboard, nhlScoreboardReducer } from './NhlScoreboard'
 
 export type State = {
    readonly campsites: Campsites
    readonly loading: Loading
+   readonly nhlScoreboard: NhlScoreboard
 }
 
 export const initialState: State = {
    campsites: initialCampsitesState,
-   loading: initialLoading
+   loading: initialLoading,
+   nhlScoreboard: initialScoreboardState
 }
 
 export const rootReducer: Reducer<State> = combineReducers<State>({
    campsites: campsitesReducer,
-   loading: loadingReducer
+   loading: loadingReducer,
+   nhlScoreboard: nhlScoreboardReducer
 })
 
 export const sagaMiddleware = createSagaMiddleware()

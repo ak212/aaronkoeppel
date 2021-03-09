@@ -8,10 +8,12 @@ export const FINISH_LOADING = "FINISH_LOADING"
 
 export type Loading = {
    campsiteTable: boolean
+   nhlScores: boolean
 }
 
 export const initialLoading = {
-   campsiteTable: false
+   campsiteTable: false,
+   nhlScores: false
 }
 
 export const loadingActions = {
@@ -37,5 +39,8 @@ export const loadingReducer: Reducer<Loading> = (state = initialLoading, action)
 export const loadingSelectors = {
    getCampsiteLoading(state: State) {
       return state.loading.campsiteTable
+   },
+   getNhlScoresLoading(state: State) {
+      return state.loading.nhlScores
    }
 }
