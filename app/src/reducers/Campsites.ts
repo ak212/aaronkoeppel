@@ -192,17 +192,17 @@ const maxReducer = (acc: number | null, next: number) => (acc ? (next > acc ? ne
 const minReducer = (acc: number | null, next: number) => (acc ? (next < acc ? next : acc) : next)
 
 export const campgroundsToLocations = (campgrounds: Campground[]): Location[] => {
-  return campgrounds.map((campground) => [campground.facility_latitude, campground.facility_longitude])
+  return campgrounds.map((campground: Campground) => [campground.facility_latitude, campground.facility_longitude])
 }
 
 export const getBounds = (locations: Location[]) => {
-  const latitudes = locations.map((location) => location[0])
-  const longitudes = locations.map((location) => location[1])
+  const latitudes: number[] = locations.map((location) => location[0])
+  const longitudes: number[] = locations.map((location) => location[1])
 
-  const maxLat = latitudes.reduce(maxReducer, 0)
-  const minLat = latitudes.reduce(minReducer, 0)
-  const maxLong = longitudes.reduce(maxReducer, 0)
-  const minLong = longitudes.reduce(minReducer, 0)
+  const maxLat: number = latitudes.reduce(maxReducer, 0)
+  const minLat: number = latitudes.reduce(minReducer, 0)
+  const maxLong: number = longitudes.reduce(maxReducer, 0)
+  const minLong: number = longitudes.reduce(minReducer, 0)
 
   if (maxLat && minLat && maxLong && minLong) {
     const topLeftCorner: Location = [minLat, maxLong]
@@ -213,13 +213,13 @@ export const getBounds = (locations: Location[]) => {
 }
 
 export const getLeafletProps = (locations: Location[]): Partial<MapProps> => {
-  const oneLocation = locations.length === 1 ? locations[0] : undefined
+  const oneLocation: Location | undefined = locations.length === 1 ? locations[0] : undefined
 
   if (oneLocation) {
     return { center: oneLocation, zoom: 12 }
   }
 
-  const bounds = getBounds(locations)
+  const bounds: Location[] | undefined = getBounds(locations)
   const boundsOptions: FitBoundsOptions = { padding: [45, 45] }
 
   return { bounds, boundsOptions }
@@ -250,7 +250,7 @@ export function numDaysSelected(daysOfWeek: DaysOfWeek): number {
   return Object.values(daysOfWeek).reduce((a, b) => (b ? ++a : a), 0)
 }
 
-export const initialDaysOfWeek = {
+export const initialDaysOfWeek: DaysOfWeek = {
   sunday: false,
   monday: false,
   tuesday: false,
@@ -260,7 +260,7 @@ export const initialDaysOfWeek = {
   saturday: false
 }
 
-export const initialCampsitesState = {
+export const initialCampsitesState: Campsites = {
   autocompleteValues: [],
   campgrounds: []
 }
