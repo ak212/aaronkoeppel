@@ -12,6 +12,11 @@ import { State as RootState } from '../reducers/Root'
 import { NhlGameScore } from './NhlGameScore'
 
 export const NhlScoreboard = () => {
+   /* Props */
+   const games: NhlGame[] = useSelector((state: RootState) => nhlScoreboardSelectors.getGames(state))
+   const loading: boolean = useSelector((state: RootState) => loadingSelectors.getNhlScoresLoading(state))
+
+   /* Dispatch */
    const dispatch: Dispatch<AnyAction> = useDispatch()
    const getGames = useCallback(() => {
       dispatch(nhlScoreboardActions.getGames())
@@ -21,15 +26,13 @@ export const NhlScoreboard = () => {
       getGames()
    }, [getGames])
 
+   /* Auto retrieve game updates every 20 seconds */
    useEffect(() => {
       const interval = setInterval(() => {
          getGames()
       }, 20000)
       return () => clearInterval(interval)
    })
-
-   const games: NhlGame[] = useSelector((state: RootState) => nhlScoreboardSelectors.getGames(state))
-   const loading: boolean = useSelector((state: RootState) => loadingSelectors.getNhlScoresLoading(state))
 
    return (
       <>

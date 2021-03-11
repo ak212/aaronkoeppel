@@ -3,8 +3,8 @@ import { slide as Menu } from 'react-burger-menu'
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
 
 import Calculator from './components/Calculator'
-import { ConnectedCampsites } from './components/Campsites'
-import MainPage from './components/MainPage'
+import { Campsites } from './components/Campsites'
+import { MainPage } from './components/MainPage'
 import { NhlScoreboard } from './components/NhlScoreboard'
 import YoutubePlayer from './components/YoutubePlayer'
 
@@ -23,7 +23,7 @@ class AppRouter extends React.Component {
             <Route path="/" exact component={MainPage} />
             <Route path="/calculator/" component={Calculator} />
             <Route path="/drone-videos/" component={YoutubePlayer} />
-            <Route path="/campsites/" component={ConnectedCampsites} />
+            <Route path="/campsites/" component={Campsites} />
             <Route path="/nhl-scoreboard/" component={NhlScoreboard} />
          </Router>
       )

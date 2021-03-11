@@ -20,11 +20,13 @@ import Autocomplete from '@material-ui/lab/Autocomplete'
 import Skeleton from '@material-ui/lab/Skeleton'
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
-import { range, startCase, uniqueId } from 'lodash'
+import range from 'lodash/range'
+import startCase from 'lodash/startCase'
+import uniqueId from 'lodash/uniqueId'
 import moment from 'moment'
-import React, { Dispatch } from 'react'
-import { connect } from 'react-redux'
-import { Action } from 'redux'
+import React, { Dispatch, useCallback, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { AnyAction } from 'redux'
 
 import {
    Campground,
@@ -42,29 +44,10 @@ import {
 } from '../reducers/Campsites'
 import { loadingSelectors } from '../reducers/Loading'
 import { State as RootState } from '../reducers/Root'
-import CampgroundMap from './CampgroundMap'
-import WeekdayPicker from './common/WeekdayPicker'
+import { CampgroundMap } from './CampgroundMap'
+import { WeekdayPicker } from './common/WeekdayPicker'
 import { CampgroundIcon } from './icons/CampgroundIcon'
 import { RecreationAreaIcon } from './icons/RecreationAreaIcon'
-
-interface State {
-   autoCompleteText: string
-   selectedRecAreas: RecreationArea[]
-   startDate?: number
-   endDate?: number
-   advancedDate: boolean
-   daysOfWeek: DaysOfWeek
-}
-
-interface Props {
-   autocompleteValues: RecreationArea[]
-   campgrounds: Campground[]
-   loading: boolean
-   getCampsites(entity_id: string): void
-   getCampsiteAvailability(recreationAreas: RecreationArea[], startDate: number, endDate: number): void
-   getAutoComplete(query: string): void
-   setRecreationAreas(recAreas: RecreationArea[]): void
-}
 
 interface DateProps {
    startDate?: number
@@ -78,51 +61,50 @@ interface DateProps {
    advancedToggle(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void
 }
 
-/*  */
-const CampgroundDates: React.FunctionComponent<DateProps> = (props: DateProps) => {
+const CampgroundDates = (props: DateProps) => {
    return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-         <div className='dateRow'>
+         <div className="dateRow">
             <KeyboardDatePicker
                disableToolbar
-               variant='inline'
-               format='MM/dd/yyyy'
-               margin='normal'
-               className='date-picker'
-               id='date-picker'
-               label='Start Date'
+               variant="inline"
+               format="MM/dd/yyyy"
+               margin="normal"
+               className="date-picker"
+               id="date-picker"
+               label="Start Date"
                minDate={moment()}
-               maxDate={moment(props.startDate).add(3, "months")}
+               maxDate={moment(props.startDate).add(3, 'months')}
                value={props.startDate}
                onChange={props.handleStartDateChange}
                KeyboardButtonProps={{
-                  "aria-label": "change date"
+                  'aria-label': 'change date'
                }}
             />
             <KeyboardDatePicker
                disableToolbar
-               variant='inline'
-               format='MM/dd/yyyy'
-               margin='normal'
-               className='date-picker'
-               id='date-picker'
-               label='End Date'
-               minDate={moment().add(1, "days")}
-               maxDate={moment(props.startDate).add(28, "days")}
+               variant="inline"
+               format="MM/dd/yyyy"
+               margin="normal"
+               className="date-picker"
+               id="date-picker"
+               label="End Date"
+               minDate={moment().add(1, 'days')}
+               maxDate={moment(props.startDate).add(28, 'days')}
                value={props.endDate}
                onChange={props.handleEndDateChange}
                KeyboardButtonProps={{
-                  "aria-label": "change date"
+                  'aria-label': 'change date'
                }}
             />
             <Button
-               variant='contained'
-               color='primary'
+               variant="contained"
+               color="primary"
                onClick={props.advancedToggle}
-               style={{ height: "48px", maxWidth: "30vw" }}
+               style={{ height: '48px', maxWidth: '30vw' }}
             >
                Advanced
-            </Button>
+        </Button>
             {props.advancedDate && (
                <WeekdayPicker daysOfWeek={props.daysOfWeek} toggleSelectedDaysOfWeek={props.toggleSelectedDaysOfWeek} />
             )}
@@ -131,140 +113,208 @@ const CampgroundDates: React.FunctionComponent<DateProps> = (props: DateProps) =
    )
 }
 
-class Campsites extends React.PureComponent<Props, State> {
-   public constructor(props: Props) {
-      super(props)
+export const Campsites = () => {
+   /* Props */
+   const autocompleteValues: RecreationArea[] = useSelector((state: RootState) =>
+      campsitesSelectors.getAutocomplete(state)
+   )
+   const campgrounds: Campground[] = useSelector((state: RootState) => campsitesSelectors.getCampgrounds(state))
+   const loading: boolean = useSelector((state: RootState) => loadingSelectors.getCampsiteLoading(state))
 
-      this.state = {
-         advancedDate: false,
-         autoCompleteText: "",
-         daysOfWeek: initialDaysOfWeek,
-         endDate: moment(Date.now()).add(1, "days").toDate().valueOf(),
-         selectedRecAreas: [],
-         startDate: Date.now()
+   /* Dispatch */
+   const dispatch: Dispatch<AnyAction> = useDispatch()
+
+   const getCampsiteAvailability = useCallback(
+      (recreationAreas: RecreationArea[], startDate: number, endDate: number) => {
+         dispatch(campsiteActions.getCampgroundAvailability(recreationAreas, startDate, endDate))
+      },
+      [dispatch]
+   )
+
+   const getAutoComplete = useCallback(
+      (name: string) => {
+         dispatch(campsiteActions.getAutocomplete(name))
+      },
+      [dispatch]
+   )
+
+   const setRecreationAreas = useCallback(
+      (recAreas: RecreationArea[]) => {
+         dispatch(campsiteActions.setRecreationAreas(recAreas))
+      },
+      [dispatch]
+   )
+
+   /* State */
+   const [autoCompleteText, setAutoCompleteText] = useState<string>('')
+   const [selectedRecAreas, setSelectedRecAreas] = useState<RecreationArea[]>([])
+   const [startDate, setStartDate] = useState<number | undefined>(Date.now())
+   const [endDate, setEndDate] = useState<number | undefined>(moment(Date.now()).add(1, 'days').toDate().valueOf())
+   const [advancedDate, setAdvancedDate] = useState<boolean>(false)
+   const [daysOfWeek, setDaysOfWeek] = useState<DaysOfWeek>(initialDaysOfWeek)
+
+   /**
+    * On click listener to get the the campsite availability for the selected recreation areas for the date range (stateDate -> endDate)
+    *
+    * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} event
+    */
+   const getCampsitesOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+      if (startDate && endDate) {
+         getCampsiteAvailability(selectedRecAreas, startDate, endDate)
       }
    }
 
-   private getCampsitesOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      if (this.state.startDate && this.state.endDate) {
-         this.props.getCampsiteAvailability(this.state.selectedRecAreas, this.state.startDate, this.state.endDate)
-      }
+   /**
+    * Get new autocomplete values based on the new input.
+    *
+    * @param {React.ChangeEvent<{}>} event
+    * @param {string} value
+    */
+   const onInputChange = (event: React.ChangeEvent<{}>, value: string): void => {
+      setAutoCompleteText(value)
+      getAutoComplete(value)
    }
 
-   private onInputChange = (event: React.ChangeEvent<{}>, value: string) => {
-      this.setState({ autoCompleteText: value })
-      this.props.getAutoComplete(value)
-   }
-
-   private onChange = (event: React.ChangeEvent<{}>, value: (string | RecreationArea)[]) => {
+   /**
+    * On change listener for the autocomplete values.
+    *
+    * @param {React.ChangeEvent<{}>} event
+    * @param {((string | RecreationArea)[])} value
+    */
+   const onChange = (event: React.ChangeEvent<{}>, value: (string | RecreationArea)[]): void => {
       if (value.every((val) => isRecreationArea(val)) || value.length === 0) {
-         this.props.setRecreationAreas(value as RecreationArea[])
-         this.setState({ selectedRecAreas: value as RecreationArea[] })
+         setRecreationAreas(value as RecreationArea[])
+         setSelectedRecAreas(value as RecreationArea[])
       }
    }
 
-   private toggleSelectedDaysOfWeek = (dayOfWeek: DayOfWeek) => {
-      this.setState((prevState) => {
-         let daysOfWeek = prevState.daysOfWeek
-         switch (dayOfWeek) {
-            case DayOfWeek.SUNDAY:
-               daysOfWeek = { ...daysOfWeek, sunday: !daysOfWeek.sunday }
-               break
-            case DayOfWeek.MONDAY:
-               daysOfWeek = { ...daysOfWeek, monday: !daysOfWeek.monday }
-               break
-            case DayOfWeek.TUESDAY:
-               daysOfWeek = { ...daysOfWeek, tuesday: !daysOfWeek.tuesday }
-               break
-            case DayOfWeek.WEDNESDAY:
-               daysOfWeek = { ...daysOfWeek, wednesday: !daysOfWeek.wednesday }
-               break
-            case DayOfWeek.THURSDAY:
-               daysOfWeek = { ...daysOfWeek, thursday: !daysOfWeek.thursday }
-               break
-            case DayOfWeek.FRIDAY:
-               daysOfWeek = { ...daysOfWeek, friday: !daysOfWeek.friday }
-               break
-            case DayOfWeek.SATURDAY:
-               daysOfWeek = { ...daysOfWeek, saturday: !daysOfWeek.saturday }
-               break
-            default:
-               break
-         }
+   /**
+    * State handler for the WeekdayPicker component.
+    *
+    * @param {DayOfWeek} dayOfWeek
+    */
+   const toggleSelectedDaysOfWeek = (dayOfWeek: DayOfWeek): void => {
+      let newDaysOfWeek = Object.assign({}, daysOfWeek)
+      switch (dayOfWeek) {
+         case DayOfWeek.SUNDAY:
+            newDaysOfWeek = { ...newDaysOfWeek, sunday: !newDaysOfWeek.sunday }
+            break
+         case DayOfWeek.MONDAY:
+            newDaysOfWeek = { ...newDaysOfWeek, monday: !newDaysOfWeek.monday }
+            break
+         case DayOfWeek.TUESDAY:
+            newDaysOfWeek = { ...newDaysOfWeek, tuesday: !newDaysOfWeek.tuesday }
+            break
+         case DayOfWeek.WEDNESDAY:
+            newDaysOfWeek = { ...newDaysOfWeek, wednesday: !newDaysOfWeek.wednesday }
+            break
+         case DayOfWeek.THURSDAY:
+            newDaysOfWeek = { ...newDaysOfWeek, thursday: !newDaysOfWeek.thursday }
+            break
+         case DayOfWeek.FRIDAY:
+            newDaysOfWeek = { ...newDaysOfWeek, friday: !newDaysOfWeek.friday }
+            break
+         case DayOfWeek.SATURDAY:
+            newDaysOfWeek = { ...newDaysOfWeek, saturday: !newDaysOfWeek.saturday }
+            break
+         default:
+            break
+      }
 
-         return { daysOfWeek }
-      })
+      setDaysOfWeek(newDaysOfWeek)
    }
 
-   private shouldGetAvailability = (startDate: number | undefined, endDate: number | undefined) => {
-      if (this.props.campgrounds.length > 0 && this.props.campgrounds[0].campsites && startDate && endDate) {
-         const startMonth = moment(startDate).get("month")
-         const endMonth = moment(endDate).get("month")
+   /**
+    * Logic to determine whether or not we need to get more availability data based off a date change.
+    *
+    * @param {(number | undefined)} start
+    * @param {(number | undefined)} end
+    */
+   const shouldGetAvailability = (start: number | undefined, end: number | undefined): void => {
+      if (campgrounds.length > 0 && campgrounds[0].campsites && start && end) {
+         const startMonth = moment(start).get('month')
+         const endMonth = moment(end).get('month')
          /* Adding another +1 to endMonth because range is not inclusive */
          let monthRange = range(startMonth, endMonth + 1)
          const statusMap: Map<string, ReservationStatus> = new Map(
-            Object.entries(this.props.campgrounds[0].campsites[0].availabilities)
+            Object.entries(campgrounds[0].campsites[0].availabilities)
          )
          for (const key of Array.from(statusMap.keys())) {
-            monthRange = monthRange.filter((month) => month !== moment(key).get("month"))
+            monthRange = monthRange.filter((month) => month !== moment(key).get('month'))
          }
 
-         if (this.state.selectedRecAreas !== undefined && monthRange.length > 0) {
-            startDate = moment(startDate).set("month", monthRange[0]).valueOf()
-            endDate = moment(endDate)
-               .set("month", monthRange[monthRange.length - 1])
+         if (selectedRecAreas !== undefined && monthRange.length > 0) {
+            start = moment(start).set('month', monthRange[0]).valueOf()
+            end = moment(end)
+               .set('month', monthRange[monthRange.length - 1])
                .valueOf()
-            this.props.getCampsiteAvailability(this.state.selectedRecAreas, startDate, endDate)
+            getCampsiteAvailability(selectedRecAreas, start, end)
          }
       }
    }
 
-   private handleStartDateChange = (date: MaterialUiPickersDate, value?: string | null | undefined) => {
-      let startDate: number | undefined
-      let endDate: number | undefined = this.state.endDate
-      if (this.state.endDate && date && moment(date).isSameOrAfter(this.state.endDate, "day")) {
-         startDate = date.valueOf()
-         endDate = moment(date).add(1, "days").toDate().valueOf()
-         this.setState({ startDate, endDate })
+   /**
+    * Handle a change to the start date.
+    *
+    * @param {MaterialUiPickersDate} date
+    * @param {(string | null | undefined)} [value]
+    */
+   const handleStartDateChange = (date: MaterialUiPickersDate, value?: string | null | undefined): void => {
+      if (endDate && date && moment(date).isSameOrAfter(endDate, 'day')) {
+         setStartDate(date.valueOf())
+         setEndDate(moment(date).add(1, 'days').toDate().valueOf())
       } else {
-         startDate = (date && date.valueOf()) || undefined
-         this.setState({ startDate })
+         setStartDate((date && date.valueOf()) || undefined)
       }
-      this.shouldGetAvailability(startDate, endDate)
+      shouldGetAvailability(startDate, endDate)
    }
 
-   private handleEndDateChange = (date: MaterialUiPickersDate, value?: string | null | undefined) => {
-      let startDate: number | undefined = this.state.startDate
-      let endDate: number | undefined = this.state.endDate
-      if (this.state.startDate && date && moment(date).isSameOrBefore(this.state.startDate, "day")) {
-         startDate = date.valueOf()
-         this.setState({ startDate })
+   /**
+    * Handle a change to the end date.
+    *
+    * @param {MaterialUiPickersDate} date
+    * @param {(string | null | undefined)} [value]
+    */
+   const handleEndDateChange = (date: MaterialUiPickersDate, value?: string | null | undefined): void => {
+      if (startDate && date && moment(date).isSameOrBefore(startDate, 'day')) {
+         setStartDate(date.valueOf())
       } else {
-         endDate = (date && date.valueOf()) || undefined
-         this.setState({ endDate })
+         setEndDate((date && date.valueOf()) || undefined)
       }
-      this.shouldGetAvailability(startDate, endDate)
+      shouldGetAvailability(startDate, endDate)
    }
 
-   private advancedToggle = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      this.setState((prevState) => {
-         return {
-            advancedDate: !prevState.advancedDate
-         }
-      })
+   /**
+    * Toggle the visibility on the WeekdayPicker.
+    *
+    * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} event
+    */
+   const advancedToggle = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+      setAdvancedDate(!advancedDate)
    }
 
-   private getDates = (): string[] => {
+   /**
+    * Get the individual days based on the date range.
+    *
+    * @returns {string[]}
+    */
+   const getDates = (): string[] => {
       const days: string[] = []
-      for (let d = this.state.startDate!; d < this.state.endDate!; d = moment(d).add(1, "days").toDate().valueOf()) {
-         days.push(moment(d).format("YYYY-MM-DD").concat("T00:00:00Z"))
+      for (let d = startDate!;d < endDate!;d = moment(d).add(1, 'days').toDate().valueOf()) {
+         days.push(moment(d).format('YYYY-MM-DD').concat('T00:00:00Z'))
       }
 
       return days
    }
 
-   private campsitesAvailabilityRange = (campground: Campground): Map<string, number> => {
-      const days: string[] = this.getDates()
+   /**
+    * Creates a map between a date in the start/end range and the number of available campsites.
+    *
+    * @param {Campground} campground
+    * @returns {Map<string, number>}
+    */
+   const campsitesAvailabilityRange = (campground: Campground): Map<string, number> => {
+      const days: string[] = getDates()
       const availabilities: Map<string, number> = new Map()
       for (const day of days) {
          let avail: number = 0
@@ -276,28 +326,34 @@ class Campsites extends React.PureComponent<Props, State> {
                }
             }
          }
-         availabilities.set(moment(day.replace("T00:00:00Z", "")).format("DD MMM YYYY"), avail)
+         availabilities.set(moment(day.replace('T00:00:00Z', '')).format('DD MMM YYYY'), avail)
       }
       return availabilities
    }
 
-   private campgroundToTableRow = (campground: Campground) => {
-      const campgroundAvailability: Map<string, number> = this.campsitesAvailabilityRange(campground)
-      if (this.state.advancedDate) {
+   /**
+    * Creates a row in the table for a campground.
+    *
+    * @param {Campground} campground
+    * @returns {JSX.Element}
+    */
+   const campgroundToTableRow = (campground: Campground): JSX.Element => {
+      const campgroundAvailability: Map<string, number> = campsitesAvailabilityRange(campground)
+      if (advancedDate) {
          for (let k of campgroundAvailability.keys()) {
-            if (!showDayOfWeek(this.state.daysOfWeek, moment(k).day())) {
+            if (!showDayOfWeek(daysOfWeek, moment(k).day())) {
                campgroundAvailability.delete(k)
             }
          }
       }
       return (
          <TableRow key={uniqueId()}>
-            <TableCell component='th' scope='row'>
+            <TableCell component="th" scope="row">
                <Typography>
                   <Link
                      href={`https://www.recreation.gov/camping/campgrounds/${campground.facility_id}`}
-                     target='_blank'
-                     color='inherit'
+                     target="_blank"
+                     color="inherit"
                   >
                      {startCase(campground.facility_name.toLowerCase())}
                   </Link>
@@ -308,41 +364,45 @@ class Campsites extends React.PureComponent<Props, State> {
                <TableCell key={uniqueId()}>
                   {campground.campsites
                      ? campground.campsites.length === 0
-                        ? "Unavailable"
+                        ? 'Unavailable'
                         : campground.facility_type === ReservationType.CAMPING_LOTTERY
-                        ? "Lottery"
-                        : `${available}/${campground.campsites.length}`
-                     : "Unknown"}
+                           ? 'Lottery'
+                           : `${available}/${campground.campsites.length}`
+                     : 'Unknown'}
                </TableCell>
             ))}
          </TableRow>
       )
    }
 
-   private campgroundAvailabilityTable = (campgrounds: Campground[]) => {
-      if (this.props.loading) {
-         return <Skeleton variant='rect' className='campgroundTable' height={`${33 * (campgrounds.length + 1)}px`} />
+   /**
+    * Creates the table of campground availability.
+    *
+    * @param {Campground[]} campgrounds
+    * @returns {(JSX.Element | undefined)}
+    */
+   const campgroundAvailabilityTable = (campgrounds: Campground[]): JSX.Element | undefined => {
+      if (loading) {
+         return <Skeleton variant="rect" className="campgroundTable" height={`${33 * (campgrounds.length + 1)}px`} />
       } else if (campgrounds.length > 0) {
          return (
-            <TableContainer component={Paper} className='campgroundTable'>
-               <Table size='small'>
+            <TableContainer component={Paper} className="campgroundTable">
+               <Table size="small">
                   <TableHead>
                      <TableRow>
                         <TableCell>Campground</TableCell>
-                        {this.getDates()
+                        {getDates()
                            .filter((date) => {
-                              return this.state.advancedDate
-                                 ? showDayOfWeek(this.state.daysOfWeek, moment(date).day())
-                                 : true
+                              return advancedDate ? showDayOfWeek(daysOfWeek, moment(date).day()) : true
                            })
                            .map((date) => (
                               <TableCell key={uniqueId()}>
-                                 {moment(date.replace("T00:00:00Z", "")).format("DD MMM YYYY")}
+                                 {moment(date.replace('T00:00:00Z', '')).format('DD MMM YYYY')}
                               </TableCell>
                            ))}
                      </TableRow>
                   </TableHead>
-                  <TableBody>{campgrounds.map(this.campgroundToTableRow)}</TableBody>
+                  <TableBody>{campgrounds.map(campgroundToTableRow)}</TableBody>
                </Table>
             </TableContainer>
          )
@@ -351,96 +411,67 @@ class Campsites extends React.PureComponent<Props, State> {
       }
    }
 
-   public render = () => {
-      return (
-         <div>
-            <div className='interactive'>
-               <Autocomplete
-                  multiple
-                  freeSolo
-                  limitTags={4}
-                  id='recreation-areas'
-                  options={this.props.autocompleteValues.filter(
-                     (ra) => [EntityType.REC_AREA, EntityType.CAMPGROUND].indexOf(ra.entity_type) !== -1
-                  )}
-                  getOptionLabel={(option) => startCase(option.name.toLowerCase())}
-                  onInputChange={this.onInputChange}
-                  value={this.state.selectedRecAreas}
-                  onChange={this.onChange}
-                  renderTags={(value: RecreationArea[], getTagProps) =>
-                     value.map((recArea: RecreationArea, index: number) => (
-                        <Chip
-                           variant='outlined'
-                           label={startCase(recArea.name.toLowerCase())}
-                           icon={
-                              recArea.entity_type === EntityType.REC_AREA ? <RecreationAreaIcon /> : <CampgroundIcon />
-                           }
-                           {...getTagProps({ index })}
-                           color='primary'
-                        />
-                     ))
-                  }
-                  renderInput={(params) => (
-                     <TextField
-                        {...params}
-                        label='Search Recreation Areas'
-                        margin='normal'
-                        variant='outlined'
-                        InputProps={{ ...params.InputProps, type: "search" }}
-                        value={this.state.autoCompleteText}
-                        className='interactive'
-                     />
-                  )}
-               />
-               <CampgroundDates
-                  startDate={this.state.startDate}
-                  endDate={this.state.endDate}
-                  advancedDate={this.state.advancedDate}
-                  daysOfWeek={this.state.daysOfWeek}
-                  handleStartDateChange={this.handleStartDateChange}
-                  handleEndDateChange={this.handleEndDateChange}
-                  advancedToggle={this.advancedToggle}
-                  toggleSelectedDaysOfWeek={this.toggleSelectedDaysOfWeek}
-               />
-               <Button
-                  variant='contained'
-                  color='primary'
-                  disabled={this.state.selectedRecAreas.length === 0}
-                  onClick={this.getCampsitesOnClick}
-               >
-                  Get campsites
-               </Button>
-               {this.campgroundAvailabilityTable(
-                  this.props.campgrounds.sort((a: Campground, b: Campground) =>
-                     a.facility_name > b.facility_name ? 1 : -1
-                  )
+   return (
+      <div>
+         <div className="interactive">
+            <Autocomplete
+               multiple
+               freeSolo
+               limitTags={4}
+               id="recreation-areas"
+               options={autocompleteValues.filter(
+                  (ra) => [EntityType.REC_AREA, EntityType.CAMPGROUND].indexOf(ra.entity_type) !== -1
                )}
-               <CampgroundMap campgrounds={this.props.campgrounds} />
-            </div>
+               getOptionLabel={(option) => startCase(option.name.toLowerCase())}
+               onInputChange={onInputChange}
+               value={selectedRecAreas}
+               onChange={onChange}
+               renderTags={(value: RecreationArea[], getTagProps) =>
+                  value.map((recArea: RecreationArea, index: number) => (
+                     <Chip
+                        variant="outlined"
+                        label={startCase(recArea.name.toLowerCase())}
+                        icon={recArea.entity_type === EntityType.REC_AREA ? <RecreationAreaIcon /> : <CampgroundIcon />}
+                        {...getTagProps({ index })}
+                        color="primary"
+                     />
+                  ))
+               }
+               renderInput={(params) => (
+                  <TextField
+                     {...params}
+                     label="Search Recreation Areas"
+                     margin="normal"
+                     variant="outlined"
+                     InputProps={{ ...params.InputProps, type: 'search' }}
+                     value={autoCompleteText}
+                     className="interactive"
+                  />
+               )}
+            />
+            <CampgroundDates
+               startDate={startDate}
+               endDate={endDate}
+               advancedDate={advancedDate}
+               daysOfWeek={daysOfWeek}
+               handleStartDateChange={handleStartDateChange}
+               handleEndDateChange={handleEndDateChange}
+               advancedToggle={advancedToggle}
+               toggleSelectedDaysOfWeek={toggleSelectedDaysOfWeek}
+            />
+            <Button
+               variant="contained"
+               color="primary"
+               disabled={selectedRecAreas.length === 0}
+               onClick={getCampsitesOnClick}
+            >
+               Get campsites
+        </Button>
+            {campgroundAvailabilityTable(
+               campgrounds.sort((a: Campground, b: Campground) => (a.facility_name > b.facility_name ? 1 : -1))
+            )}
+            <CampgroundMap campgrounds={campgrounds} />
          </div>
-      )
-   }
+      </div>
+   )
 }
-
-const mapStateToProps = (state: RootState) => ({
-   autocompleteValues: campsitesSelectors.getAutocomplete(state),
-   campgrounds: campsitesSelectors.getCampgrounds(state),
-   loading: loadingSelectors.getCampsiteLoading(state)
-})
-
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-   getCampsites(entity_id: string) {
-      dispatch(campsiteActions.getCampsites(entity_id))
-   },
-   getCampsiteAvailability(recreationAreas: RecreationArea[], startDate: number, endDate: number) {
-      dispatch(campsiteActions.getCampgroundAvailability(recreationAreas, startDate, endDate))
-   },
-   getAutoComplete(name: string) {
-      dispatch(campsiteActions.getAutocomplete(name))
-   },
-   setRecreationAreas(recAreas: RecreationArea[]) {
-      dispatch(campsiteActions.setRecreationAreas(recAreas))
-   }
-})
-
-export const ConnectedCampsites = connect(mapStateToProps, mapDispatchToProps)(Campsites)

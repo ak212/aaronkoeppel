@@ -4,7 +4,6 @@ import { State } from './Root'
 
 export type NhlScoreboard = {
    games: NhlGame[]
-   logos: Map<number, string>
 }
 
 export type NhlGame = {
@@ -221,7 +220,7 @@ type GameStatus = {
    startTimeTBD: boolean
 }
 
-enum AbstractGameState {
+export enum AbstractGameState {
    LIVE = "Live",
    FINAL = "Final"
 }
@@ -242,15 +241,11 @@ export const nhlScoreboardActions = {
    },
    getGamesSuccess: (games: NhlGame[]) => {
       return { type: GET_GAMES_SUCCESS, games }
-   },
-   setTeamLogos: (logos: Map<number, string>) => {
-      return { type: SET_TEAM_LOGOS, logos }
    }
 }
 
 export const initialScoreboardState = {
-   games: [],
-   logos: new Map()
+   games: []
 }
 
 export const nhlScoreboardReducer: Reducer<NhlScoreboard> = (state = initialScoreboardState, action): NhlScoreboard => {
@@ -260,8 +255,6 @@ export const nhlScoreboardReducer: Reducer<NhlScoreboard> = (state = initialScor
             return { ...state, games: [...action.games] }
          }
          return state
-      case SET_TEAM_LOGOS:
-         return { ...state, logos: action.logos }
       default:
          return state
    }
@@ -270,8 +263,5 @@ export const nhlScoreboardReducer: Reducer<NhlScoreboard> = (state = initialScor
 export const nhlScoreboardSelectors = {
    getGames(state: State) {
       return state.nhlScoreboard.games
-   },
-   getLogos(state: State) {
-      return state.nhlScoreboard.logos
    }
 }

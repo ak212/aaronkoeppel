@@ -10,71 +10,65 @@ interface Props {
    daysOfWeek: DaysOfWeek
 }
 
-export default class WeekdayPicker extends React.PureComponent<Props> {
-   public constructor(props: Props) {
-      super(props)
-   }
-
-   public render = () => {
-      return (
-         <div className='weekdayGrid'>
-            <Button
-               onClick={() => this.props.toggleSelectedDaysOfWeek(DayOfWeek.SUNDAY)}
-               variant={this.props.daysOfWeek.sunday ? "contained" : "outlined"}
-               color='primary'
-               className='weekdayButton'
-            >
-               Su
+export const WeekdayPicker = (props: Props) => {
+   return (
+      <div className='weekdayGrid'>
+         <Button
+            onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.SUNDAY)}
+            variant={props.daysOfWeek.sunday ? "contained" : "outlined"}
+            color='primary'
+            className='weekdayButton'
+         >
+            Su
             </Button>
-            <Button
-               onClick={() => this.props.toggleSelectedDaysOfWeek(DayOfWeek.MONDAY)}
-               variant={this.props.daysOfWeek.monday ? "contained" : "outlined"}
-               color='primary'
-               className='weekdayButton'
-            >
-               M
+         <Button
+            onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.MONDAY)}
+            variant={props.daysOfWeek.monday ? "contained" : "outlined"}
+            color='primary'
+            className='weekdayButton'
+         >
+            M
             </Button>
-            <Button
-               onClick={() => this.props.toggleSelectedDaysOfWeek(DayOfWeek.TUESDAY)}
-               variant={this.props.daysOfWeek.tuesday ? "contained" : "outlined"}
-               color='primary'
-               className='weekdayButton'
-            >
-               Tu
+         <Button
+            onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.TUESDAY)}
+            variant={props.daysOfWeek.tuesday ? "contained" : "outlined"}
+            color='primary'
+            className='weekdayButton'
+         >
+            Tu
             </Button>
-            <Button
-               onClick={() => this.props.toggleSelectedDaysOfWeek(DayOfWeek.WEDNESDAY)}
-               variant={this.props.daysOfWeek.wednesday ? "contained" : "outlined"}
-               color='primary'
-               className='weekdayButton'
-            >
-               W
+         <Button
+            onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.WEDNESDAY)}
+            variant={props.daysOfWeek.wednesday ? "contained" : "outlined"}
+            color='primary'
+            className='weekdayButton'
+         >
+            W
             </Button>
-            <Button
-               onClick={() => this.props.toggleSelectedDaysOfWeek(DayOfWeek.THURSDAY)}
-               variant={this.props.daysOfWeek.thursday ? "contained" : "outlined"}
-               color='primary'
-               className='weekdayButton'
-            >
-               Th
+         <Button
+            onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.THURSDAY)}
+            variant={props.daysOfWeek.thursday ? "contained" : "outlined"}
+            color='primary'
+            className='weekdayButton'
+         >
+            Th
             </Button>
-            <Button
-               onClick={() => this.props.toggleSelectedDaysOfWeek(DayOfWeek.FRIDAY)}
-               variant={this.props.daysOfWeek.friday ? "contained" : "outlined"}
-               color='primary'
-               className='weekdayButton'
-            >
-               F
+         <Button
+            onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.FRIDAY)}
+            variant={props.daysOfWeek.friday ? "contained" : "outlined"}
+            color='primary'
+            className='weekdayButton'
+         >
+            F
             </Button>
-            <Button
-               onClick={() => this.props.toggleSelectedDaysOfWeek(DayOfWeek.SATURDAY)}
-               variant={this.props.daysOfWeek.saturday ? "contained" : "outlined"}
-               color='primary'
-               className='weekdayButton'
-            >
-               Sa
+         <Button
+            onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.SATURDAY)}
+            variant={props.daysOfWeek.saturday ? "contained" : "outlined"}
+            color='primary'
+            className='weekdayButton'
+         >
+            Sa
             </Button>
-         </div>
-      )
-   }
+      </div>
+   )
 }

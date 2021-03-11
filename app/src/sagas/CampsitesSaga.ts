@@ -1,4 +1,4 @@
-import { range } from 'lodash'
+import range from 'lodash/range'
 import moment from 'moment'
 import { all, call, delay, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
 
