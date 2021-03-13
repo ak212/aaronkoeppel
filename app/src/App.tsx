@@ -2,10 +2,10 @@ import './App.css'
 
 import React from 'react'
 
-import AppRouter from './AppRouter'
+import { AppRouter } from './AppRouter'
 import Footer from './components/common/Footer'
 
-const App: React.FC = () => {
+export const App = () => {
    return (
       <div className='App'>
          <AppRouter />
@@ -13,5 +13,3 @@ const App: React.FC = () => {
       </div>
    )
 }
-
-export default App

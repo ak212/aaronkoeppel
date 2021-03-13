@@ -1,22 +1,29 @@
 import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
+import Collapse from '@material-ui/core/Collapse'
 import Grid from '@material-ui/core/Grid'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import moment from 'moment'
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { NhlGame } from '../reducers/NhlScoreboard'
+import { NhlGame, ScoringPlay } from '../reducers/NhlScoreboard'
 
 interface Props {
   game: NhlGame
+  showAllExpanded: boolean
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   card: {
-    height: 85,
     '@media (min-width: 1280px)': {
       width: 1000
     },
@@ -51,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     '@media (max-width: 620px)': {
       maxWidth: '90px'
-    },
+    }
   },
   middleContainer: {
     '@media (min-width: 850px)': {
@@ -76,12 +83,26 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: 60,
       height: 46,
       margin: 2.5
-    },
+    }
+  },
+  logoSmall: {
+    width: 22,
+    height: 16,
+    margin: 2.5
   }
 }))
 
 export const NhlGameScore = (props: Props) => {
   const classes = useStyles()
+  const [expanded, setExpanded] = React.useState(false)
+
+  useEffect(() => {
+    if (props.showAllExpanded) {
+      setExpanded(true)
+    } else if (!props.showAllExpanded) {
+      setExpanded(false)
+    }
+  }, [props.showAllExpanded])
 
   const homeScoreGreater: boolean = props.game.teams.home.score > props.game.teams.away.score
   const awayScoreGreater: boolean = props.game.teams.away.score > props.game.teams.home.score
@@ -89,6 +110,72 @@ export const NhlGameScore = (props: Props) => {
   const maxWidth850: boolean = useMediaQuery('(max-width:850px)')
   const maxWidth620: boolean = useMediaQuery('(max-width:620px)')
 
+  /**
+   * On click listener for the card itself to expand or collapse.
+   *
+   */
+  const handleExpandClick = () => {
+    setExpanded(!expanded)
+  }
+
+  /**
+   * Filter scoring plays by period.
+   *
+   * @param {ScoringPlay[]} scoringPlays
+   * @param {number} period
+   * @returns {ScoringPlay[]}
+   */
+  const filterScoringPlays = (scoringPlays: ScoringPlay[], period: number): ScoringPlay[] => {
+    return scoringPlays.filter((scoringPlay) => scoringPlay.about.period === period)
+  }
+
+  const displayScoringPlays = (periodText: string, period: number) => {
+    const scoringPlays: ScoringPlay[] = filterScoringPlays(props.game.scoringPlays, period)
+    return (
+      <Table size="small" aria-label="a dense table" style={{ maxWidth: '700px' }}>
+        <TableHead>
+          <TableRow>
+            <TableCell style={{ borderBottomColor: 'rgb(40, 44, 52)' }}>{periodText}</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow key={'row.name'}>
+            <TableCell component="th" scope="row" style={{ borderBottomWidth: '0px' }}>
+              {filterScoringPlays(props.game.scoringPlays, period).map((scoringPlay) => (
+                <Grid container direction="row" alignContent="center">
+                  <Typography
+                    paragraph
+                    style={{ marginBottom: '2px' }}
+                  >{`${scoringPlay.about.periodTimeRemaining}`}</Typography>
+                  <CardMedia
+                    classes={{ root: classes.logoSmall }}
+                    component="img"
+                    image={`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${scoringPlay.team.id}.svg`}
+                    title={`${scoringPlay.team.name} Logo`}
+                  />
+                  <Typography
+                    paragraph
+                    style={{ marginBottom: '2px' }}
+                  >{`${scoringPlay.result.description}`}</Typography>
+                </Grid>
+              ))}
+              {scoringPlays.length === 0 && (
+                <Typography paragraph variant="caption" style={{ marginBottom: '2px' }}>
+                  No Goals Scored
+                </Typography>
+              )}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    )
+  }
+
+  /**
+   * Logic to produce middle display depending on if it is pregame, live, or postgame.
+   *
+   * @returns
+   */
   const buildMiddleContainer = () => {
     if (props.game.linescore.currentPeriod !== 0) {
       if (props.game.linescore.currentPeriodTimeRemaining === 'END') {
@@ -127,10 +214,25 @@ export const NhlGameScore = (props: Props) => {
     }
   }
 
-  return (
-    <Grid item>
+  /**
+   * Wrap the card component to make it clickable.
+   *
+   * @param {JSX.Element} children
+   * @returns
+   */
+  const clickableWrapper = (children: JSX.Element) => {
+    return <CardActionArea onClick={handleExpandClick}>{children}</CardActionArea>
+  }
+
+  /**
+   * Produces the card component.
+   *
+   * @returns
+   */
+  const gameScoreCard = () => {
+    return (
       <Card classes={{ root: classes.card }}>
-        <Grid container justify="space-between" alignContent="center" style={{ height: '100%'}}>
+        <Grid container justify="space-between" alignContent="center" style={{ height: '100%' }}>
           <Grid container classes={{ root: classes.teamContainer }}>
             <CardMedia
               classes={{ root: classes.logo }}
@@ -139,9 +241,14 @@ export const NhlGameScore = (props: Props) => {
               title={`${props.game.teams.away.team.name} Logo`}
             />
             <Grid container xs justify="center" direction="column">
-              {!maxWidth620 && <Typography variant={maxWidth850 ? "h6" : "h5"} color={homeScoreGreater ? 'textSecondary' : 'textPrimary'}>
-                {minWidth1000 ? props.game.teams.away.team.name : props.game.teams.away.team.teamName}
-              </Typography>}
+              {!maxWidth620 && (
+                <Typography
+                  variant={maxWidth850 ? 'h6' : 'h5'}
+                  color={homeScoreGreater ? 'textSecondary' : 'textPrimary'}
+                >
+                  {minWidth1000 ? props.game.teams.away.team.name : props.game.teams.away.team.teamName}
+                </Typography>
+              )}
               <Typography variant="h6" color={homeScoreGreater ? 'textSecondary' : 'textPrimary'}>
                 {props.game.teams.away.score}
               </Typography>
@@ -152,9 +259,14 @@ export const NhlGameScore = (props: Props) => {
           </Grid>
           <Grid container classes={{ root: classes.teamContainer }}>
             <Grid container xs justify="center" direction="column">
-              {!maxWidth620 && <Typography variant={maxWidth850 ? "h6" : "h5"} color={awayScoreGreater ? 'textSecondary' : 'textPrimary'}>
-                {minWidth1000 ? props.game.teams.home.team.name : props.game.teams.home.team.teamName}
-              </Typography>}
+              {!maxWidth620 && (
+                <Typography
+                  variant={maxWidth850 ? 'h6' : 'h5'}
+                  color={awayScoreGreater ? 'textSecondary' : 'textPrimary'}
+                >
+                  {minWidth1000 ? props.game.teams.home.team.name : props.game.teams.home.team.teamName}
+                </Typography>
+              )}
               <Typography variant="h6" color={awayScoreGreater ? 'textSecondary' : 'textPrimary'}>
                 {props.game.teams.home.score}
               </Typography>
@@ -167,7 +279,19 @@ export const NhlGameScore = (props: Props) => {
             />
           </Grid>
         </Grid>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            {displayScoringPlays('1st Period', 1)}
+            {displayScoringPlays('2nd Period', 2)}
+            {displayScoringPlays('3rd Period', 3)}
+            {props.game.linescore.currentPeriod === 4 && displayScoringPlays('OT', 4)}
+          </CardContent>
+        </Collapse>
       </Card>
-    </Grid>
+    )
+  }
+
+  return (
+    <Grid item>{props.game.linescore.currentPeriod !== 0 ? clickableWrapper(gameScoreCard()) : gameScoreCard()}</Grid>
   )
 }

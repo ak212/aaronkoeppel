@@ -4,7 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 
-import App from './App'
+import { App } from './App'
 import { sagaMiddleware, STORE } from './reducers/Root'
 import rootSaga from './sagas/RootSaga'
 import * as serviceWorker from './serviceWorker'

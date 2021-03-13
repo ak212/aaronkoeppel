@@ -8,8 +8,7 @@ import { MainPage } from './components/MainPage'
 import { NhlScoreboard } from './components/NhlScoreboard'
 import YoutubePlayer from './components/YoutubePlayer'
 
-class AppRouter extends React.Component {
-   public render = () => {
+export const AppRouter = () => {
       return (
          <Router>
             <Menu>
@@ -27,7 +26,4 @@ class AppRouter extends React.Component {
             <Route path="/nhl-scoreboard/" component={NhlScoreboard} />
          </Router>
       )
-   }
 }
-
-export default AppRouter

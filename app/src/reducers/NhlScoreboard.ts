@@ -24,7 +24,7 @@ type GameMetadata = {
    description: string
 }
 
-type ScoringPlay = {
+export type ScoringPlay = {
    players: ScoringPlayPlayers[]
    result: ScoringPlayResult
    about: ScoringPlayAbout
