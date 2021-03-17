@@ -3,6 +3,7 @@
    "bracketSpacing": true,
    "endOfLine": "lf",
    "formatOnSave" : true,
+   "htmlWhitespaceSensitivity": "ignore",
    "jsxBracketSameLine": false,
    "jsxSingleQuote": false,
    "parser": "typescript",

@@ -259,7 +259,7 @@ export const Campsites = (): JSX.Element => {
    * @param {MaterialUiPickersDate} date
    * @param {(string | null | undefined)} [value]
    */
-  const handleStartDateChange = (date: MaterialUiPickersDate, value?: string | null | undefined): void => {
+  const handleStartDateChange = (date: MaterialUiPickersDate): void => {
     if (endDate && date && moment(date).isSameOrAfter(endDate, 'day')) {
       setStartDate(date.valueOf())
       setEndDate(moment(date).add(1, 'days').toDate().valueOf())
@@ -275,7 +275,7 @@ export const Campsites = (): JSX.Element => {
    * @param {MaterialUiPickersDate} date
    * @param {(string | null | undefined)} [value]
    */
-  const handleEndDateChange = (date: MaterialUiPickersDate, value?: string | null | undefined): void => {
+  const handleEndDateChange = (date: MaterialUiPickersDate): void => {
     if (startDate && date && moment(date).isSameOrBefore(startDate, 'day')) {
       setStartDate(date.valueOf())
     } else {
@@ -289,7 +289,7 @@ export const Campsites = (): JSX.Element => {
    *
    * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} event
    */
-  const advancedToggle = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+  const advancedToggle = (): void => {
     setAdvancedDate(!advancedDate)
   }
 

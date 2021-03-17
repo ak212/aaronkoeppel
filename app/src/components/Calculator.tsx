@@ -18,7 +18,7 @@ export const Calculator = (): JSX.Element => {
     document.addEventListener('keyup', backspaceListener)
   }, [])
 
-  const backspaceListener = (event: any) => {
+  const backspaceListener = (event: KeyboardEvent) => {
     if (event.defaultPrevented) {
       return
     }
@@ -98,7 +98,7 @@ export const Calculator = (): JSX.Element => {
 
   const createNumericalButton = (number: string): JSX.Element => {
     return (
-      <button className="calc-button" onClick={e => appendNumber(number)}>
+      <button className="calc-button" onClick={() => appendNumber(number)}>
         {number}
       </button>
     )
@@ -106,7 +106,7 @@ export const Calculator = (): JSX.Element => {
 
   const createModifierButton = (mod: string): JSX.Element => {
     return (
-      <button className="calc-button" onClick={e => setMod(mod)}>
+      <button className="calc-button" onClick={() => setMod(mod)}>
         {mod}
       </button>
     )

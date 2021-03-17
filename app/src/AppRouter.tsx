@@ -6,7 +6,7 @@ import { Calculator } from './components/Calculator'
 import { Campsites } from './components/Campsites'
 import { MainPage } from './components/MainPage'
 import { NhlScoreboard } from './components/NhlScoreboard'
-import YoutubePlayer from './components/YoutubePlayer'
+import { YoutubePlayer } from './components/YoutubePlayer'
 
 export const AppRouter = (): JSX.Element => {
   return (
