@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 const rest = new RestManager(axiosInstance)
 
 function buildParamArray(arrayName: string, params: string[]): string {
-  return params.map((param) => `${arrayName}=${encodeURIComponent(param)}`).join('&')
+  return params.map(param => `${arrayName}=${encodeURIComponent(param)}`).join('&')
 }
 
 export default class CampsitesApi {

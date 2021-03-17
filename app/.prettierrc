@@ -1,0 +1,16 @@
+{
+   "arrowParens": "avoid",
+   "bracketSpacing": true,
+   "endOfLine": "lf",
+   "formatOnSave" : true,
+   "jsxBracketSameLine": false,
+   "jsxSingleQuote": false,
+   "parser": "typescript",
+   "printWidth": 120,
+   "singleQuote": true,
+   "semi": false,
+   "useTabs": false,
+   "tabWidth": 2,
+   "trailingComma": "none",
+   "rcVerbose": true
+}

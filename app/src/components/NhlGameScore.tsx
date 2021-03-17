@@ -92,7 +92,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const NhlGameScore = (props: Props) => {
+export const NhlGameScore = (props: Props): JSX.Element => {
   const classes = useStyles()
   const [expanded, setExpanded] = React.useState(false)
 
@@ -126,13 +126,13 @@ export const NhlGameScore = (props: Props) => {
    * @returns {ScoringPlay[]}
    */
   const filterScoringPlays = (scoringPlays: ScoringPlay[], period: number): ScoringPlay[] => {
-    return scoringPlays.filter((scoringPlay) => scoringPlay.about.period === period)
+    return scoringPlays.filter(scoringPlay => scoringPlay.about.period === period)
   }
 
   const displayScoringPlays = (periodText: string, period: number) => {
     const scoringPlays: ScoringPlay[] = filterScoringPlays(props.game.scoringPlays, period)
     return (
-      <Table size="small" aria-label="a dense table" style={{ maxWidth: '700px' }}>
+      <Table size="small" aria-label="a dense table" style={{ maxWidth: '750px' }}>
         <TableHead>
           <TableRow>
             <TableCell style={{ borderBottomColor: 'rgb(40, 44, 52)' }}>{periodText}</TableCell>
@@ -141,7 +141,7 @@ export const NhlGameScore = (props: Props) => {
         <TableBody>
           <TableRow key={'row.name'}>
             <TableCell component="th" scope="row" style={{ borderBottomWidth: '0px' }}>
-              {filterScoringPlays(props.game.scoringPlays, period).map((scoringPlay) => (
+              {filterScoringPlays(props.game.scoringPlays, period).map(scoringPlay => (
                 <Grid container direction="row" alignContent="center">
                   <Typography
                     paragraph
@@ -281,10 +281,11 @@ export const NhlGameScore = (props: Props) => {
         </Grid>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            {displayScoringPlays('1st Period', 1)}
-            {displayScoringPlays('2nd Period', 2)}
-            {displayScoringPlays('3rd Period', 3)}
+            {props.game.linescore.currentPeriod > 0 && displayScoringPlays('1st Period', 1)}
+            {props.game.linescore.currentPeriod > 1 && displayScoringPlays('2nd Period', 2)}
+            {props.game.linescore.currentPeriod > 2 && displayScoringPlays('3rd Period', 3)}
             {props.game.linescore.currentPeriod === 4 && displayScoringPlays('OT', 4)}
+            {props.game.linescore.currentPeriod === 5 && displayScoringPlays('Shootout', 5)}
           </CardContent>
         </Collapse>
       </Card>

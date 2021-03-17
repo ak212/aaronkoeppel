@@ -1,8 +1,12 @@
-import { all } from "redux-saga/effects"
+import { all, AllEffect, ForkEffect } from 'redux-saga/effects'
 
-import { campsitesSaga } from "./CampsitesSaga"
-import { nhlScoreboardSaga } from "./NhlScoreboardSaga"
+import { campsitesSaga } from './CampsitesSaga'
+import { nhlScoreboardSaga } from './NhlScoreboardSaga'
 
-export default function* rootSaga() {
-   yield all([campsitesSaga(), nhlScoreboardSaga()])
+export default function* rootSaga(): Generator<
+  AllEffect<Generator<AllEffect<ForkEffect<never>>, void, unknown>>,
+  void,
+  unknown
+> {
+  yield all([campsitesSaga(), nhlScoreboardSaga()])
 }

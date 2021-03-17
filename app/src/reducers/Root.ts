@@ -7,21 +7,21 @@ import { initialLoading, Loading, loadingReducer } from './Loading'
 import { initialScoreboardState, NhlScoreboard, nhlScoreboardReducer } from './NhlScoreboard'
 
 export type State = {
-   readonly campsites: Campsites
-   readonly loading: Loading
-   readonly nhlScoreboard: NhlScoreboard
+  readonly campsites: Campsites
+  readonly loading: Loading
+  readonly nhlScoreboard: NhlScoreboard
 }
 
 export const initialState: State = {
-   campsites: initialCampsitesState,
-   loading: initialLoading,
-   nhlScoreboard: initialScoreboardState
+  campsites: initialCampsitesState,
+  loading: initialLoading,
+  nhlScoreboard: initialScoreboardState
 }
 
 export const rootReducer: Reducer<State> = combineReducers<State>({
-   campsites: campsitesReducer,
-   loading: loadingReducer,
-   nhlScoreboard: nhlScoreboardReducer
+  campsites: campsitesReducer,
+  loading: loadingReducer,
+  nhlScoreboard: nhlScoreboardReducer
 })
 
 export const sagaMiddleware = createSagaMiddleware()
@@ -29,7 +29,7 @@ export const sagaMiddleware = createSagaMiddleware()
 const middlewares: Middleware[] = [sagaMiddleware]
 
 export const STORE: Store<State> = createStore(
-   rootReducer,
-   initialState,
-   composeWithDevTools(applyMiddleware(...middlewares))
+  rootReducer,
+  initialState,
+  composeWithDevTools(applyMiddleware(...middlewares))
 )

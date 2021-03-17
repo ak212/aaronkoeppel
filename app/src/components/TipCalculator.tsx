@@ -28,10 +28,10 @@ class TipCalculator extends React.Component<{}, State> {
         return (
           <div
             style={{
-              display: "flex",
-              flex: "1 1 auto",
-              flexDirection: "column",
-              paddingBottom: "10%"
+              display: 'flex',
+              flex: '1 1 auto',
+              flexDirection: 'column',
+              paddingBottom: '10%'
             }}
           >
             {this.getTextField()}
@@ -41,8 +41,8 @@ class TipCalculator extends React.Component<{}, State> {
               onClick={this.addPerson}
               style={{
                 width: 150,
-                justifyContent: "center",
-                textAlign: "center"
+                justifyContent: 'center',
+                textAlign: 'center'
               }}
             >
               Add Party
@@ -50,17 +50,15 @@ class TipCalculator extends React.Component<{}, State> {
           </div>
         )
       case 1:
-        return "What is an ad group anyways?"
+        return 'What is an ad group anyways?'
       case 2:
-        return "This is the bit I really care about!"
+        return 'This is the bit I really care about!'
       default:
-        return "Uknown stepIndex"
+        return 'Uknown stepIndex'
     }
   }
 
-  private addPerson = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void => {
+  private addPerson = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     this.setState(prevState => {
       return {
         numberOfPeople: prevState.numberOfPeople + 1
@@ -105,7 +103,7 @@ class TipCalculator extends React.Component<{}, State> {
   }
 
   private getSteps = () => {
-    return ["Add People", "Add Menu Items", "Divide It Up"]
+    return ['Add People', 'Add Menu Items', 'Divide It Up']
   }
 
   public render = () => {
@@ -123,9 +121,7 @@ class TipCalculator extends React.Component<{}, State> {
         <div>
           {this.state.activeStep === steps.length ? (
             <div>
-              <Typography /* className={styles.instructions} */>
-                All steps completed
-              </Typography>
+              <Typography /* className={styles.instructions} */>All steps completed</Typography>
               <Button onClick={this.handleReset}>Reset</Button>
             </div>
           ) : (
@@ -141,14 +137,8 @@ class TipCalculator extends React.Component<{}, State> {
                 >
                   Back
                 </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleNext}
-                >
-                  {this.state.activeStep === steps.length - 1
-                    ? "Finish"
-                    : "Next"}
+                <Button variant="contained" color="primary" onClick={this.handleNext}>
+                  {this.state.activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                 </Button>
               </div>
             </div>

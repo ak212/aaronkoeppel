@@ -1,6 +1,6 @@
 import range from 'lodash/range'
 import moment from 'moment'
-import { all, call, delay, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
+import { all, AllEffect, call, delay, ForkEffect, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
 
 import {
   Campground,
@@ -45,15 +45,12 @@ function* getCampsiteAvailability({
   const monthRange = range(startMonth, endMonth + 1)
   for (const recreationArea of recreationAreas) {
     if (recreationArea.entity_type === EntityType.CAMPGROUND) {
-      const campgroundObj: { campground: Campground } = yield call(
-        CampsitesApi.getCampground,
-        recreationArea.entity_id
-      )
+      const campgroundObj: { campground: Campground } = yield call(CampsitesApi.getCampground, recreationArea.entity_id)
       let campground: Campground = campgroundObj['campground']
-      const existingCampground = campgrounds.find((camp) => camp.facility_id === recreationArea.entity_id)
+      const existingCampground = campgrounds.find(camp => camp.facility_id === recreationArea.entity_id)
 
       if (campground.facility_type !== ReservationType.CAMPING_LOTTERY) {
-        let campsites: Campsite[] =
+        const campsites: Campsite[] =
           existingCampground && existingCampground.campsites ? existingCampground.campsites : []
         yield getCampsitesAvailability(campsites, recreationArea.entity_id, startDate, monthRange)
 
@@ -73,9 +70,9 @@ function* getCampsiteAvailability({
       insertOrUpdateCampground(campgrounds, campgroundValues.map(mapCampgroundRAtoCampground))
       yield put(campsiteActions.setCampgrounds(campgrounds))
 
-      for (let campground of campgroundValues) {
-        const existingCampground = campgrounds.find((camp) => camp.facility_id === campground.entity_id)
-        let campsites: Campsite[] =
+      for (const campground of campgroundValues) {
+        const existingCampground = campgrounds.find(camp => camp.facility_id === campground.entity_id)
+        const campsites: Campsite[] =
           existingCampground && existingCampground.campsites ? existingCampground.campsites : []
         yield getCampsitesAvailability(campsites, campground.entity_id, startDate, monthRange)
 
@@ -91,10 +88,10 @@ function* getCampsiteAvailability({
 
 function insertOrUpdateCampground(campgrounds: Campground[], campgroundsToAdd: Campground[]) {
   for (const campground of campgroundsToAdd) {
-    const existingCampground = campgrounds.find((camp) => camp.facility_id === campground.facility_id)
+    const existingCampground = campgrounds.find(camp => camp.facility_id === campground.facility_id)
     if (existingCampground) {
       campgrounds.splice(
-        campgrounds.findIndex((campground) => campground.facility_id === existingCampground.facility_id),
+        campgrounds.findIndex(campground => campground.facility_id === existingCampground.facility_id),
         1,
         campground
       )
@@ -112,9 +109,9 @@ function* getCampsitesAvailability(campsites: Campsite[], entity_id: string, sta
       moment(startDate).set('month', month).valueOf()
     )
     const campsiteMap = campsitesObj['campsites']
-    Object.keys(campsiteMap).forEach((entry) => {
+    Object.keys(campsiteMap).forEach(entry => {
       const mapCampsite: Campsite = campsiteMap[entry]
-      const index = campsites.findIndex((campsite) => campsite.campsite_id === mapCampsite.campsite_id)
+      const index = campsites.findIndex(campsite => campsite.campsite_id === mapCampsite.campsite_id)
       if (index !== -1) {
         const statusMap: Map<string, ReservationStatus> = new Map(Object.entries(mapCampsite.availabilities))
         const campsitesMap: Map<string, ReservationStatus> = new Map(Object.entries(campsites[index].availabilities))
@@ -153,17 +150,15 @@ function* getAutocomplete({ query }: ReturnType<typeof campsiteActions.getAutoco
 
 function* setRecreationAreas({ recAreas }: ReturnType<typeof campsiteActions.setRecreationAreas>) {
   const campgrounds: Campground[] = yield select(campsitesSelectors.getCampgrounds)
-  const filteredCampgrounds = campgrounds.filter((campground) =>
-    recAreas.some(
-      (recArea) => recArea.entity_id === campground.facility_id || recArea.entity_id === campground.parent_id
-    )
+  const filteredCampgrounds = campgrounds.filter(campground =>
+    recAreas.some(recArea => recArea.entity_id === campground.facility_id || recArea.entity_id === campground.parent_id)
   )
   if (campgrounds.length !== filteredCampgrounds.length) {
     yield put(campsiteActions.setCampgrounds(filteredCampgrounds))
   }
 }
 
-export function* campsitesSaga() {
+export function* campsitesSaga(): Generator<AllEffect<ForkEffect<never>>, void, unknown> {
   yield all([
     takeEvery(GET_CAMPSITES, getCampsites),
     takeEvery(GET_CAMPGROUND_AVAILABILITY, getCampsiteAvailability),

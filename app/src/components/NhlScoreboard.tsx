@@ -12,7 +12,7 @@ import { NhlGame, nhlScoreboardActions, nhlScoreboardSelectors } from '../reduce
 import { State as RootState } from '../reducers/Root'
 import { NhlGameScore } from './NhlGameScore'
 
-export const NhlScoreboard = () => {
+export const NhlScoreboard = (): JSX.Element => {
   /* Props */
   const games: NhlGame[] = useSelector((state: RootState) => nhlScoreboardSelectors.getGames(state))
   const loading: boolean = useSelector((state: RootState) => loadingSelectors.getNhlScoresLoading(state))
@@ -63,7 +63,7 @@ export const NhlScoreboard = () => {
             spacing={2}
             style={{ marginTop: '15px', width: '100%' }}
           >
-            {games.map((game) => (
+            {games.map(game => (
               <NhlGameScore game={game} showAllExpanded={showAllExpanded} />
             ))}
           </Grid>

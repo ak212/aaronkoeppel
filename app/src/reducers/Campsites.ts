@@ -1,4 +1,4 @@
-import { FitBoundsOptions } from 'leaflet'
+import { FitBoundsOptions, LatLngBoundsExpression } from 'leaflet'
 import { MapProps } from 'react-leaflet'
 import { Reducer } from 'redux'
 
@@ -195,21 +195,18 @@ export const campgroundsToLocations = (campgrounds: Campground[]): Location[] =>
   return campgrounds.map((campground: Campground) => [campground.facility_latitude, campground.facility_longitude])
 }
 
-export const getBounds = (locations: Location[]) => {
-  const latitudes: number[] = locations.map((location) => location[0])
-  const longitudes: number[] = locations.map((location) => location[1])
+export const getBounds = (locations: Location[]): LatLngBoundsExpression => {
+  const latitudes: number[] = locations.map(location => location[0])
+  const longitudes: number[] = locations.map(location => location[1])
 
   const maxLat: number = latitudes.reduce(maxReducer, 0)
   const minLat: number = latitudes.reduce(minReducer, 0)
   const maxLong: number = longitudes.reduce(maxReducer, 0)
   const minLong: number = longitudes.reduce(minReducer, 0)
 
-  if (maxLat && minLat && maxLong && minLong) {
-    const topLeftCorner: Location = [minLat, maxLong]
-    const bottomRightCorner: Location = [maxLat, minLong]
-    return [topLeftCorner, bottomRightCorner]
-  }
-  return undefined
+  const topLeftCorner: Location = [minLat, maxLong]
+  const bottomRightCorner: Location = [maxLat, minLong]
+  return [topLeftCorner, bottomRightCorner]
 }
 
 export const getLeafletProps = (locations: Location[]): Partial<MapProps> => {
@@ -219,7 +216,7 @@ export const getLeafletProps = (locations: Location[]): Partial<MapProps> => {
     return { center: oneLocation, zoom: 12 }
   }
 
-  const bounds: Location[] | undefined = getBounds(locations)
+  const bounds: LatLngBoundsExpression = getBounds(locations)
   const boundsOptions: FitBoundsOptions = { padding: [45, 45] }
 
   return { bounds, boundsOptions }

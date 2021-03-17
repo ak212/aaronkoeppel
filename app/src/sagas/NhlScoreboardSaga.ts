@@ -1,4 +1,4 @@
-import { all, call, put, takeEvery } from 'redux-saga/effects'
+import { all, AllEffect, call, ForkEffect, put, takeEvery } from 'redux-saga/effects'
 
 import { loadingActions } from '../reducers/Loading'
 import { GET_GAMES, NhlGame, nhlScoreboardActions } from '../reducers/NhlScoreboard'
@@ -17,6 +17,6 @@ function* getGames() {
   yield put(loadingActions.finishLoading('nhlScores'))
 }
 
-export function* nhlScoreboardSaga() {
+export function* nhlScoreboardSaga(): Generator<AllEffect<ForkEffect<never>>, void, unknown> {
   yield all([takeEvery(GET_GAMES, getGames)])
 }

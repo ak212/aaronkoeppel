@@ -1,204 +1,171 @@
 import './Calculator.css'
 
-import React from 'react'
-
-interface Props {}
-
-interface State {
-   value: string
-   secondValue?: string
-   modifier?: string
-}
+import React, { useEffect, useState } from 'react'
 
 const regexp = /([-]?(\d+\.$|\d+\.\d+|\d+))+/
 
-const ADD = "+"
-const SUBTRACT = "-"
-const DIVIDE = "÷"
-const MULTIPLY = "×"
+const ADD = '+'
+const SUBTRACT = '-'
+const DIVIDE = '÷'
+const MULTIPLY = '×'
 
-export default class Calculator extends React.Component<Props, State> {
-   public constructor(props: Props) {
-      super(props)
-      this.state = {
-         value: "0"
-      }
+export const Calculator = (): JSX.Element => {
+  const [value, setValue] = useState<string>('0')
+  const [secondValue, setSecondValue] = useState<string | undefined>(undefined)
+  const [modifier, setModifier] = useState<string | undefined>(undefined)
 
-      document.addEventListener("keyup", this.backspaceListener)
-   }
+  useEffect(() => {
+    document.addEventListener('keyup', backspaceListener)
+  }, [])
 
-   private backspaceListener = (event: any) => {
-      if (event.defaultPrevented) {
-         return
-      }
+  const backspaceListener = (event: any) => {
+    if (event.defaultPrevented) {
+      return
+    }
 
-      var key = event.key || event.keyCode
+    const key = event.key || event.keyCode
 
-      if (key === "Delete" && this.state.value !== "0") {
-         this.backspace()
-      }
-      event.stopPropagation()
-   }
+    if (key === 'Delete' && value !== '0') {
+      backspace()
+    }
+    event.stopPropagation()
+  }
 
-   private backspace = () => {
-      this.setState((prevState) => {
-         return {
-            value: prevState.value.length === 1 ? "0" : prevState.value.slice(0, prevState.value.length - 1)
-         }
-      })
-   }
+  const backspace = () => {
+    setValue(value.length === 1 ? '0' : value.slice(0, value.length - 1))
+  }
 
-   private isNumber = (num: string): RegExpMatchArray | null => {
-      return num.match(regexp)
-   }
+  const isNumber = (num: string): RegExpMatchArray | null => {
+    return num.match(regexp)
+  }
 
-   private getNewNumber = (oldNumber: string | undefined, newChar: string) => {
-      let match
-      if (oldNumber === undefined || oldNumber === "0") {
-         match = this.isNumber(newChar)
-         if (match) {
-            return newChar
-         } else {
-            return oldNumber
-         }
-      }
-      match = this.isNumber(`${oldNumber}${newChar}`)
-      if (match && match[0] === `${oldNumber}${newChar}`) {
-         return match[0]
+  const getNewNumber = (oldNumber: string | undefined, newChar: string) => {
+    let match
+    if (oldNumber === undefined || oldNumber === '0') {
+      match = isNumber(newChar)
+      if (match) {
+        return newChar
       } else {
-         return oldNumber
+        return oldNumber
       }
-   }
+    }
+    match = isNumber(`${oldNumber}${newChar}`)
+    if (match && match[0] === `${oldNumber}${newChar}`) {
+      return match[0]
+    } else {
+      return oldNumber
+    }
+  }
 
-   private appendNumber = (num: string) => {
-      if (this.state.modifier) {
-         this.setState((prevState) => {
-            return {
-               secondValue: this.getNewNumber(prevState.secondValue, num)
-            }
-         })
-      } else {
-         this.setState((prevState) => {
-            return {
-               value: this.getNewNumber(prevState.value, num)!
-            }
-         })
-      }
-   }
+  const appendNumber = (num: string) => {
+    if (modifier) {
+      setSecondValue(getNewNumber(secondValue, num))
+    } else {
+      setValue(getNewNumber(value, num)!)
+    }
+  }
 
-   private setModifier = (modifier: string) => {
-      if (this.state.secondValue) {
-         this.calculate(modifier)()
-      } else {
-         this.setState({
-            modifier,
-            secondValue: undefined
-         })
-      }
-   }
+  const setMod = (mod: string) => {
+    if (secondValue) {
+      calculate(mod)()
+    } else {
+      setModifier(mod)
+      setSecondValue(undefined)
+    }
+  }
 
-   private clearValues = () => {
-      this.setState({
-         value: "0",
-         modifier: undefined,
-         secondValue: undefined
-      })
-   }
+  const clearValues = () => {
+    setValue('0')
+    setModifier(undefined)
+    setSecondValue(undefined)
+  }
 
-   private calculate = (nextModifier?: string) => (): void => {
-      this.setState((prevState) => {
-         let value = parseFloat(prevState.value)
-         const mod = prevState.modifier
-         if (mod && !prevState.secondValue) {
-            value = this.performOperation(value, value, mod)
-         } else if (mod && prevState.secondValue) {
-            value = this.performOperation(value, parseFloat(prevState.secondValue), mod)
-         }
+  const calculate = (nextModifier?: string) => (): void => {
+    let newValue = parseFloat(value)
+    if (modifier && !secondValue) {
+      newValue = performOperation(newValue, newValue, mod)
+    } else if (mod && secondValue) {
+      newValue = performOperation(newValue, parseFloat(secondValue), mod)
+    }
+    setValue(newValue.toString())
+    setModifier(nextModifier)
+    setSecondValue(undefined)
+  }
 
-         return {
-            value: value.toString(),
-            modifier: nextModifier,
-            secondValue: undefined
-         }
-      })
-   }
+  const performOperation = (val1: number, val2: number, op: string): number => {
+    return op === DIVIDE ? val1 / val2 : op === MULTIPLY ? val1 * val2 : op === SUBTRACT ? val1 - val2 : val1 + val2
+  }
 
-   private performOperation = (val1: number, val2: number, op: string): number => {
-      return op === DIVIDE ? val1 / val2 : op === MULTIPLY ? val1 * val2 : op === SUBTRACT ? val1 - val2 : val1 + val2
-   }
+  const createNumericalButton = (number: string): JSX.Element => {
+    return (
+      <button className="calc-button" onClick={e => appendNumber(number)}>
+        {number}
+      </button>
+    )
+  }
 
-   private createNumericalButton = (number: string): JSX.Element => {
-      return (
-         <button className='calc-button' onClick={(e) => this.appendNumber(number)}>
-            {number}
-         </button>
-      )
-   }
+  const createModifierButton = (mod: string): JSX.Element => {
+    return (
+      <button className="calc-button" onClick={e => setMod(mod)}>
+        {mod}
+      </button>
+    )
+  }
 
-   private createModifierButton = (mod: string): JSX.Element => {
-      return (
-         <button className='calc-button' onClick={(e) => this.setModifier(mod)}>
-            {mod}
-         </button>
-      )
-   }
+  const mod = modifier ? ` ${modifier}` : ''
+  const secValue = secondValue ? ` ${secondValue}` : ''
+  const displayString = `${value}${mod}${secValue}`
 
-   public render = () => {
-      const mod = this.state.modifier ? ` ${this.state.modifier}` : ""
-      const secondValue = this.state.secondValue ? ` ${this.state.secondValue}` : ""
-      const displayString = `${this.state.value}${mod}${secondValue}`
-
-      return (
-         <div className={"calc"}>
-            <div className={"calc-background"}>
-               <div style={{ margin: "10px" }}>
-                  <h2 className={"calc-value-display"}> {displayString} </h2>
-                  <div
-                     style={{
-                        display: "flex",
-                        flex: "1 1 auto",
-                        flexDirection: "column"
-                     }}
-                  >
-                     <div className='calc-row'>
-                        <button className='calc-button' onClick={this.clearValues}>
-                           C
-                        </button>
-                        <button className='calc-button' onClick={this.backspace}>
-                           ⌫
-                        </button>
-                     </div>
-
-                     <div className='calc-row'>
-                        {this.createNumericalButton("7")}
-                        {this.createNumericalButton("8")}
-                        {this.createNumericalButton("9")}
-                        {this.createModifierButton(DIVIDE)}
-                     </div>
-                     <div className='calc-row'>
-                        {this.createNumericalButton("4")}
-                        {this.createNumericalButton("5")}
-                        {this.createNumericalButton("6")}
-                        {this.createModifierButton(MULTIPLY)}
-                     </div>
-                     <div className='calc-row'>
-                        {this.createNumericalButton("1")}
-                        {this.createNumericalButton("2")}
-                        {this.createNumericalButton("3")}
-                        {this.createModifierButton(SUBTRACT)}
-                     </div>
-                     <div className='calc-row'>
-                        {this.createNumericalButton("0")}
-                        {this.createNumericalButton(".")}
-                        <button className='calc-button' onClick={this.calculate()}>
-                           =
-                        </button>
-                        {this.createModifierButton(ADD)}
-                     </div>
-                  </div>
-               </div>
+  return (
+    <div className={'calc'}>
+      <div className={'calc-background'}>
+        <div style={{ margin: '10px' }}>
+          <h2 className={'calc-value-display'}> {displayString} </h2>
+          <div
+            style={{
+              display: 'flex',
+              flex: '1 1 auto',
+              flexDirection: 'column'
+            }}
+          >
+            <div className="calc-row">
+              <button className="calc-button" onClick={clearValues}>
+                C
+              </button>
+              <button className="calc-button" onClick={backspace}>
+                ⌫
+              </button>
             </div>
-         </div>
-      )
-   }
+
+            <div className="calc-row">
+              {createNumericalButton('7')}
+              {createNumericalButton('8')}
+              {createNumericalButton('9')}
+              {createModifierButton(DIVIDE)}
+            </div>
+            <div className="calc-row">
+              {createNumericalButton('4')}
+              {createNumericalButton('5')}
+              {createNumericalButton('6')}
+              {createModifierButton(MULTIPLY)}
+            </div>
+            <div className="calc-row">
+              {createNumericalButton('1')}
+              {createNumericalButton('2')}
+              {createNumericalButton('3')}
+              {createModifierButton(SUBTRACT)}
+            </div>
+            <div className="calc-row">
+              {createNumericalButton('0')}
+              {createNumericalButton('.')}
+              <button className="calc-button" onClick={calculate()}>
+                =
+              </button>
+              {createModifierButton(ADD)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
