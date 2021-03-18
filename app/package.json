@@ -35,6 +35,7 @@
       "leaflet": "^1.7.1",
       "lodash": "^4.17.19",
       "moment": "^2.26.0",
+      "notistack": "^1.0.5",
       "react": "^16.13.1",
       "react-burger-menu": "^2.6.14",
       "react-dom": "^16.13.1",

@@ -1,8 +1,8 @@
 import { all, AllEffect, call, ForkEffect, put, takeEvery } from 'redux-saga/effects'
 
 import { loadingActions } from '../reducers/Loading'
-import { GET_GAMES, NhlGame, nhlScoreboardActions } from '../reducers/NhlScoreboard'
 import NhlScoreboardApi from '../remote/NhlScoreboardApi'
+import { GET_GAMES, NhlGame, nhlScoreboardActions } from '../store/nhlScoreboard'
 
 function* getGames() {
   yield put(loadingActions.startLoading('nhlScores'))

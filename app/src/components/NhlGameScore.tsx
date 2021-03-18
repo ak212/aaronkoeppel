@@ -15,7 +15,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import moment from 'moment'
 import React, { useEffect } from 'react'
 
-import { NhlGame, ScoringPlay } from '../reducers/NhlScoreboard'
+import { NhlGame, ScoringPlay, ScoringPlayCode, ScoringPlayPlayerType } from '../store/nhlScoreboard'
 
 interface Props {
   game: NhlGame
@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
       width: 500
     },
     '@media (max-width: 620px)': {
-      width: 250
+      width: 350
     },
     background: '#b4c6e9',
     boxShadow:
@@ -57,7 +57,7 @@ const useStyles = makeStyles(() => ({
       maxWidth: '225px'
     },
     '@media (max-width: 620px)': {
-      maxWidth: '90px'
+      maxWidth: '140px'
     }
   },
   middleContainer: {
@@ -86,8 +86,8 @@ const useStyles = makeStyles(() => ({
     }
   },
   logoSmall: {
-    width: 22,
-    height: 16,
+    width: 45,
+    height: 34.5,
     margin: 2.5
   }
 }))
@@ -129,10 +129,42 @@ export const NhlGameScore = (props: Props): JSX.Element => {
     return scoringPlays.filter(scoringPlay => scoringPlay.about.period === period)
   }
 
+  const createScoringPlayLine = (scoringPlay: ScoringPlay) => {
+    const assists = scoringPlay.players.filter(player => player.playerType === ScoringPlayPlayerType.ASSIST)
+    let assistString =
+      assists.length === 0 ? 'Unassisted' : `Assists: ${assists[0].player.fullName} (${assists[0].seasonTotal})`
+    assistString += assists.length === 2 ? ` and ${assists[1].player.fullName} (${assists[1].seasonTotal})` : ''
+    let goalScorer = `${scoringPlay.players[0].player.fullName} (${scoringPlay.players[0].seasonTotal})`
+    goalScorer +=
+      scoringPlay.result.strength.code !== ScoringPlayCode.EVEN
+        ? ` (${scoringPlay.result.strength.code.substring(0, 2)})`
+        : ''
+
+    return (
+      <Grid container direction="row" alignContent="center">
+        <Typography paragraph style={{ marginTop: '9px' }}>{`${scoringPlay.about.periodTimeRemaining}`}</Typography>
+        <CardMedia
+          classes={{ root: classes.logoSmall }}
+          component="img"
+          image={`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${scoringPlay.team.id}.svg`}
+          title={`${scoringPlay.team.name} Logo`}
+        />
+        <Grid container direction="column" xs>
+          <Typography variant="subtitle2" style={{ marginBottom: '2px' }}>
+            {goalScorer}
+          </Typography>
+          <Typography variant="caption" style={{ marginBottom: '2px' }}>
+            {assistString}
+          </Typography>
+        </Grid>
+      </Grid>
+    )
+  }
+
   const displayScoringPlays = (periodText: string, period: number) => {
     const scoringPlays: ScoringPlay[] = filterScoringPlays(props.game.scoringPlays, period)
     return (
-      <Table size="small" aria-label="a dense table" style={{ maxWidth: '750px' }}>
+      <Table size="small" aria-label="Scoring Summary" style={{ maxWidth: '750px' }}>
         <TableHead>
           <TableRow>
             <TableCell style={{ borderBottomColor: 'rgb(40, 44, 52)' }}>{periodText}</TableCell>
@@ -140,25 +172,8 @@ export const NhlGameScore = (props: Props): JSX.Element => {
         </TableHead>
         <TableBody>
           <TableRow key={'row.name'}>
-            <TableCell component="th" scope="row" style={{ borderBottomWidth: '0px' }}>
-              {filterScoringPlays(props.game.scoringPlays, period).map(scoringPlay => (
-                <Grid container direction="row" alignContent="center">
-                  <Typography
-                    paragraph
-                    style={{ marginBottom: '2px' }}
-                  >{`${scoringPlay.about.periodTimeRemaining}`}</Typography>
-                  <CardMedia
-                    classes={{ root: classes.logoSmall }}
-                    component="img"
-                    image={`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${scoringPlay.team.id}.svg`}
-                    title={`${scoringPlay.team.name} Logo`}
-                  />
-                  <Typography
-                    paragraph
-                    style={{ marginBottom: '2px' }}
-                  >{`${scoringPlay.result.description}`}</Typography>
-                </Grid>
-              ))}
+            <TableCell component="th" scope="row" style={{ borderBottomWidth: '0px', paddingLeft: '8px' }}>
+              {filterScoringPlays(props.game.scoringPlays, period).map(createScoringPlayLine)}
               {scoringPlays.length === 0 && (
                 <Typography paragraph variant="caption" style={{ marginBottom: '2px' }}>
                   No Goals Scored
@@ -198,7 +213,7 @@ export const NhlGameScore = (props: Props): JSX.Element => {
               <Grid container justify="center" alignContent="center">
                 {props.game.linescore.currentPeriodTimeRemaining}
               </Grid>
-              {props.game.linescore.currentPeriod === 4 && (
+              {(props.game.linescore.currentPeriod === 4 || props.game.linescore.currentPeriod === 5) && (
                 <Grid container justify="center" alignContent="center">
                   {props.game.linescore.currentPeriodOrdinal}
                 </Grid>
@@ -280,7 +295,7 @@ export const NhlGameScore = (props: Props): JSX.Element => {
           </Grid>
         </Grid>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
+          <CardContent style={{ padding: '0 0 0 0' }}>
             {props.game.linescore.currentPeriod > 0 && displayScoringPlays('1st Period', 1)}
             {props.game.linescore.currentPeriod > 1 && displayScoringPlays('2nd Period', 2)}
             {props.game.linescore.currentPeriod > 2 && displayScoringPlays('3rd Period', 3)}
