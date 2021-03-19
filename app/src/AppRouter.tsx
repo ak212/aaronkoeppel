@@ -2,11 +2,11 @@ import React from 'react'
 import { slide as Menu } from 'react-burger-menu'
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
 
-import { Calculator } from './components/Calculator'
-import { Campsites } from './components/Campsites'
+import { Calculator } from './components/calculator/Calculator'
+import { Campsites } from './components/campgrounds/Campsites'
+import { YoutubePlayer } from './components/droneVideos/YoutubePlayer'
 import { MainPage } from './components/MainPage'
-import { NhlScoreboard } from './components/NhlScoreboard'
-import { YoutubePlayer } from './components/YoutubePlayer'
+import { NhlScoreboard } from './components/nhlScoreboard/NhlScoreboard'
 
 export const AppRouter = (): JSX.Element => {
   return (

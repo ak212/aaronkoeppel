@@ -11,10 +11,10 @@ import React, { Dispatch, MutableRefObject, useCallback, useEffect, useRef, useS
 import { useDispatch, useSelector } from 'react-redux'
 import { AnyAction } from 'redux'
 
-import { loadingSelectors } from '../reducers/Loading'
-import { State as RootState } from '../reducers/Root'
-import { NhlGame, nhlScoreboardActions, nhlScoreboardSelectors } from '../store/nhlScoreboard'
-import { NhlGameScore } from './NhlGameScore'
+import { loadingSelectors } from '../../reducers/Loading'
+import { State as RootState } from '../../reducers/Root'
+import { NhlGame, nhlScoreboardActions, nhlScoreboardSelectors } from '../../store/nhlScoreboard'
+import { NhlGameCard } from './NhlGameCard'
 
 const useStyles = makeStyles(() => ({
   logoSmall: {
@@ -66,9 +66,10 @@ export const NhlScoreboard = (): JSX.Element => {
   useEffect(() => {
     for (const game of games) {
       const prevGameState: NhlGame | undefined = prevGames ? prevGames.find(g => g.gamePk === game.gamePk) : undefined
+
       if (prevGameState !== undefined) {
         if (prevGameState.scoringPlays.length !== game.scoringPlays.length) {
-          game.scoringPlays.slice(prevGameState.scoringPlays.length - 1).forEach(scoringPlay =>
+          game.scoringPlays.slice(prevGameState.scoringPlays.length).forEach(scoringPlay => {
             enqueueSnackbar(
               <Grid container direction="row" alignContent="center">
                 <Typography
@@ -82,9 +83,12 @@ export const NhlScoreboard = (): JSX.Element => {
                   title={`${scoringPlay.team.name} Logo`}
                 />
                 <Typography paragraph style={{ marginBottom: '2px' }}>{`${scoringPlay.result.description}`}</Typography>
-              </Grid>
+              </Grid>,
+              {
+                autoHideDuration: 15000
+              }
             )
-          )
+          })
         }
       }
     }
@@ -120,7 +124,7 @@ export const NhlScoreboard = (): JSX.Element => {
             style={{ marginTop: '15px', width: '100%' }}
           >
             {games.map(game => (
-              <NhlGameScore game={game} showAllExpanded={showAllExpanded} />
+              <NhlGameCard game={game} showAllExpanded={showAllExpanded} />
             ))}
           </Grid>
         </Grid>

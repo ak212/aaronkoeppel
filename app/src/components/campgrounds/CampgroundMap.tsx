@@ -2,7 +2,7 @@ import startCase from 'lodash/startCase'
 import React from 'react'
 import { Map as LeafletMap, Marker, Popup, TileLayer } from 'react-leaflet'
 
-import { Campground, campgroundsToLocations, getLeafletProps } from '../reducers/Campsites'
+import { Campground, campgroundsToLocations, getLeafletProps } from '../../reducers/Campsites'
 
 interface Props {
   campgrounds: Campground[]

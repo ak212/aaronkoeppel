@@ -12,6 +12,52 @@ export type NhlGame = {
   scoringPlays: ScoringPlay[]
   venue: TeamVenue
   metadata: GameMetadata
+  content: GameMedia
+}
+
+type GameMedia = {
+  highlights: Highlights
+}
+
+type Highlights = {
+  scoreboard: Scoreboard
+}
+
+type Scoreboard = {
+  title: string
+  topicList: string
+  items: Highlight[]
+}
+
+export type Highlight = {
+  type: string
+  id: string
+  date: Date
+  title: string
+  blurb: string
+  description: string
+  duration: string
+  image: HighlightImage
+  playbacks: HighlightPlayback[]
+}
+
+export const HIGHLIGHT_PLAYBACK_NAME = 'FLASH_1800K_896x504'
+
+type HighlightPlayback = {
+  name: string
+  width: string
+  height: string
+  url: string
+}
+
+type HighlightImage = {
+  cuts: ImageCut[]
+}
+
+type ImageCut = {
+  width: number
+  height: number
+  src: string
 }
 
 type GameMetadata = {
