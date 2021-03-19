@@ -1,6 +1,7 @@
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Grid from '@material-ui/core/Grid'
+import GridList from '@material-ui/core/GridList'
 import Paper from '@material-ui/core/Paper'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Tab from '@material-ui/core/Tab'
@@ -25,7 +26,7 @@ enum NhlGameCardTab {
   HIGHLIGHTS = 'HIGHLIGHTS'
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   card: {
     '@media (min-width: 1280px)': {
       width: 1000
@@ -53,6 +54,18 @@ const useStyles = makeStyles(() => ({
   },
   tabs: {
     background: '#b4c6e9'
+  },
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    margin: '1vh'
+  },
+  gridList: {
+    flexWrap: 'nowrap',
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+    transform: 'translateZ(0)'
   }
 }))
 
@@ -176,13 +189,15 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
           </>
         )}
         {tabPanelValue === NhlGameCardTab.HIGHLIGHTS && (
-          <Grid container justify="center" alignItems="center" direction="row" style={{ overflowX: 'auto' }}>
-            {props.game.content.highlights.scoreboard.items
-              .sort((highlightA: Highlight, highlightB: Highlight) => Number(highlightA.id) - Number(highlightB.id))
-              .map(item => (
-                <NhlHighlightCard highlight={item} />
-              ))}
-          </Grid>
+          <div className={classes.root}>
+            <GridList className={classes.gridList} cols={2.5}>
+              {props.game.content.highlights.scoreboard.items
+                .sort((highlightA: Highlight, highlightB: Highlight) => Number(highlightA.id) - Number(highlightB.id))
+                .map(item => (
+                  <NhlHighlightCard highlight={item} />
+                ))}
+            </GridList>
+          </div>
         )}
       </CardContent>
     </>
