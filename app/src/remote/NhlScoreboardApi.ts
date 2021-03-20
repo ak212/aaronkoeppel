@@ -12,7 +12,7 @@ const statsApiRestManager = new RestManager(statsApiAxios)
 
 export default class NhlScoreboardApi {
   public static async getGames() {
-    const date: string = moment().subtract(1, 'day').format('YYYY-MM-DD')
+    const date: string = moment().format('YYYY-MM-DD')
     const config: AxiosRequestConfig = {
       params: {
         startDate: date,
