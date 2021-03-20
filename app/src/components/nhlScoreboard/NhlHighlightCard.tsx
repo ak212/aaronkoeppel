@@ -8,12 +8,12 @@ import React from 'react'
 
 import { Highlight, HIGHLIGHT_PLAYBACK_NAME } from '../../store/nhlScoreboard'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     maxWidth: 345,
     margin: '0 1vw 0 0'
   }
-}))
+})
 
 type Props = {
   highlight: Highlight

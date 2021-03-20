@@ -26,7 +26,7 @@ enum NhlGameCardTab {
   HIGHLIGHTS = 'HIGHLIGHTS'
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   card: {
     '@media (min-width: 1280px)': {
       width: 1000
@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)'
   }
-}))
+})
 
 export const NhlGameInnerCard = (props: Props): JSX.Element => {
   const classes = useStyles()
