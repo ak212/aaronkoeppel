@@ -2,6 +2,17 @@ export type NhlScoreboard = {
   games: NhlGame[]
 }
 
+export type NhlScoreboardResponse = {
+  dates: NhlGameDay[]
+  totalGames: number
+}
+
+export type NhlGameDay = {
+  games: NhlGame[]
+  date: Date
+  totalGames: number
+}
+
 export type NhlGame = {
   gamePk: string
   gameType: string

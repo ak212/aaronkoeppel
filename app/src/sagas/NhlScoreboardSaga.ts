@@ -2,16 +2,17 @@ import { all, AllEffect, call, ForkEffect, put, takeEvery } from 'redux-saga/eff
 
 import { loadingActions } from '../reducers/Loading'
 import NhlScoreboardApi from '../remote/NhlScoreboardApi'
-import { GET_GAMES, NhlGame, nhlScoreboardActions } from '../store/nhlScoreboard'
+import { GET_GAMES, nhlScoreboardActions, NhlScoreboardResponse } from '../store/nhlScoreboard'
 
-function* getGames() {
+function* getGames({ gameDate }: ReturnType<typeof nhlScoreboardActions.getGames>) {
   yield put(loadingActions.startLoading('nhlScores'))
 
-  const scoreboard: { dates: any[] } = yield call(NhlScoreboardApi.getGames)
-  const date = scoreboard && (scoreboard.dates as any[])
+  const scoreboard: NhlScoreboardResponse = yield call(NhlScoreboardApi.getGames, gameDate)
 
-  if (scoreboard && scoreboard.dates && date.length === 1 && date[0].games) {
-    yield put(nhlScoreboardActions.getGamesSuccess(scoreboard.dates[0].games as NhlGame[]))
+  if (scoreboard && scoreboard.totalGames > 0) {
+    yield put(nhlScoreboardActions.getGamesSuccess(scoreboard.dates[0].games))
+  } else {
+    yield put(nhlScoreboardActions.getGamesSuccess([]))
   }
 
   yield put(loadingActions.finishLoading('nhlScores'))

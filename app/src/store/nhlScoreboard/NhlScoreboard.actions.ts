@@ -6,8 +6,8 @@ export const GET_GAMES_SUCCESS = 'GET_GAMES_SUCCESS'
 export const SET_TEAM_LOGOS = 'SET_TEAM_LOGOS'
 
 export const nhlScoreboardActions = {
-  getGames: () => {
-    return { type: GET_GAMES }
+  getGames: (gameDate: number) => {
+    return { type: GET_GAMES, gameDate }
   },
   getGamesSuccess: (games: NhlGame[]) => {
     return { type: GET_GAMES_SUCCESS, games }
