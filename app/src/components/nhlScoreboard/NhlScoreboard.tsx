@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid'
 import Snackbar from '@material-ui/core/Snackbar'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Alert } from '@material-ui/lab'
 import { KeyboardDatePicker } from '@material-ui/pickers/DatePicker'
 import MuiPickersUtilsProvider from '@material-ui/pickers/MuiPickersUtilsProvider'
@@ -31,15 +32,15 @@ const useStyles = makeStyles(() => ({
   },
   actionRow: {
     paddingTop: '2vh',
-    height: '90px'
+    minHeight: '90px'
   },
   actionRowItem: {
     alignItems: 'center',
-    '@media (min-width: 650px)': {
+    '@media (min-width: 620px)': {
       justifyContent: 'flex-end'
     },
-    '@media (max-width: 649px)': {
-      justifyContent: 'space-between'
+    '@media (max-width: 619px)': {
+      justifyContent: 'space-evenly'
     }
   },
   datePicker: {
@@ -62,6 +63,7 @@ export function usePrevious<T>(value: T, initial?: T): MutableRefObject<T | unde
 export const NhlScoreboard = (): JSX.Element => {
   const classes = useStyles()
   const { enqueueSnackbar } = useSnackbar()
+  const maxWidth620: boolean = useMediaQuery('(max-width:620px)')
 
   /* Props */
   const games: NhlGame[] = useSelector((state: RootState) => nhlScoreboardSelectors.getGames(state))
@@ -138,52 +140,60 @@ export const NhlScoreboard = (): JSX.Element => {
 
   return (
     <>
-      <Grid>
-        <Grid container direction="row" classes={{ root: classes.actionRow }}>
-          <Grid container xs={6} classes={{ root: classes.actionRowItem }} style={{ paddingLeft: '5vw' }}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                className={classes.datePicker}
-                id="date-picker"
-                value={startDate}
-                onChange={handleStartDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date'
-                }}
-              />
-            </MuiPickersUtilsProvider>
-          </Grid>
-          <Grid container xs={6} classes={{ root: classes.actionRowItem }} style={{ paddingRight: '5vw' }}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setShowAllExpanded(true)}
-              style={{ marginRight: '1vw' }}
-            >
-              Expand All
-            </Button>
-            <Button variant="contained" color="primary" onClick={() => setShowAllExpanded(false)}>
-              Collapse All
-            </Button>
-          </Grid>
+      <Grid container direction={maxWidth620 ? 'row' : 'column'} classes={{ root: classes.actionRow }}>
+        <Grid
+          container
+          xs={maxWidth620 ? 12 : 6}
+          classes={{ root: classes.actionRowItem }}
+          style={{ paddingLeft: '5vw' }}
+        >
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              disableToolbar
+              variant="inline"
+              format="MM/dd/yyyy"
+              margin="normal"
+              className={classes.datePicker}
+              id="date-picker"
+              value={startDate}
+              onChange={handleStartDateChange}
+              KeyboardButtonProps={{
+                'aria-label': 'change date'
+              }}
+            />
+          </MuiPickersUtilsProvider>
         </Grid>
         <Grid
           container
-          justify="flex-start"
-          alignItems="center"
-          direction="column"
-          spacing={2}
-          style={{ marginTop: '15px', width: '100%' }}
+          xs={maxWidth620 ? 12 : 6}
+          classes={{ root: classes.actionRowItem }}
+          style={{ paddingRight: '5vw' }}
         >
-          {games.map(game => (
-            <NhlGameCard game={game} showAllExpanded={showAllExpanded} />
-          ))}
-          {games.length === 0 && <Alert severity="warning">No games scheduled on the date you selected.</Alert>}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setShowAllExpanded(true)}
+            style={{ marginRight: '1vw' }}
+          >
+            Expand All
+          </Button>
+          <Button variant="contained" color="primary" onClick={() => setShowAllExpanded(false)}>
+            Collapse All
+          </Button>
         </Grid>
+      </Grid>
+      <Grid
+        container
+        justify="flex-start"
+        alignItems="center"
+        direction="column"
+        spacing={2}
+        style={{ marginTop: '15px', width: '100%' }}
+      >
+        {games.map(game => (
+          <NhlGameCard game={game} showAllExpanded={showAllExpanded} />
+        ))}
+        {games.length === 0 && <Alert severity="warning">No games scheduled on the date you selected.</Alert>}
       </Grid>
 
       <Snackbar

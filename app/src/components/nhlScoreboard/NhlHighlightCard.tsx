@@ -11,7 +11,7 @@ import { Highlight, HIGHLIGHT_PLAYBACK_NAME } from '../../store/nhlScoreboard'
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
-    margin: '0 1vw 0 0'
+    margin: '0 1vw 1vh 0'
   }
 })
 
@@ -26,12 +26,12 @@ export const NhlHighlightCard = (props: Props): JSX.Element => {
       <Card className={classes.root}>
         <CardMedia
           component="video"
-          height="140"
+          height="190"
           image={props.highlight.playbacks.find(playback => playback.name === HIGHLIGHT_PLAYBACK_NAME)?.url || ''}
           controls
           title={props.highlight.title}
         />
-        <CardContent>
+        <CardContent style={{ padding: '1vh 0 1vh 0' }}>
           <Typography gutterBottom variant="subtitle2">
             {props.highlight.title}
           </Typography>
