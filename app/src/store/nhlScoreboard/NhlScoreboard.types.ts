@@ -28,6 +28,21 @@ export type NhlGame = {
 
 type GameMedia = {
   highlights: Highlights
+  media: Media
+}
+
+type Media = {
+  epg: EPG[]
+}
+
+type EPG = {
+  title: EpgTypes
+  items: Highlight[]
+}
+
+export enum EpgTypes {
+  EXTENDED_HIGHLIGHTS = 'Extended Highlights',
+  RECAP = 'Recap'
 }
 
 type Highlights = {

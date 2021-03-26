@@ -14,7 +14,14 @@ import Tabs from '@material-ui/core/Tabs'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
 
-import { Highlight, NhlGame, ScoringPlay, ScoringPlayCode, ScoringPlayPlayerType } from '../../store/nhlScoreboard'
+import {
+  EpgTypes,
+  Highlight,
+  NhlGame,
+  ScoringPlay,
+  ScoringPlayCode,
+  ScoringPlayPlayerType
+} from '../../store/nhlScoreboard'
 import { NhlHighlightCard } from './NhlHighlightCard'
 
 interface Props {
@@ -163,6 +170,21 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
     setTabPanelValue(newValue)
   }
 
+  const epgs = [...props.game.content.media.epg]
+  epgs.forEach(epg => {
+    epg.items = epg.items.map(highlight => {
+      return { ...highlight, title: epg.title }
+    })
+  })
+  const highlights: Highlight[] = [
+    ...epgs
+      .filter(epg => epg.title === EpgTypes.EXTENDED_HIGHLIGHTS || epg.title === EpgTypes.RECAP)
+      .flatMap(epg => epg.items),
+    ...props.game.content.highlights.scoreboard.items.sort(
+      (highlightA: Highlight, highlightB: Highlight) => Number(highlightA.id) - Number(highlightB.id)
+    )
+  ]
+
   return (
     <>
       <Paper square>
@@ -191,11 +213,9 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
         {tabPanelValue === NhlGameCardTab.HIGHLIGHTS && (
           <div className={classes.root}>
             <GridList className={classes.gridList} cols={2.5}>
-              {props.game.content.highlights.scoreboard.items
-                .sort((highlightA: Highlight, highlightB: Highlight) => Number(highlightA.id) - Number(highlightB.id))
-                .map(item => (
-                  <NhlHighlightCard highlight={item} />
-                ))}
+              {highlights.map(item => (
+                <NhlHighlightCard highlight={item} />
+              ))}
             </GridList>
           </div>
         )}
