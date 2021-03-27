@@ -296,13 +296,15 @@ type GameStatus = {
 
 export enum AbstractGameState {
   LIVE = 'Live',
-  FINAL = 'Final'
+  FINAL = 'Final',
+  PREVIEW = 'Preview'
 }
 
-enum DetailedGameState {
+export enum DetailedGameState {
   IN_PROGRESS = 'In Progress',
   IN_PROGRESS_CRITICAL = 'In Progress - Critical',
-  FINAL = 'Final'
+  FINAL = 'Final',
+  POSTPONED = 'Postponed'
 }
 
 export const isGameLive = (game: NhlGame): boolean => {

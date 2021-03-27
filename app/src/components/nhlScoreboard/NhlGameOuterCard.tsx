@@ -6,7 +6,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import moment from 'moment'
 import React from 'react'
 
-import { NhlGame } from '../../store/nhlScoreboard'
+import { DetailedGameState, NhlGame } from '../../store/nhlScoreboard'
 
 interface Props {
   game: NhlGame
@@ -72,7 +72,13 @@ export const NhlGameOuterCard = (props: Props): JSX.Element => {
    * @returns
    */
   const buildMiddleContainer = () => {
-    if (props.game.linescore.currentPeriod !== 0) {
+    if (props.game.status.detailedState === DetailedGameState.POSTPONED) {
+      return (
+        <Grid container justify="center" alignContent="center">
+          {props.game.status.detailedState}
+        </Grid>
+      )
+    } else if (props.game.linescore.currentPeriod !== 0) {
       if (props.game.linescore.currentPeriodTimeRemaining === 'END') {
         return (
           <>

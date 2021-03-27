@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
     height: 16,
     margin: 2.5
   },
-  actionRow: {
+  actionGroup: {
     paddingTop: '2vh',
     minHeight: '90px'
   },
@@ -136,11 +136,12 @@ export const NhlScoreboard = (): JSX.Element => {
    */
   const handleStartDateChange = (date: MaterialUiPickersDate): void => {
     setStartDate(date !== null ? date?.valueOf() : moment().valueOf())
+    setShowAllExpanded(false)
   }
 
   return (
     <>
-      <Grid container direction={maxWidth620 ? 'row' : 'column'} classes={{ root: classes.actionRow }}>
+      <Grid container direction="row" classes={{ root: classes.actionGroup }}>
         <Grid
           container
           xs={maxWidth620 ? 12 : 6}
@@ -188,7 +189,7 @@ export const NhlScoreboard = (): JSX.Element => {
         alignItems="center"
         direction="column"
         spacing={2}
-        style={{ marginTop: '15px', width: '100%' }}
+        style={{ marginTop: '1vh', width: '100%', minHeight: '70vh' }}
       >
         {games.map(game => (
           <NhlGameCard game={game} showAllExpanded={showAllExpanded} />

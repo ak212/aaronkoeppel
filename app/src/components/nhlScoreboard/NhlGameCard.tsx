@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import React, { useEffect, useState } from 'react'
 
-import { NhlGame } from '../../store/nhlScoreboard'
+import { AbstractGameState, NhlGame } from '../../store/nhlScoreboard'
 import { NhlGameInnerCard } from './NhlGameInnerCard'
 import { NhlGameOuterCard } from './NhlGameOuterCard'
 
@@ -48,6 +48,9 @@ const useStyles = makeStyles(() => ({
 export const NhlGameCard = (props: Props): JSX.Element => {
   const classes = useStyles()
   const [expanded, setExpanded] = useState(false)
+  const canExpand: boolean =
+    props.game.status.abstractGameState === AbstractGameState.LIVE ||
+    props.game.status.abstractGameState === AbstractGameState.FINAL
 
   useEffect(() => {
     if (props.showAllExpanded) {
@@ -84,7 +87,7 @@ export const NhlGameCard = (props: Props): JSX.Element => {
     return (
       <Card classes={{ root: classes.card }}>
         <NhlGameOuterCard game={props.game} />
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <Collapse in={canExpand && expanded} timeout="auto" unmountOnExit>
           <NhlGameInnerCard game={props.game} />
         </Collapse>
       </Card>
