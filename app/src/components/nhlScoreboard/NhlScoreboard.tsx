@@ -82,10 +82,6 @@ export const NhlScoreboard = (): JSX.Element => {
 
   useEffect(() => {
     getGames()
-  }, [getGames])
-
-  useEffect(() => {
-    getGames()
   }, [startDate])
 
   /* Auto retrieve game updates every 20 seconds */
