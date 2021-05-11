@@ -3,7 +3,7 @@ import './WeekdayPicker.css'
 import { Button } from '@material-ui/core'
 import React from 'react'
 
-import { DayOfWeek, DaysOfWeek } from '../../reducers/Campsites'
+import { DayOfWeek, DaysOfWeek } from '../../store/campsites'
 
 interface Props {
   toggleSelectedDaysOfWeek(dayOfWeek: DayOfWeek): void

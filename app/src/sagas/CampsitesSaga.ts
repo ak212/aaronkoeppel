@@ -2,6 +2,8 @@ import range from 'lodash/range'
 import moment from 'moment'
 import { all, AllEffect, call, delay, ForkEffect, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
 
+import { loadingActions } from '../reducers/Loading'
+import CampsitesApi from '../remote/CampsitesApi'
 import {
   Campground,
   CampgroundRA,
@@ -18,9 +20,7 @@ import {
   ReservationStatus,
   ReservationType,
   SET_RECREATION_AREAS
-} from '../reducers/Campsites'
-import { loadingActions } from '../reducers/Loading'
-import CampsitesApi from '../remote/CampsitesApi'
+} from '../store/campsites'
 
 const emptyRecreationAreas: RecreationArea[] = []
 

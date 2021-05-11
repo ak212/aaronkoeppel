@@ -8,7 +8,7 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import moment from 'moment'
 import React from 'react'
 
-import { DayOfWeek, DaysOfWeek } from '../../reducers/Campsites'
+import { DayOfWeek, DaysOfWeek } from '../../store/campsites'
 import { WeekdayPicker } from '../common/WeekdayPicker'
 
 interface DateProps {

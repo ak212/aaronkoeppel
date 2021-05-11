@@ -12,6 +12,8 @@ import React, { Dispatch, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AnyAction } from 'redux'
 
+import { loadingSelectors } from '../../reducers/Loading'
+import { State as RootState } from '../../reducers/Root'
 import {
   Campground,
   campsiteActions,
@@ -23,9 +25,7 @@ import {
   isRecreationArea,
   RecreationArea,
   ReservationStatus
-} from '../../reducers/Campsites'
-import { loadingSelectors } from '../../reducers/Loading'
-import { State as RootState } from '../../reducers/Root'
+} from '../../store/campsites'
 import { CampgroundIcon } from '../icons/CampgroundIcon'
 import { RecreationAreaIcon } from '../icons/RecreationAreaIcon'
 import { CampgroundAvailabilityTable } from './CampgroundAvailabilityTable'

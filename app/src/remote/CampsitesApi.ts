@@ -1,7 +1,7 @@
 import axios from 'axios'
 import moment from 'moment'
 
-import { Campsite } from '../reducers/Campsites'
+import { Campsite } from '../store/campsites'
 import { RestManager } from './RestManager'
 
 const PROXY_URL = 'https://cors-anywhere-49a7m0q7vcpoxggi.herokuapp.com'

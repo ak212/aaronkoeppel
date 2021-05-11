@@ -17,7 +17,7 @@ import uniqueId from 'lodash/uniqueId'
 import moment from 'moment'
 import React from 'react'
 
-import { Campground, DaysOfWeek, ReservationStatus, ReservationType, showDayOfWeek } from '../../reducers/Campsites'
+import { Campground, DaysOfWeek, ReservationStatus, ReservationType, showDayOfWeek } from '../../store/campsites'
 
 type Props = {
   campgrounds: Campground[]
@@ -102,7 +102,7 @@ export const CampgroundAvailabilityTable = (props: Props): JSX.Element => {
         </TableCell>
 
         {Array.from(campgroundAvailability.values()).map(available => (
-          <TableCell key={uniqueId()}>
+          <TableCell key={uniqueId()} style={{ backgroundColor: available !== 0 ? '#4178ee' : 'lightgray' }}>
             {campground.campsites
               ? campground.campsites.length === 0
                 ? 'Unavailable'

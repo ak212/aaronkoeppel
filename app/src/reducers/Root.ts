@@ -2,8 +2,8 @@ import { applyMiddleware, combineReducers, createStore, Middleware, Reducer, Sto
 import { composeWithDevTools } from 'redux-devtools-extension'
 import createSagaMiddleware from 'redux-saga'
 
+import { Campsites, campsitesReducer, initialCampsitesState } from '../store/campsites'
 import { initialScoreboardState, NhlScoreboard, nhlScoreboardReducer } from '../store/nhlScoreboard/'
-import { Campsites, campsitesReducer, initialCampsitesState } from './Campsites'
 import { initialLoading, Loading, loadingReducer } from './Loading'
 
 export type State = {
