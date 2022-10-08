@@ -2,7 +2,6 @@
    "arrowParens": "avoid",
    "bracketSpacing": true,
    "endOfLine": "lf",
-   "formatOnSave" : true,
    "htmlWhitespaceSensitivity": "ignore",
    "jsxBracketSameLine": false,
    "jsxSingleQuote": false,
@@ -12,6 +11,6 @@
    "semi": false,
    "useTabs": false,
    "tabWidth": 2,
-   "trailingComma": "none",
+   "trailingComma": "all",
    "rcVerbose": true
 }

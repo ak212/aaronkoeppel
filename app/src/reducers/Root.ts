@@ -1,5 +1,5 @@
 import { applyMiddleware, combineReducers, createStore, Middleware, Reducer, Store } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { composeWithDevTools } from '@redux-devtools/extension'
 import createSagaMiddleware from 'redux-saga'
 
 import { Campsites, campsitesReducer, initialCampsitesState } from '../store/campsites'
@@ -15,13 +15,13 @@ export type State = {
 export const initialState: State = {
   campsites: initialCampsitesState,
   loading: initialLoading,
-  nhlScoreboard: initialScoreboardState
+  nhlScoreboard: initialScoreboardState,
 }
 
 export const rootReducer: Reducer<State> = combineReducers<State>({
   campsites: campsitesReducer,
   loading: loadingReducer,
-  nhlScoreboard: nhlScoreboardReducer
+  nhlScoreboard: nhlScoreboardReducer,
 })
 
 export const sagaMiddleware = createSagaMiddleware()
@@ -31,5 +31,5 @@ const middlewares: Middleware[] = [sagaMiddleware]
 export const STORE: Store<State> = createStore(
   rootReducer,
   initialState,
-  composeWithDevTools(applyMiddleware(...middlewares))
+  composeWithDevTools(applyMiddleware(...middlewares)),
 )

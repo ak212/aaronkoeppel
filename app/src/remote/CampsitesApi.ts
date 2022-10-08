@@ -7,7 +7,7 @@ import { RestManager } from './RestManager'
 const PROXY_URL = 'https://cors-anywhere-49a7m0q7vcpoxggi.herokuapp.com'
 
 const axiosInstance = axios.create({
-  baseURL: `${PROXY_URL}/https://www.recreation.gov/api/`
+  baseURL: `${PROXY_URL}/https://www.recreation.gov/api/`,
 })
 const rest = new RestManager(axiosInstance)
 
@@ -22,7 +22,7 @@ export default class CampsitesApi {
       'entity_type:campground',
       'campsite_type_of_use:Overnight',
       'campsite_type_of_use:Day',
-      'campsite_type_of_use:na'
+      'campsite_type_of_use:na',
     ]
     return rest.get(`search?${buildParamArray('fq', params)}`, { params: { size: 1000, sort: 'score' } })
   }
@@ -34,8 +34,8 @@ export default class CampsitesApi {
   public static async getAutocomplete(query: string) {
     const config = {
       params: {
-        q: query
-      }
+        q: query,
+      },
     }
     return rest.get('search/suggest', config)
   }
@@ -44,7 +44,7 @@ export default class CampsitesApi {
     return rest.get(
       `camps/availability/campground/${entity_id}/month?start_date=${moment(startDate)
         .format('YYYY-MM-01')
-        .concat(encodeURIComponent('T00:00:00.000Z'))}`
+        .concat(encodeURIComponent('T00:00:00.000Z'))}`,
     )
   }
 }

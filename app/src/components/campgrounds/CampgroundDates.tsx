@@ -40,7 +40,7 @@ export const CampgroundDates = (props: DateProps) => {
           value={props.startDate}
           onChange={props.handleStartDateChange}
           KeyboardButtonProps={{
-            'aria-label': 'change date'
+            'aria-label': 'change date',
           }}
         />
         <KeyboardDatePicker
@@ -56,7 +56,7 @@ export const CampgroundDates = (props: DateProps) => {
           value={props.endDate}
           onChange={props.handleEndDateChange}
           KeyboardButtonProps={{
-            'aria-label': 'change date'
+            'aria-label': 'change date',
           }}
         />
         <Button

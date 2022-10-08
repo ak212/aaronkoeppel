@@ -125,7 +125,7 @@ export const Calculator = (): JSX.Element => {
             style={{
               display: 'flex',
               flex: '1 1 auto',
-              flexDirection: 'column'
+              flexDirection: 'column',
             }}
           >
             <div className="calc-row">

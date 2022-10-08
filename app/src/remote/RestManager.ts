@@ -7,7 +7,7 @@ export class RestManager {
     this.axiosInstance = axiosInstance
   }
 
-  protected handleError = (error: AxiosError) => {
+  protected handleError = (error: AxiosError | unknown) => {
     throw error
   }
 

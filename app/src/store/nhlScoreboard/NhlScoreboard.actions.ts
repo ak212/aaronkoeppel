@@ -11,5 +11,5 @@ export const nhlScoreboardActions = {
   },
   getGamesSuccess: (games: NhlGame[]) => {
     return { type: GET_GAMES_SUCCESS, games }
-  }
+  },
 }

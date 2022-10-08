@@ -15,46 +15,46 @@ interface Props {
 const useStyles = makeStyles(() => ({
   teamContainer: {
     '@media (min-width: 1280px)': {
-      maxWidth: '450px'
+      maxWidth: '450px',
     },
     '@media (max-width: 1279px)': {
-      maxWidth: '350px'
+      maxWidth: '350px',
     },
     '@media (max-width: 1000px)': {
-      maxWidth: '275px'
+      maxWidth: '275px',
     },
     '@media (max-width: 850px)': {
-      maxWidth: '225px'
+      maxWidth: '225px',
     },
     '@media (max-width: 620px)': {
-      maxWidth: '140px'
-    }
+      maxWidth: '140px',
+    },
   },
   middleContainer: {
     '@media (min-width: 850px)': {
-      maxWidth: '100px'
+      maxWidth: '100px',
     },
     '@media (max-width: 849px)': {
-      maxWidth: '50px'
-    }
+      maxWidth: '50px',
+    },
   },
   logo: {
     '@media (min-width: 850px)': {
       width: 90,
       height: 70,
-      margin: 2.5
+      margin: 2.5,
     },
     '@media (max-width: 849px)': {
       width: 80,
       height: 62,
-      margin: 2.5
+      margin: 2.5,
     },
     '@media (max-width: 620px)': {
       width: 60,
       height: 46,
-      margin: 2.5
-    }
-  }
+      margin: 2.5,
+    },
+  },
 }))
 
 export const NhlGameOuterCard = (props: Props): JSX.Element => {

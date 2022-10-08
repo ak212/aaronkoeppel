@@ -24,7 +24,7 @@ import {
   initialDaysOfWeek,
   isRecreationArea,
   RecreationArea,
-  ReservationStatus
+  ReservationStatus,
 } from '../../store/campsites'
 import { CampgroundIcon } from '../icons/CampgroundIcon'
 import { RecreationAreaIcon } from '../icons/RecreationAreaIcon'
@@ -35,7 +35,7 @@ import { CampgroundMap } from './CampgroundMap'
 export const Campsites = (): JSX.Element => {
   /* Props */
   const autocompleteValues: RecreationArea[] = useSelector((state: RootState) =>
-    campsitesSelectors.getAutocomplete(state)
+    campsitesSelectors.getAutocomplete(state),
   )
   const campgrounds: Campground[] = useSelector((state: RootState) => campsitesSelectors.getCampgrounds(state))
   const loading: boolean = useSelector((state: RootState) => loadingSelectors.getCampsiteLoading(state))
@@ -47,21 +47,21 @@ export const Campsites = (): JSX.Element => {
     (recreationAreas: RecreationArea[], startDate: number, endDate: number) => {
       dispatch(campsiteActions.getCampgroundAvailability(recreationAreas, startDate, endDate))
     },
-    [dispatch]
+    [dispatch],
   )
 
   const getAutoComplete = useCallback(
     (name: string) => {
       dispatch(campsiteActions.getAutocomplete(name))
     },
-    [dispatch]
+    [dispatch],
   )
 
   const setRecreationAreas = useCallback(
     (recAreas: RecreationArea[]) => {
       dispatch(campsiteActions.setRecreationAreas(recAreas))
     },
-    [dispatch]
+    [dispatch],
   )
 
   /* State */
@@ -156,7 +156,7 @@ export const Campsites = (): JSX.Element => {
       /* Adding another +1 to endMonth because range is not inclusive */
       let monthRange = range(startMonth, endMonth + 1)
       const statusMap: Map<string, ReservationStatus> = new Map(
-        Object.entries(campgrounds[0].campsites[0].availabilities)
+        Object.entries(campgrounds[0].campsites[0].availabilities),
       )
       for (const key of Array.from(statusMap.keys())) {
         monthRange = monthRange.filter(month => month !== moment(key).get('month'))
@@ -245,7 +245,7 @@ export const Campsites = (): JSX.Element => {
           limitTags={4}
           id="recreation-areas"
           options={autocompleteValues.filter(
-            ra => [EntityType.REC_AREA, EntityType.CAMPGROUND].indexOf(ra.entity_type) !== -1
+            ra => [EntityType.REC_AREA, EntityType.CAMPGROUND].indexOf(ra.entity_type) !== -1,
           )}
           getOptionLabel={option => startCase(option.name.toLowerCase())}
           onInputChange={onInputChange}
@@ -254,6 +254,7 @@ export const Campsites = (): JSX.Element => {
           renderTags={(value: RecreationArea[], getTagProps) =>
             value.map((recArea: RecreationArea, index: number) => (
               <Chip
+                key={recArea.entity_id}
                 variant="outlined"
                 label={startCase(recArea.name.toLowerCase())}
                 icon={recArea.entity_type === EntityType.REC_AREA ? <RecreationAreaIcon /> : <CampgroundIcon />}
@@ -293,7 +294,7 @@ export const Campsites = (): JSX.Element => {
           Get campsites
         </Button>
         {campgroundAvailabilityTable(
-          campgrounds.sort((a: Campground, b: Campground) => (a.facility_name > b.facility_name ? 1 : -1))
+          campgrounds.sort((a: Campground, b: Campground) => (a.facility_name > b.facility_name ? 1 : -1)),
         )}
         <CampgroundMap campgrounds={campgrounds} />
       </div>

@@ -11,8 +11,8 @@ import { Highlight, HIGHLIGHT_PLAYBACK_NAME } from '../../store/nhlScoreboard'
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
-    margin: '0 1vw 1vh 0'
-  }
+    margin: '0 1vw 1vh 0',
+  },
 })
 
 type Props = {

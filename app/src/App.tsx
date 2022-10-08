@@ -12,7 +12,7 @@ export const App = (): JSX.Element => {
       maxSnack={3}
       anchorOrigin={{
         vertical: 'bottom',
-        horizontal: 'left'
+        horizontal: 'left',
       }}
     >
       <div className="App">

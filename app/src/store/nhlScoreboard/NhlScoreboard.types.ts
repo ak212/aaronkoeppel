@@ -42,7 +42,7 @@ type EPG = {
 
 export enum EpgTypes {
   EXTENDED_HIGHLIGHTS = 'Extended Highlights',
-  RECAP = 'Recap'
+  RECAP = 'Recap',
 }
 
 type Highlights = {
@@ -146,7 +146,7 @@ type ScoringPlayGoalStrength = {
 export enum ScoringPlayCode {
   PPG = 'PPG',
   SHG = 'SHG',
-  EVEN = 'EVEN'
+  EVEN = 'EVEN',
 }
 
 type ScoringPlayPlayers = {
@@ -158,7 +158,7 @@ type ScoringPlayPlayers = {
 export enum ScoringPlayPlayerType {
   SCORER = 'Scorer',
   ASSIST = 'Assist',
-  GOALIE = 'Goalie'
+  GOALIE = 'Goalie',
 }
 
 type ScoringPlayPlayer = {
@@ -297,14 +297,14 @@ type GameStatus = {
 export enum AbstractGameState {
   LIVE = 'Live',
   FINAL = 'Final',
-  PREVIEW = 'Preview'
+  PREVIEW = 'Preview',
 }
 
 export enum DetailedGameState {
   IN_PROGRESS = 'In Progress',
   IN_PROGRESS_CRITICAL = 'In Progress - Critical',
   FINAL = 'Final',
-  POSTPONED = 'Postponed'
+  POSTPONED = 'Postponed',
 }
 
 export const isGameLive = (game: NhlGame): boolean => {
@@ -312,5 +312,5 @@ export const isGameLive = (game: NhlGame): boolean => {
 }
 
 export const initialScoreboardState = {
-  games: []
+  games: [],
 }

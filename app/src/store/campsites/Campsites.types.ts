@@ -38,7 +38,7 @@ export enum EntityType {
   CAMPGROUND = 'campground',
   FACILITY = 'facility',
   REC_AREA = 'recarea',
-  TICKET_FACILITY = 'ticketfacility'
+  TICKET_FACILITY = 'ticketfacility',
 }
 
 export function entityTypeToString(entityType: EntityType) {
@@ -98,7 +98,7 @@ export function mapCampgroundRAtoCampground(campgroundRA: CampgroundRA) {
     facility_longitude: campgroundRA.longitude,
     facility_name: campgroundRA.name,
     facility_type: campgroundRA.type,
-    parent_id: campgroundRA.parent_id
+    parent_id: campgroundRA.parent_id,
   }
 
   return campground
@@ -118,7 +118,7 @@ export type Campground = {
 export enum CampsiteType {
   TENT_ONLY_NONELECTRIC = 'TENT ONLY NONELECTRIC',
   MANAGEMENT = 'MANAGEMENT',
-  STANDARD_NONELECTRIC = 'STANDARD NONELECTRIC'
+  STANDARD_NONELECTRIC = 'STANDARD NONELECTRIC',
 }
 
 export type Campsite = {
@@ -136,13 +136,13 @@ export type Campsite = {
 
 export enum ReservationType {
   STANDARD = 'STANDARD',
-  CAMPING_LOTTERY = 'CAMPING_LOTTERY'
+  CAMPING_LOTTERY = 'CAMPING_LOTTERY',
 }
 
 export enum ReservationStatus {
   AVAILABLE = 'Available',
   RESERVED = 'Reserved',
-  NOT_RESERVABLE = 'Not Reservable'
+  NOT_RESERVABLE = 'Not Reservable',
 }
 
 export type CampsiteSeason = {
@@ -179,7 +179,7 @@ export enum DayOfWeek {
   WEDNESDAY = 'Wednesday',
   THURSDAY = 'Thursday',
   FRIDAY = 'Friday',
-  SATURDAY = 'Saturday'
+  SATURDAY = 'Saturday',
 }
 
 export type Location = [number, number]
@@ -251,10 +251,10 @@ export const initialDaysOfWeek: DaysOfWeek = {
   wednesday: false,
   thursday: false,
   friday: false,
-  saturday: false
+  saturday: false,
 }
 
 export const initialCampsitesState: Campsites = {
   autocompleteValues: [],
-  campgrounds: []
+  campgrounds: [],
 }

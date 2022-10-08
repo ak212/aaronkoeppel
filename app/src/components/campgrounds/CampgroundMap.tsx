@@ -10,7 +10,7 @@ interface Props {
 
 export const CampgroundMap = (props: Props): JSX.Element | null => {
   const filteredCampgrounds: Campground[] = props.campgrounds.filter(
-    campground => campground.facility_latitude !== undefined && campground.facility_longitude !== undefined
+    campground => campground.facility_latitude !== undefined && campground.facility_longitude !== undefined,
   )
   if (filteredCampgrounds.length > 0) {
     const markers = filteredCampgrounds.map(campground => {

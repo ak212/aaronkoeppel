@@ -9,7 +9,7 @@ import {
   GET_CAMPSITES_SUCCESS,
   RecreationArea,
   SET_CAMPGROUNDS,
-  SET_RECREATION_AREAS
+  SET_RECREATION_AREAS,
 } from './Campsites.types'
 
 export const campsiteActions = {
@@ -36,5 +36,5 @@ export const campsiteActions = {
   },
   getAutocompleteSuccess: (values: RecreationArea[]) => {
     return { type: GET_AUTOCOMPLETE_SUCCESS, values }
-  }
+  },
 }

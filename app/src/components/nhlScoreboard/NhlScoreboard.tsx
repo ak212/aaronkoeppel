@@ -28,24 +28,24 @@ const useStyles = makeStyles(() => ({
   logoSmall: {
     width: 22,
     height: 16,
-    margin: 2.5
+    margin: 2.5,
   },
   actionGroup: {
     paddingTop: '2vh',
-    minHeight: '90px'
+    minHeight: '90px',
   },
   actionRowItem: {
     alignItems: 'center',
     '@media (min-width: 620px)': {
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
     },
     '@media (max-width: 619px)': {
-      justifyContent: 'space-evenly'
-    }
+      justifyContent: 'space-evenly',
+    },
   },
   datePicker: {
-    maxWidth: '150px'
-  }
+    maxWidth: '150px',
+  },
 }))
 
 export function usePrevious<T>(value: T, initial?: T): MutableRefObject<T | undefined>['current'] {
@@ -115,8 +115,8 @@ export const NhlScoreboard = (): JSX.Element => {
                 <Typography paragraph style={{ marginBottom: '2px' }}>{`${scoringPlay.result.description}`}</Typography>
               </Grid>,
               {
-                autoHideDuration: 15000
-              }
+                autoHideDuration: 15000,
+              },
             )
           })
         }
@@ -155,7 +155,7 @@ export const NhlScoreboard = (): JSX.Element => {
               value={startDate}
               onChange={handleStartDateChange}
               KeyboardButtonProps={{
-                'aria-label': 'change date'
+                'aria-label': 'change date',
               }}
             />
           </MuiPickersUtilsProvider>
@@ -188,7 +188,7 @@ export const NhlScoreboard = (): JSX.Element => {
         style={{ marginTop: '1vh', width: '100%', minHeight: '70vh' }}
       >
         {games.map(game => (
-          <NhlGameCard game={game} showAllExpanded={showAllExpanded} />
+          <NhlGameCard key={game.gamePk} game={game} showAllExpanded={showAllExpanded} />
         ))}
         {games.length === 0 && <Alert severity="warning">No games scheduled on the date you selected.</Alert>}
       </Grid>
@@ -197,7 +197,7 @@ export const NhlScoreboard = (): JSX.Element => {
         open={loading}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         TransitionComponent={Fade}
         message="Loading"

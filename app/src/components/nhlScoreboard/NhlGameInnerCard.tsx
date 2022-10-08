@@ -20,7 +20,7 @@ import {
   NhlGame,
   ScoringPlay,
   ScoringPlayCode,
-  ScoringPlayPlayerType
+  ScoringPlayPlayerType,
 } from '../../store/nhlScoreboard'
 import { NhlHighlightCard } from './NhlHighlightCard'
 
@@ -30,50 +30,50 @@ interface Props {
 
 enum NhlGameCardTab {
   SCORING_PLAYS = 'SCORING_PLAYS',
-  HIGHLIGHTS = 'HIGHLIGHTS'
+  HIGHLIGHTS = 'HIGHLIGHTS',
 }
 
 const useStyles = makeStyles({
   card: {
     '@media (min-width: 1280px)': {
-      width: 1000
+      width: 1000,
     },
     '@media (max-width: 1279px)': {
-      width: 800
+      width: 800,
     },
     '@media (max-width: 1000px)': {
-      width: 650
+      width: 650,
     },
     '@media (max-width: 850px)': {
-      width: 500
+      width: 500,
     },
     '@media (max-width: 620px)': {
-      width: 350
+      width: 350,
     },
     background: '#b4c6e9',
     boxShadow:
-      '0px 3px 3px -2px rgba(255, 255, 255, 0.2),0px 3px 4px 0px rgba(255, 255, 255, 0.14),0px 1px 8px 0px rgba(255, 255, 255, 0.52)'
+      '0px 3px 3px -2px rgba(255, 255, 255, 0.2),0px 3px 4px 0px rgba(255, 255, 255, 0.14),0px 1px 8px 0px rgba(255, 255, 255, 0.52)',
   },
   logoSmall: {
     width: 45,
     height: 34.5,
-    margin: 2.5
+    margin: 2.5,
   },
   tabs: {
-    background: '#b4c6e9'
+    background: '#b4c6e9',
   },
   root: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
-    margin: '1vh'
+    margin: '1vh',
   },
   gridList: {
     flexWrap: 'nowrap',
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-    transform: 'translateZ(0)'
-  }
+    transform: 'translateZ(0)',
+  },
 })
 
 export const NhlGameInnerCard = (props: Props): JSX.Element => {
@@ -181,8 +181,8 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
       .filter(epg => epg.title === EpgTypes.EXTENDED_HIGHLIGHTS || epg.title === EpgTypes.RECAP)
       .flatMap(epg => epg.items),
     ...props.game.content.highlights.scoreboard.items.sort(
-      (highlightA: Highlight, highlightB: Highlight) => Number(highlightA.id) - Number(highlightB.id)
-    )
+      (highlightA: Highlight, highlightB: Highlight) => Number(highlightA.id) - Number(highlightB.id),
+    ),
   ]
 
   return (
@@ -214,7 +214,7 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
           <div className={classes.root}>
             <GridList className={classes.gridList} cols={2.5}>
               {highlights.map(item => (
-                <NhlHighlightCard highlight={item} />
+                <NhlHighlightCard key={item.id} highlight={item} />
               ))}
             </GridList>
           </div>

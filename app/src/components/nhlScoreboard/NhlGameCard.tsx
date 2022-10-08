@@ -17,32 +17,32 @@ interface Props {
 const useStyles = makeStyles(() => ({
   card: {
     '@media (min-width: 1280px)': {
-      width: 1000
+      width: 1000,
     },
     '@media (max-width: 1279px)': {
-      width: 800
+      width: 800,
     },
     '@media (max-width: 1000px)': {
-      width: 650
+      width: 650,
     },
     '@media (max-width: 850px)': {
-      width: 500
+      width: 500,
     },
     '@media (max-width: 620px)': {
-      width: 350
+      width: 350,
     },
     background: '#b4c6e9',
     boxShadow:
-      '0px 3px 3px -2px rgba(255, 255, 255, 0.2),0px 3px 4px 0px rgba(255, 255, 255, 0.14),0px 1px 8px 0px rgba(255, 255, 255, 0.52)'
+      '0px 3px 3px -2px rgba(255, 255, 255, 0.2),0px 3px 4px 0px rgba(255, 255, 255, 0.14),0px 1px 8px 0px rgba(255, 255, 255, 0.52)',
   },
   logoSmall: {
     width: 45,
     height: 34.5,
-    margin: 2.5
+    margin: 2.5,
   },
   tabs: {
-    background: '#b4c6e9'
-  }
+    background: '#b4c6e9',
+  },
 }))
 
 export const NhlGameCard = (props: Props): JSX.Element => {

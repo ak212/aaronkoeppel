@@ -6,5 +6,5 @@ export const campsitesSelectors = {
   },
   getCampgrounds(state: State) {
     return state.campsites.campgrounds
-  }
+  },
 }

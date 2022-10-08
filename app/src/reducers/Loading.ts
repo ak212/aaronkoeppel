@@ -13,7 +13,7 @@ export type Loading = {
 
 export const initialLoading = {
   campsiteTable: false,
-  nhlScores: false
+  nhlScores: false,
 }
 
 export const loadingActions = {
@@ -22,7 +22,7 @@ export const loadingActions = {
   },
   finishLoading: (loadingIndicator: string) => {
     return { type: FINISH_LOADING, loadingIndicator }
-  }
+  },
 }
 
 export const loadingReducer: Reducer<Loading> = (state = initialLoading, action): Loading => {
@@ -42,5 +42,5 @@ export const loadingSelectors = {
   },
   getNhlScoresLoading(state: State) {
     return state.loading.nhlScores
-  }
+  },
 }
