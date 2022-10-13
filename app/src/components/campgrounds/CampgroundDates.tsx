@@ -34,7 +34,9 @@ export const CampgroundDates = (props: DateProps) => {
           maxDate={props.startDate ? add(toDate(props.startDate), { months: 3 }) : undefined}
           value={props.startDate}
           onChange={props.handleStartDateChange}
-          renderInput={params => <TextField {...params} />}
+          renderInput={params => (
+            <TextField {...params} sx={{ label: { color: '#1976d2' }, input: { color: 'white' } }} />
+          )}
         />
         <DesktopDatePicker
           inputFormat="MM/dd/yyyy"
@@ -44,7 +46,9 @@ export const CampgroundDates = (props: DateProps) => {
           maxDate={props.startDate ? add(toDate(props.startDate), { weeks: 4 }) : undefined}
           value={props.endDate}
           onChange={props.handleEndDateChange}
-          renderInput={params => <TextField {...params} />}
+          renderInput={params => (
+            <TextField {...params} sx={{ label: { color: '#1976d2' }, input: { color: 'white' } }} />
+          )}
         />
         <Button
           variant="contained"

@@ -1,9 +1,10 @@
-import { Alert, TextField } from '@mui/material'
+import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import CardMedia from '@mui/material/CardMedia'
 import Fade from '@mui/material/Fade'
 import Grid from '@mui/material/Grid'
 import Snackbar from '@mui/material/Snackbar'
+import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import makeStyles from '@mui/styles/makeStyles'
@@ -145,7 +146,7 @@ export const NhlScoreboard = (): JSX.Element => {
               className={classes.datePicker}
               value={startDate}
               onChange={handleStartDateChange}
-              renderInput={params => <TextField {...params} />}
+              renderInput={params => <TextField {...params} sx={{ input: { color: 'white' } }} />}
             />
           </LocalizationProvider>
         </Grid>
