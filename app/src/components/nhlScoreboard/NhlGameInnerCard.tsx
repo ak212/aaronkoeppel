@@ -1,17 +1,17 @@
-import CardContent from '@material-ui/core/CardContent'
-import CardMedia from '@material-ui/core/CardMedia'
-import Grid from '@material-ui/core/Grid'
-import GridList from '@material-ui/core/GridList'
-import Paper from '@material-ui/core/Paper'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Tab from '@material-ui/core/Tab'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import Tabs from '@material-ui/core/Tabs'
-import Typography from '@material-ui/core/Typography'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import Grid from '@mui/material/Grid'
+import ImageList from '@mui/material/ImageList'
+import Paper from '@mui/material/Paper'
+import makeStyles from '@mui/styles/makeStyles'
+import Tab from '@mui/material/Tab'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Tabs from '@mui/material/Tabs'
+import Typography from '@mui/material/Typography'
 import React, { useState } from 'react'
 
 import {
@@ -212,11 +212,11 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
         )}
         {tabPanelValue === NhlGameCardTab.HIGHLIGHTS && (
           <div className={classes.root}>
-            <GridList className={classes.gridList} cols={2.5}>
+            <ImageList className={classes.gridList} cols={2.5}>
               {highlights.map(item => (
                 <NhlHighlightCard key={item.id} highlight={item} />
               ))}
-            </GridList>
+            </ImageList>
           </div>
         )}
       </CardContent>

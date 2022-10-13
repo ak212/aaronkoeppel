@@ -1,13 +1,12 @@
+import add from 'date-fns/add'
+import toDate from 'date-fns/toDate'
 import './Campsites.css'
-import 'date-fns'
 
-import DateFnsUtils from '@date-io/date-fns'
-import { Button } from '@material-ui/core'
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
-import moment from 'moment'
+import { Button, TextField } from '@mui/material'
 import React from 'react'
 
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DayOfWeek, DaysOfWeek } from '../../store/campsites'
 import { WeekdayPicker } from '../common/WeekdayPicker'
 
@@ -18,46 +17,34 @@ interface DateProps {
   daysOfWeek: DaysOfWeek
 
   toggleSelectedDaysOfWeek(dayOfWeek: DayOfWeek): void
-  handleStartDateChange(date: MaterialUiPickersDate, value?: string | null | undefined): void
-  handleEndDateChange(date: MaterialUiPickersDate, value?: string | null | undefined): void
+  handleStartDateChange(date: Date | null, value?: string | null | undefined): void
+  handleEndDateChange(date: Date | null, value?: string | null | undefined): void
   advancedToggle(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void
 }
 
 export const CampgroundDates = (props: DateProps) => {
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <div className="dateRow">
-        <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="MM/dd/yyyy"
-          margin="normal"
+        <DesktopDatePicker
+          inputFormat="MM/dd/yyyy"
           className="date-picker"
-          id="date-picker"
           label="Start Date"
-          minDate={moment()}
-          maxDate={moment(props.startDate).add(3, 'months')}
+          minDate={new Date()}
+          maxDate={props.startDate ? add(toDate(props.startDate), { months: 3 }) : undefined}
           value={props.startDate}
           onChange={props.handleStartDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
+          renderInput={params => <TextField {...params} />}
         />
-        <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="MM/dd/yyyy"
-          margin="normal"
+        <DesktopDatePicker
+          inputFormat="MM/dd/yyyy"
           className="date-picker"
-          id="date-picker"
           label="End Date"
-          minDate={moment().add(1, 'days')}
-          maxDate={moment(props.startDate).add(28, 'days')}
+          minDate={add(new Date(), { days: 1 })}
+          maxDate={props.startDate ? add(toDate(props.startDate), { weeks: 4 }) : undefined}
           value={props.endDate}
           onChange={props.handleEndDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
+          renderInput={params => <TextField {...params} />}
         />
         <Button
           variant="contained"
@@ -71,6 +58,6 @@ export const CampgroundDates = (props: DateProps) => {
           <WeekdayPicker daysOfWeek={props.daysOfWeek} toggleSelectedDaysOfWeek={props.toggleSelectedDaysOfWeek} />
         )}
       </div>
-    </MuiPickersUtilsProvider>
+    </LocalizationProvider>
   )
 }

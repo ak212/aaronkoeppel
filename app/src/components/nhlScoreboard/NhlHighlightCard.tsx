@@ -1,9 +1,9 @@
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import CardMedia from '@material-ui/core/CardMedia'
-import GridListTile from '@material-ui/core/GridListTile'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Typography from '@material-ui/core/Typography'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import ImageListItem from '@mui/material/ImageListItem'
+import makeStyles from '@mui/styles/makeStyles'
+import Typography from '@mui/material/Typography'
 import React from 'react'
 
 import { Highlight, HIGHLIGHT_PLAYBACK_NAME } from '../../store/nhlScoreboard'
@@ -22,7 +22,7 @@ type Props = {
 export const NhlHighlightCard = (props: Props): JSX.Element => {
   const classes = useStyles()
   return (
-    <GridListTile key={props.highlight.title}>
+    <ImageListItem key={props.highlight.title}>
       <Card className={classes.root}>
         <CardMedia
           component="video"
@@ -37,6 +37,6 @@ export const NhlHighlightCard = (props: Props): JSX.Element => {
           </Typography>
         </CardContent>
       </Card>
-    </GridListTile>
+    </ImageListItem>
   )
 }

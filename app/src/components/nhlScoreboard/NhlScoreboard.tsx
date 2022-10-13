@@ -1,19 +1,14 @@
-import 'date-fns'
-
-import DateFnsUtils from '@date-io/date-fns'
-import Button from '@material-ui/core/Button'
-import CardMedia from '@material-ui/core/CardMedia'
-import Fade from '@material-ui/core/Fade'
-import Grid from '@material-ui/core/Grid'
-import Snackbar from '@material-ui/core/Snackbar'
-import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { Alert } from '@material-ui/lab'
-import { KeyboardDatePicker } from '@material-ui/pickers/DatePicker'
-import MuiPickersUtilsProvider from '@material-ui/pickers/MuiPickersUtilsProvider'
-import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
-import moment from 'moment'
+import { Alert, TextField } from '@mui/material'
+import Button from '@mui/material/Button'
+import CardMedia from '@mui/material/CardMedia'
+import Fade from '@mui/material/Fade'
+import Grid from '@mui/material/Grid'
+import Snackbar from '@mui/material/Snackbar'
+import Typography from '@mui/material/Typography'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import makeStyles from '@mui/styles/makeStyles'
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useSnackbar } from 'notistack'
 import React, { Dispatch, MutableRefObject, useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -130,8 +125,8 @@ export const NhlScoreboard = (): JSX.Element => {
    * @param {MaterialUiPickersDate} date
    * @param {(string | null | undefined)} [value]
    */
-  const handleStartDateChange = (date: MaterialUiPickersDate): void => {
-    setStartDate(date !== null ? date?.valueOf() : moment().valueOf())
+  const handleStartDateChange = (date: Date | null): void => {
+    setStartDate(date !== null ? date?.valueOf() : new Date().valueOf())
     setShowAllExpanded(false)
   }
 
@@ -144,21 +139,15 @@ export const NhlScoreboard = (): JSX.Element => {
           classes={{ root: classes.actionRowItem }}
           style={{ paddingLeft: '5vw' }}
         >
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="MM/dd/yyyy"
-              margin="normal"
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DesktopDatePicker
+              inputFormat="MM/dd/yyyy"
               className={classes.datePicker}
-              id="date-picker"
               value={startDate}
               onChange={handleStartDateChange}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
+              renderInput={params => <TextField {...params} />}
             />
-          </MuiPickersUtilsProvider>
+          </LocalizationProvider>
         </Grid>
         <Grid
           container
@@ -181,7 +170,7 @@ export const NhlScoreboard = (): JSX.Element => {
       </Grid>
       <Grid
         container
-        justify="flex-start"
+        justifyContent="flex-start"
         alignItems="center"
         direction="column"
         spacing={2}

@@ -1,6 +1,6 @@
 import './WeekdayPicker.css'
 
-import { Button } from '@material-ui/core'
+import { Button } from '@mui/material'
 import React from 'react'
 
 import { DayOfWeek, DaysOfWeek } from '../../store/campsites'

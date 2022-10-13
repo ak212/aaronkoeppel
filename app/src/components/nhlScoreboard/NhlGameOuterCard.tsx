@@ -1,8 +1,8 @@
-import CardMedia from '@material-ui/core/CardMedia'
-import Grid from '@material-ui/core/Grid'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Typography from '@material-ui/core/Typography'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import CardMedia from '@mui/material/CardMedia'
+import Grid from '@mui/material/Grid'
+import makeStyles from '@mui/styles/makeStyles'
+import Typography from '@mui/material/Typography'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import moment from 'moment'
 import React from 'react'
 
@@ -74,7 +74,7 @@ export const NhlGameOuterCard = (props: Props): JSX.Element => {
   const buildMiddleContainer = () => {
     if (props.game.status.detailedState === DetailedGameState.POSTPONED) {
       return (
-        <Grid container justify="center" alignContent="center">
+        <Grid container justifyContent="center" alignContent="center">
           {props.game.status.detailedState}
         </Grid>
       )
@@ -82,10 +82,10 @@ export const NhlGameOuterCard = (props: Props): JSX.Element => {
       if (props.game.linescore.currentPeriodTimeRemaining === 'END') {
         return (
           <>
-            <Grid container justify="center" alignContent="center">
+            <Grid container justifyContent="center" alignContent="center">
               {props.game.linescore.currentPeriodTimeRemaining} - {props.game.linescore.currentPeriodOrdinal}
             </Grid>
-            <Grid container justify="center" alignContent="center">
+            <Grid container justifyContent="center" alignContent="center">
               {`${maxWidth850 ? '' : 'Intermission'} ${moment
                 .utc(props.game.linescore.intermissionInfo.intermissionTimeRemaining * 1000)
                 .format('mm:ss')}`}
@@ -96,11 +96,11 @@ export const NhlGameOuterCard = (props: Props): JSX.Element => {
         if (props.game.linescore.currentPeriodTimeRemaining === 'Final') {
           return (
             <>
-              <Grid container justify="center" alignContent="center">
+              <Grid container justifyContent="center" alignContent="center">
                 {props.game.linescore.currentPeriodTimeRemaining}
               </Grid>
               {(props.game.linescore.currentPeriod === 4 || props.game.linescore.currentPeriod === 5) && (
-                <Grid container justify="center" alignContent="center">
+                <Grid container justifyContent="center" alignContent="center">
                   {props.game.linescore.currentPeriodOrdinal}
                 </Grid>
               )}
@@ -116,7 +116,7 @@ export const NhlGameOuterCard = (props: Props): JSX.Element => {
   }
 
   return (
-    <Grid container justify="space-between" alignContent="center" style={{ height: '100%' }}>
+    <Grid container justifyContent="space-between" alignContent="center" style={{ height: '100%' }}>
       <Grid container classes={{ root: classes.teamContainer }}>
         <CardMedia
           classes={{ root: classes.logo }}
@@ -124,7 +124,7 @@ export const NhlGameOuterCard = (props: Props): JSX.Element => {
           image={`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${props.game.teams.away.team.id}.svg`}
           title={`${props.game.teams.away.team.name} Logo`}
         />
-        <Grid container xs justify="center" direction="column">
+        <Grid container xs justifyContent="center" direction="column">
           {!maxWidth620 && (
             <Typography variant={maxWidth850 ? 'h6' : 'h5'} color={homeScoreGreater ? 'textSecondary' : 'textPrimary'}>
               {minWidth1000 ? props.game.teams.away.team.name : props.game.teams.away.team.teamName}
@@ -135,11 +135,11 @@ export const NhlGameOuterCard = (props: Props): JSX.Element => {
           </Typography>
         </Grid>
       </Grid>
-      <Grid container justify="center" alignContent="center" classes={{ root: classes.middleContainer }}>
+      <Grid container justifyContent="center" alignContent="center" classes={{ root: classes.middleContainer }}>
         {buildMiddleContainer()}
       </Grid>
       <Grid container classes={{ root: classes.teamContainer }}>
-        <Grid container xs justify="center" direction="column">
+        <Grid container xs justifyContent="center" direction="column">
           {!maxWidth620 && (
             <Typography variant={maxWidth850 ? 'h6' : 'h5'} color={awayScoreGreater ? 'textSecondary' : 'textPrimary'}>
               {minWidth1000 ? props.game.teams.home.team.name : props.game.teams.home.team.teamName}

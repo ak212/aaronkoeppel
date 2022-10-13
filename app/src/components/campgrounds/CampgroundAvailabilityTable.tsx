@@ -11,7 +11,7 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import startCase from 'lodash/startCase'
 import uniqueId from 'lodash/uniqueId'
 import moment from 'moment'

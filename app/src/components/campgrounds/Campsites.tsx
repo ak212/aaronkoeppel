@@ -1,10 +1,9 @@
+/* eslint-ignore */
 import './Campsites.css'
-import 'date-fns'
 
-import { Button, Chip, TextField } from '@material-ui/core'
-import Autocomplete from '@material-ui/lab/Autocomplete'
-import Skeleton from '@material-ui/lab/Skeleton'
-import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
+import { Button, Chip, TextField } from '@mui/material'
+import Autocomplete from '@mui/material/Autocomplete'
+import Skeleton from '@mui/material/Skeleton'
 import range from 'lodash/range'
 import startCase from 'lodash/startCase'
 import moment from 'moment'
@@ -178,7 +177,7 @@ export const Campsites = (): JSX.Element => {
    * @param {MaterialUiPickersDate} date
    * @param {(string | null | undefined)} [value]
    */
-  const handleStartDateChange = (date: MaterialUiPickersDate): void => {
+  const handleStartDateChange = (date: Date): void => {
     if (endDate && date && moment(date).isSameOrAfter(endDate, 'day')) {
       setStartDate(date.valueOf())
       setEndDate(moment(date).add(1, 'days').toDate().valueOf())
@@ -194,7 +193,7 @@ export const Campsites = (): JSX.Element => {
    * @param {MaterialUiPickersDate} date
    * @param {(string | null | undefined)} [value]
    */
-  const handleEndDateChange = (date: MaterialUiPickersDate): void => {
+  const handleEndDateChange = (date: Date): void => {
     if (startDate && date && moment(date).isSameOrBefore(startDate, 'day')) {
       setStartDate(date.valueOf())
     } else {
@@ -220,7 +219,9 @@ export const Campsites = (): JSX.Element => {
    */
   const campgroundAvailabilityTable = (campgrounds: Campground[]): JSX.Element | undefined => {
     if (loading) {
-      return <Skeleton variant="rect" className="campgroundTable" height={`${33 * (campgrounds.length + 1)}px`} />
+      return (
+        <Skeleton variant="rectangular" className="campgroundTable" height={`${33 * (campgrounds.length + 1)}px`} />
+      )
     } else if (campgrounds.length > 0) {
       return (
         <CampgroundAvailabilityTable
@@ -236,6 +237,17 @@ export const Campsites = (): JSX.Element => {
     }
   }
 
+  const options: RecreationArea[] = autocompleteValues.filter(
+    ra => [EntityType.REC_AREA, EntityType.CAMPGROUND].indexOf(ra.entity_type) !== -1,
+  )
+
+  const tg = (tbd: any): tbd is RecreationArea => {
+    if ((tbd as RecreationArea).entity_id) {
+      return true
+    }
+    return false
+  }
+
   return (
     <div>
       <div className="interactive">
@@ -244,23 +256,22 @@ export const Campsites = (): JSX.Element => {
           freeSolo
           limitTags={4}
           id="recreation-areas"
-          options={autocompleteValues.filter(
-            ra => [EntityType.REC_AREA, EntityType.CAMPGROUND].indexOf(ra.entity_type) !== -1,
-          )}
-          getOptionLabel={option => startCase(option.name.toLowerCase())}
+          options={options}
+          getOptionLabel={option => (tg(option) ? startCase(option.name.toLowerCase()) : option)}
           onInputChange={onInputChange}
           value={selectedRecAreas}
           onChange={onChange}
           renderTags={(value: RecreationArea[], getTagProps) =>
             value.map((recArea: RecreationArea, index: number) => (
-              <Chip
-                key={recArea.entity_id}
-                variant="outlined"
-                label={startCase(recArea.name.toLowerCase())}
-                icon={recArea.entity_type === EntityType.REC_AREA ? <RecreationAreaIcon /> : <CampgroundIcon />}
-                {...getTagProps({ index })}
-                color="primary"
-              />
+              <div key={index}>
+                <Chip
+                  variant="outlined"
+                  label={startCase(recArea.name.toLowerCase())}
+                  icon={recArea.entity_type === EntityType.REC_AREA ? <RecreationAreaIcon /> : <CampgroundIcon />}
+                  {...getTagProps({ index })}
+                  color="primary"
+                />
+              </div>
             ))
           }
           renderInput={params => (

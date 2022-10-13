@@ -1,7 +1,7 @@
-import { Button } from '@material-ui/core'
-import GitHubIcon from '@material-ui/icons/GitHub'
-import LinkedInIcon from '@material-ui/icons/LinkedIn'
-import MailOutlineIcon from '@material-ui/icons/MailOutline'
+import { Button } from '@mui/material'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import React from 'react'
 
 export const Footer = (): JSX.Element => {

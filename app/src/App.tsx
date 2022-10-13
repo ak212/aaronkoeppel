@@ -1,8 +1,8 @@
 import './App.css'
 
-import { SnackbarProvider } from 'notistack'
 import React from 'react'
 
+import { SnackbarProvider } from 'notistack'
 import { AppRouter } from './AppRouter'
 import { Footer } from './components/common/Footer'
 

@@ -1,8 +1,8 @@
-import Card from '@material-ui/core/Card'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import Collapse from '@material-ui/core/Collapse'
-import Grid from '@material-ui/core/Grid'
-import makeStyles from '@material-ui/core/styles/makeStyles'
+import Card from '@mui/material/Card'
+import CardActionArea from '@mui/material/CardActionArea'
+import Collapse from '@mui/material/Collapse'
+import Grid from '@mui/material/Grid'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { useEffect, useState } from 'react'
 
 import { AbstractGameState, NhlGame } from '../../store/nhlScoreboard'
