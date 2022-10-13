@@ -19,11 +19,11 @@ export const AppRouter = (): JSX.Element => {
         <Link to="/nhl-scoreboard">NHL Scoreboard</Link>
       </Menu>
 
-      <Route path="/" exact component={MainPage} />
-      <Route path="/calculator/" component={Calculator} />
-      <Route path="/drone-videos/" component={YoutubePlayer} />
-      <Route path="/campsites/" component={Campsites} />
-      <Route path="/nhl-scoreboard/" component={NhlScoreboard} />
+      <Route path="/" element={<MainPage />} />
+      <Route path="/calculator/" element={<Calculator />} />
+      <Route path="/drone-videos/" element={<YoutubePlayer />} />
+      <Route path="/campsites/" element={<Campsites />} />
+      <Route path="/nhl-scoreboard/" element={<NhlScoreboard />} />
     </Router>
   )
 }
