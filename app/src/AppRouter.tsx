@@ -1,6 +1,6 @@
 import React from 'react'
 import { slide as Menu } from 'react-burger-menu'
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom'
 
 import { Calculator } from './components/calculator/Calculator'
 import { Campsites } from './components/campgrounds/Campsites'
@@ -19,11 +19,13 @@ export const AppRouter = (): JSX.Element => {
         <Link to="/nhl-scoreboard">NHL Scoreboard</Link>
       </Menu>
 
-      <Route path="/" element={<MainPage />} />
-      <Route path="/calculator/" element={<Calculator />} />
-      <Route path="/drone-videos/" element={<YoutubePlayer />} />
-      <Route path="/campsites/" element={<Campsites />} />
-      <Route path="/nhl-scoreboard/" element={<NhlScoreboard />} />
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/calculator/" element={<Calculator />} />
+        <Route path="/drone-videos/" element={<YoutubePlayer />} />
+        <Route path="/campsites/" element={<Campsites />} />
+        <Route path="/nhl-scoreboard/" element={<NhlScoreboard />} />
+      </Routes>
     </Router>
   )
 }

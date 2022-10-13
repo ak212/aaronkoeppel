@@ -1,5 +1,5 @@
 import { FitBoundsOptions, LatLngBoundsExpression } from 'leaflet'
-import { MapProps } from 'react-leaflet'
+import { MapContainerProps } from 'react-leaflet'
 
 /* Action Definition */
 export const GET_CAMPSITES = 'GET_CAMPSITES'
@@ -206,7 +206,7 @@ export const getBounds = (locations: Location[]): LatLngBoundsExpression => {
   return [topLeftCorner, bottomRightCorner]
 }
 
-export const getLeafletProps = (locations: Location[]): Partial<MapProps> => {
+export const getLeafletProps = (locations: Location[]): Partial<MapContainerProps> => {
   const oneLocation: Location | undefined = locations.length === 1 ? locations[0] : undefined
 
   if (oneLocation) {

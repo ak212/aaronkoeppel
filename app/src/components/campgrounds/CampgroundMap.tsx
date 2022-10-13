@@ -1,6 +1,6 @@
 import startCase from 'lodash/startCase'
 import React from 'react'
-import { Map as LeafletMap, Marker, Popup, TileLayer } from 'react-leaflet'
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 
 import { Campground, campgroundsToLocations, getLeafletProps } from '../../store/campsites'
 
@@ -25,13 +25,13 @@ export const CampgroundMap = (props: Props): JSX.Element | null => {
       )
     })
     return (
-      <LeafletMap {...getLeafletProps(campgroundsToLocations(props.campgrounds))} style={{ height: '40vh' }}>
+      <MapContainer {...getLeafletProps(campgroundsToLocations(props.campgrounds))} style={{ height: '40vh' }}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {markers}
-      </LeafletMap>
+      </MapContainer>
     )
   } else {
     return null

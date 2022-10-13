@@ -2,28 +2,19 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import ImageListItem from '@mui/material/ImageListItem'
-import makeStyles from '@mui/styles/makeStyles'
 import Typography from '@mui/material/Typography'
 import React from 'react'
 
 import { Highlight, HIGHLIGHT_PLAYBACK_NAME } from '../../store/nhlScoreboard'
-
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 345,
-    margin: '0 1vw 1vh 0',
-  },
-})
 
 type Props = {
   highlight: Highlight
 }
 
 export const NhlHighlightCard = (props: Props): JSX.Element => {
-  const classes = useStyles()
   return (
     <ImageListItem key={props.highlight.title}>
-      <Card className={classes.root}>
+      <Card sx={{ minWidth: 345, margin: '0 1vw 1vh 0' }}>
         <CardMedia
           component="video"
           height="190"

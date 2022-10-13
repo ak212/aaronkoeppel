@@ -3,7 +3,6 @@ import CardMedia from '@mui/material/CardMedia'
 import Grid from '@mui/material/Grid'
 import ImageList from '@mui/material/ImageList'
 import Paper from '@mui/material/Paper'
-import makeStyles from '@mui/styles/makeStyles'
 import Tab from '@mui/material/Tab'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -33,51 +32,7 @@ enum NhlGameCardTab {
   HIGHLIGHTS = 'HIGHLIGHTS',
 }
 
-const useStyles = makeStyles({
-  card: {
-    '@media (min-width: 1280px)': {
-      width: 1000,
-    },
-    '@media (max-width: 1279px)': {
-      width: 800,
-    },
-    '@media (max-width: 1000px)': {
-      width: 650,
-    },
-    '@media (max-width: 850px)': {
-      width: 500,
-    },
-    '@media (max-width: 620px)': {
-      width: 350,
-    },
-    background: '#b4c6e9',
-    boxShadow:
-      '0px 3px 3px -2px rgba(255, 255, 255, 0.2),0px 3px 4px 0px rgba(255, 255, 255, 0.14),0px 1px 8px 0px rgba(255, 255, 255, 0.52)',
-  },
-  logoSmall: {
-    width: 45,
-    height: 34.5,
-    margin: 2.5,
-  },
-  tabs: {
-    background: '#b4c6e9',
-  },
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    margin: '1vh',
-  },
-  gridList: {
-    flexWrap: 'nowrap',
-    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-    transform: 'translateZ(0)',
-  },
-})
-
 export const NhlGameInnerCard = (props: Props): JSX.Element => {
-  const classes = useStyles()
   const [tabPanelValue, setTabPanelValue] = useState<string>(NhlGameCardTab.SCORING_PLAYS)
 
   /**
@@ -112,7 +67,7 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
       <Grid container direction="row" alignContent="center">
         <Typography paragraph style={{ marginTop: '9px' }}>{`${scoringPlay.about.periodTimeRemaining}`}</Typography>
         <CardMedia
-          classes={{ root: classes.logoSmall }}
+          sx={{ width: 45, height: 34.5, margin: '0.25vh 1vw 0.25vh 1vw' }}
           component="img"
           image={`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${scoringPlay.team.id}.svg`}
           title={`${scoringPlay.team.name} Logo`}
@@ -190,7 +145,7 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
       <Paper square>
         <Tabs
           value={tabPanelValue}
-          classes={{ root: classes.tabs }}
+          sx={{ background: '#b4c6e9' }}
           indicatorColor="primary"
           textColor="primary"
           onChange={handleChange}
@@ -211,8 +166,23 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
           </>
         )}
         {tabPanelValue === NhlGameCardTab.HIGHLIGHTS && (
-          <div className={classes.root}>
-            <ImageList className={classes.gridList} cols={2.5}>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-around',
+              overflow: 'hidden',
+              margin: '1vh',
+            }}
+          >
+            <ImageList
+              sx={{
+                flexWrap: 'nowrap',
+                // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+                transform: 'translateZ(0)',
+              }}
+              cols={highlights.length}
+            >
               {highlights.map(item => (
                 <NhlHighlightCard key={item.id} highlight={item} />
               ))}

@@ -1,6 +1,5 @@
 import CardMedia from '@mui/material/CardMedia'
 import Grid from '@mui/material/Grid'
-import makeStyles from '@mui/styles/makeStyles'
 import Typography from '@mui/material/Typography'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import moment from 'moment'
@@ -12,54 +11,7 @@ interface Props {
   game: NhlGame
 }
 
-const useStyles = makeStyles(() => ({
-  teamContainer: {
-    '@media (min-width: 1280px)': {
-      maxWidth: '450px',
-    },
-    '@media (max-width: 1279px)': {
-      maxWidth: '350px',
-    },
-    '@media (max-width: 1000px)': {
-      maxWidth: '275px',
-    },
-    '@media (max-width: 850px)': {
-      maxWidth: '225px',
-    },
-    '@media (max-width: 620px)': {
-      maxWidth: '140px',
-    },
-  },
-  middleContainer: {
-    '@media (min-width: 850px)': {
-      maxWidth: '100px',
-    },
-    '@media (max-width: 849px)': {
-      maxWidth: '50px',
-    },
-  },
-  logo: {
-    '@media (min-width: 850px)': {
-      width: 90,
-      height: 70,
-      margin: 2.5,
-    },
-    '@media (max-width: 849px)': {
-      width: 80,
-      height: 62,
-      margin: 2.5,
-    },
-    '@media (max-width: 620px)': {
-      width: 60,
-      height: 46,
-      margin: 2.5,
-    },
-  },
-}))
-
 export const NhlGameOuterCard = (props: Props): JSX.Element => {
-  const classes = useStyles()
-
   const homeScoreGreater: boolean = props.game.teams.home.score > props.game.teams.away.score
   const awayScoreGreater: boolean = props.game.teams.away.score > props.game.teams.home.score
   const minWidth1000: boolean = useMediaQuery('(min-width:1000px)')
@@ -117,9 +69,44 @@ export const NhlGameOuterCard = (props: Props): JSX.Element => {
 
   return (
     <Grid container justifyContent="space-between" alignContent="center" style={{ height: '100%' }}>
-      <Grid container classes={{ root: classes.teamContainer }}>
+      <Grid
+        container
+        sx={{
+          '@media (min-width: 1280px)': {
+            maxWidth: '450px',
+          },
+          '@media (max-width: 1279px)': {
+            maxWidth: '350px',
+          },
+          '@media (max-width: 1000px)': {
+            maxWidth: '275px',
+          },
+          '@media (max-width: 850px)': {
+            maxWidth: '225px',
+          },
+          '@media (max-width: 620px)': {
+            maxWidth: '140px',
+          },
+        }}
+      >
         <CardMedia
-          classes={{ root: classes.logo }}
+          sx={{
+            '@media (min-width: 850px)': {
+              width: 90,
+              height: 70,
+              margin: '0.25rem',
+            },
+            '@media (max-width: 849px)': {
+              width: 80,
+              height: 62,
+              margin: '0.25rem',
+            },
+            '@media (max-width: 620px)': {
+              width: 60,
+              height: 46,
+              margin: '0.25rem',
+            },
+          }}
           component="img"
           image={`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${props.game.teams.away.team.id}.svg`}
           title={`${props.game.teams.away.team.name} Logo`}
@@ -135,10 +122,41 @@ export const NhlGameOuterCard = (props: Props): JSX.Element => {
           </Typography>
         </Grid>
       </Grid>
-      <Grid container justifyContent="center" alignContent="center" classes={{ root: classes.middleContainer }}>
+      <Grid
+        container
+        justifyContent="center"
+        alignContent="center"
+        sx={{
+          '@media (min-width: 850px)': {
+            maxWidth: '100px',
+          },
+          '@media (max-width: 849px)': {
+            maxWidth: '50px',
+          },
+        }}
+      >
         {buildMiddleContainer()}
       </Grid>
-      <Grid container classes={{ root: classes.teamContainer }}>
+      <Grid
+        container
+        sx={{
+          '@media (min-width: 1280px)': {
+            maxWidth: '450px',
+          },
+          '@media (max-width: 1279px)': {
+            maxWidth: '350px',
+          },
+          '@media (max-width: 1000px)': {
+            maxWidth: '275px',
+          },
+          '@media (max-width: 850px)': {
+            maxWidth: '225px',
+          },
+          '@media (max-width: 620px)': {
+            maxWidth: '140px',
+          },
+        }}
+      >
         <Grid container xs justifyContent="center" direction="column">
           {!maxWidth620 && (
             <Typography variant={maxWidth850 ? 'h6' : 'h5'} color={awayScoreGreater ? 'textSecondary' : 'textPrimary'}>
@@ -150,7 +168,23 @@ export const NhlGameOuterCard = (props: Props): JSX.Element => {
           </Typography>
         </Grid>
         <CardMedia
-          classes={{ root: classes.logo }}
+          sx={{
+            '@media (min-width: 850px)': {
+              width: 90,
+              height: 70,
+              margin: '0.25rem',
+            },
+            '@media (max-width: 849px)': {
+              width: 80,
+              height: 62,
+              margin: '0.25rem',
+            },
+            '@media (max-width: 620px)': {
+              width: 60,
+              height: 46,
+              margin: '0.25rem',
+            },
+          }}
           component="img"
           image={`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${props.game.teams.home.team.id}.svg`}
           title={`${props.game.teams.home.team.name} Logo`}

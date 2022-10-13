@@ -7,7 +7,6 @@ specifiers:
   '@mui/icons-material': 5.10.6
   '@mui/lab': 5.0.0-alpha.102
   '@mui/material': 5.10.8
-  '@mui/styles': 5.10.8
   '@mui/x-date-pickers': 5.0.4
   '@redux-devtools/extension': 3.2.3
   '@types/jest': 24.0.18
@@ -42,7 +41,7 @@ specifiers:
   react: 18.2.0
   react-burger-menu: 3.0.8
   react-dom: 18.2.0
-  react-leaflet: 2.7.0
+  react-leaflet: 4.1.0
   react-redux: 7.1.1
   react-redux-typescript: 3.0.0-rc.3
   react-router-dom: 6.4.2
@@ -61,7 +60,6 @@ dependencies:
   '@mui/icons-material': 5.10.6_lrxyqjzvf7pkknwtk2aj65ruy4
   '@mui/lab': 5.0.0-alpha.102_ej5cswvk7ic6gea53ovjkapqie
   '@mui/material': 5.10.8_ikcgkdnp4bn3rgptamntbhbo7e
-  '@mui/styles': 5.10.8_iapumuv4e6jcjznwuxpf4tt22e
   '@mui/x-date-pickers': 5.0.4_ahbqwlmggayqxypmvcngvpiff4
   axios: 1.1.2
   date-fns: 2.29.3
@@ -73,7 +71,7 @@ dependencies:
   react: 18.2.0
   react-burger-menu: 3.0.8_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
-  react-leaflet: 2.7.0_ck4vhzg7aizutrwygiu3aueify
+  react-leaflet: 4.1.0_ck4vhzg7aizutrwygiu3aueify
   react-redux: 7.1.1_react@18.2.0+redux@4.2.0
   react-redux-typescript: 3.0.0-rc.3
   react-router-dom: 6.4.2_biqbaboplfbrettd7655fr4n2y
@@ -2338,37 +2336,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@mui/styles/5.10.8_iapumuv4e6jcjznwuxpf4tt22e:
-    resolution: {integrity: sha512-aQGfz4Av12Bf0C8sJC0a7UoTbusD0IUKo4zNjkB5ERmhIFrbgN1G8XDIVvTgrgwdKbstbFlHDFfXkDcYe9elSQ==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@types/react': ^17.0.0
-      react: ^17.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.19.0
-      '@emotion/hash': 0.9.0
-      '@mui/private-theming': 5.10.6_iapumuv4e6jcjznwuxpf4tt22e
-      '@mui/types': 7.2.0_@types+react@18.0.21
-      '@mui/utils': 5.10.6_react@18.2.0
-      '@types/react': 18.0.21
-      clsx: 1.2.1
-      csstype: 3.1.1
-      hoist-non-react-statics: 3.3.2
-      jss: 10.9.2
-      jss-plugin-camel-case: 10.9.2
-      jss-plugin-default-unit: 10.9.2
-      jss-plugin-global: 10.9.2
-      jss-plugin-nested: 10.9.2
-      jss-plugin-props-sort: 10.9.2
-      jss-plugin-rule-value-function: 10.9.2
-      jss-plugin-vendor-prefixer: 10.9.2
-      prop-types: 15.8.1
-      react: 18.2.0
-    dev: false
-
   /@mui/system/5.10.8_h33l6npc22g7vcra72cibfsrvm:
     resolution: {integrity: sha512-hRQ354zcrYP/KHqK8FheICSvE9raQaUgQaV+A3oD4JETaFUCVI9Ytt+RcQYgTqx02xlCXIjl8LK1rPjTneySqw==}
     engines: {node: '>=12.0.0'}
@@ -2540,6 +2507,18 @@ packages:
 
   /@popperjs/core/2.11.6:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
+    dev: false
+
+  /@react-leaflet/core/2.1.0_ck4vhzg7aizutrwygiu3aueify:
+    resolution: {integrity: sha512-Qk7Pfu8BSarKGqILj4x7bCSZ1pjuAPZ+qmRwH5S7mDS91VSbVVsJSrW4qA+GPrro8t69gFYVMWb1Zc4yFmPiVg==}
+    peerDependencies:
+      leaflet: ^1.9.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      leaflet: 1.9.2
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@redux-devtools/extension/3.2.3_redux@4.2.0:
@@ -4457,13 +4436,6 @@ packages:
       source-map: 0.6.1
     dev: false
 
-  /css-vendor/2.0.8:
-    resolution: {integrity: sha512-x9Aq0XTInxrkuFeHKbYC7zWY8ai7qJ04Kxd9MnvbC1uO5DagxoHQjm4JvG+vCdXOoFtCjbL2XSZfxmoYa9uQVQ==}
-    dependencies:
-      '@babel/runtime': 7.19.0
-      is-in-browser: 1.1.3
-    dev: false
-
   /css-what/3.4.2:
     resolution: {integrity: sha512-ACUm3L0/jiZTqfzRM3Hi9Q8eZqd6IK37mMWPLz9PJxkLWllYeRf+EHUSHYEtFop2Eqytaq1FizFVh7XfBnXCDQ==}
     engines: {node: '>= 6'}
@@ -6167,10 +6139,6 @@ packages:
     engines: {node: '>=10.17.0'}
     dev: false
 
-  /hyphenate-style-name/1.0.4:
-    resolution: {integrity: sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==}
-    dev: false
-
   /iconv-lite/0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -6341,10 +6309,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       is-extglob: 2.1.1
-
-  /is-in-browser/1.1.3:
-    resolution: {integrity: sha512-FeXIBgG/CPGd/WUxuEyvgGTEfwiG9Z4EKGxjNMRqviiIIfsmgrpnHLffEDdwUHqNva1VEW91o3xBT/m8Elgl9g==}
-    dev: false
 
   /is-module/1.0.0:
     resolution: {integrity: sha512-51ypPSPCoTEIN9dy5Oy+h4pShgJmPCygKfyRCISBI+JoWT/2oJvK8QPxmwv7b/p239jXrm9M1mlQbyKJ5A152g==}
@@ -7176,68 +7140,6 @@ packages:
   /jsonpointer/5.0.1:
     resolution: {integrity: sha512-p/nXbhSEcu3pZRdkW1OfJhpsVtW1gd4Wa1fnQc9YLiTfAjn0312eMKimbdIQzuZl9aa9xUGaRlP9T/CJE/ditQ==}
     engines: {node: '>=0.10.0'}
-    dev: false
-
-  /jss-plugin-camel-case/10.9.2:
-    resolution: {integrity: sha512-wgBPlL3WS0WDJ1lPJcgjux/SHnDuu7opmgQKSraKs4z8dCCyYMx9IDPFKBXQ8Q5dVYij1FFV0WdxyhuOOAXuTg==}
-    dependencies:
-      '@babel/runtime': 7.19.0
-      hyphenate-style-name: 1.0.4
-      jss: 10.9.2
-    dev: false
-
-  /jss-plugin-default-unit/10.9.2:
-    resolution: {integrity: sha512-pYg0QX3bBEFtTnmeSI3l7ad1vtHU42YEEpgW7pmIh+9pkWNWb5dwS/4onSfAaI0kq+dOZHzz4dWe+8vWnanoSg==}
-    dependencies:
-      '@babel/runtime': 7.19.0
-      jss: 10.9.2
-    dev: false
-
-  /jss-plugin-global/10.9.2:
-    resolution: {integrity: sha512-GcX0aE8Ef6AtlasVrafg1DItlL/tWHoC4cGir4r3gegbWwF5ZOBYhx04gurPvWHC8F873aEGqge7C17xpwmp2g==}
-    dependencies:
-      '@babel/runtime': 7.19.0
-      jss: 10.9.2
-    dev: false
-
-  /jss-plugin-nested/10.9.2:
-    resolution: {integrity: sha512-VgiOWIC6bvgDaAL97XCxGD0BxOKM0K0zeB/ECyNaVF6FqvdGB9KBBWRdy2STYAss4VVA7i5TbxFZN+WSX1kfQA==}
-    dependencies:
-      '@babel/runtime': 7.19.0
-      jss: 10.9.2
-      tiny-warning: 1.0.3
-    dev: false
-
-  /jss-plugin-props-sort/10.9.2:
-    resolution: {integrity: sha512-AP1AyUTbi2szylgr+O0OB7gkIxEGzySLITZ2GpsaoX72YMCGI2jYAc+WUhPfvUnZYiauF4zTnN4V4TGuvFjJlw==}
-    dependencies:
-      '@babel/runtime': 7.19.0
-      jss: 10.9.2
-    dev: false
-
-  /jss-plugin-rule-value-function/10.9.2:
-    resolution: {integrity: sha512-vf5ms8zvLFMub6swbNxvzsurHfUZ5Shy5aJB2gIpY6WNA3uLinEcxYyraQXItRHi5ivXGqYciFDRM2ZoVoRZ4Q==}
-    dependencies:
-      '@babel/runtime': 7.19.0
-      jss: 10.9.2
-      tiny-warning: 1.0.3
-    dev: false
-
-  /jss-plugin-vendor-prefixer/10.9.2:
-    resolution: {integrity: sha512-SxcEoH+Rttf9fEv6KkiPzLdXRmI6waOTcMkbbEFgdZLDYNIP9UKNHFy6thhbRKqv0XMQZdrEsbDyV464zE/dUA==}
-    dependencies:
-      '@babel/runtime': 7.19.0
-      css-vendor: 2.0.8
-      jss: 10.9.2
-    dev: false
-
-  /jss/10.9.2:
-    resolution: {integrity: sha512-b8G6rWpYLR4teTUbGd4I4EsnWjg7MN0Q5bSsjKhVkJVjhQDy2KzkbD2AW3TuT0RYZVmZZHKIrXDn6kjU14qkUg==}
-    dependencies:
-      '@babel/runtime': 7.19.0
-      csstype: 3.1.1
-      is-in-browser: 1.1.3
-      tiny-warning: 1.0.3
     dev: false
 
   /jsx-ast-utils/3.3.3:
@@ -8949,20 +8851,17 @@ packages:
   /react-is/18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
 
-  /react-leaflet/2.7.0_ck4vhzg7aizutrwygiu3aueify:
-    resolution: {integrity: sha512-pMf5eRyWU8RH9HohM2i0NZymcWHraJA1m6iMFYu94/01PAaBJpOyxORZJmN6cV9dBzkVWaLjAAHTNmxbwIpcfw==}
+  /react-leaflet/4.1.0_ck4vhzg7aizutrwygiu3aueify:
+    resolution: {integrity: sha512-i+V9pX5lywJ48O2+K3USeeTdYLIhxnLMweH+YLd/UPqVIj3uKzE3Q29bzt83PBtViyZmxDlulzC6uoR3JLiE9A==}
     peerDependencies:
-      leaflet: ^1.6.0
-      react: ^16.8.0
-      react-dom: ^16.8.0
+      leaflet: ^1.9.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
     dependencies:
-      '@babel/runtime': 7.19.0
-      fast-deep-equal: 3.1.3
-      hoist-non-react-statics: 3.3.2
+      '@react-leaflet/core': 2.1.0_ck4vhzg7aizutrwygiu3aueify
       leaflet: 1.9.2
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      warning: 4.0.3
     dev: false
 
   /react-redux-typescript/3.0.0-rc.3:
@@ -10136,10 +10035,6 @@ packages:
     resolution: {integrity: sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==}
     dev: false
 
-  /tiny-warning/1.0.3:
-    resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}
-    dev: false
-
   /tmpl/1.0.5:
     resolution: {integrity: sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw==}
     dev: false
@@ -10426,12 +10321,6 @@ packages:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
     dependencies:
       makeerror: 1.0.12
-    dev: false
-
-  /warning/4.0.3:
-    resolution: {integrity: sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==}
-    dependencies:
-      loose-envify: 1.4.0
     dev: false
 
   /watchpack/2.4.0:

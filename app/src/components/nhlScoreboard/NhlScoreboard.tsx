@@ -7,7 +7,6 @@ import Snackbar from '@mui/material/Snackbar'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import makeStyles from '@mui/styles/makeStyles'
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useSnackbar } from 'notistack'
@@ -19,30 +18,6 @@ import { loadingSelectors } from '../../reducers/Loading'
 import { State as RootState } from '../../reducers/Root'
 import { NhlGame, nhlScoreboardActions, nhlScoreboardSelectors } from '../../store/nhlScoreboard'
 import { NhlGameCard } from './NhlGameCard'
-
-const useStyles = makeStyles(() => ({
-  logoSmall: {
-    width: 22,
-    height: 16,
-    margin: 2.5,
-  },
-  actionGroup: {
-    paddingTop: '2vh',
-    minHeight: '90px',
-  },
-  actionRowItem: {
-    alignItems: 'center',
-    '@media (min-width: 620px)': {
-      justifyContent: 'flex-end',
-    },
-    '@media (max-width: 619px)': {
-      justifyContent: 'space-evenly',
-    },
-  },
-  datePicker: {
-    maxWidth: '150px',
-  },
-}))
 
 export function usePrevious<T>(value: T, initial?: T): MutableRefObject<T | undefined>['current'] {
   const ref = useRef({ target: value, previous: initial })
@@ -57,7 +32,6 @@ export function usePrevious<T>(value: T, initial?: T): MutableRefObject<T | unde
 }
 
 export const NhlScoreboard = (): JSX.Element => {
-  const classes = useStyles()
   const { enqueueSnackbar } = useSnackbar()
   const maxWidth620: boolean = useMediaQuery('(max-width:620px)')
 
@@ -103,7 +77,7 @@ export const NhlScoreboard = (): JSX.Element => {
                   style={{ marginBottom: '2px' }}
                 >{`${scoringPlay.about.periodTimeRemaining}`}</Typography>
                 <CardMedia
-                  classes={{ root: classes.logoSmall }}
+                  sx={{ width: 22, height: 16, margin: 2.5 }}
                   component="img"
                   image={`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${scoringPlay.team.id}.svg`}
                   title={`${scoringPlay.team.name} Logo`}
@@ -133,27 +107,42 @@ export const NhlScoreboard = (): JSX.Element => {
 
   return (
     <>
-      <Grid container direction="row" classes={{ root: classes.actionGroup }}>
+      <Grid container direction="row" sx={{ paddingTop: '2vh', minHeight: '90px' }}>
         <Grid
           container
           xs={maxWidth620 ? 12 : 6}
-          classes={{ root: classes.actionRowItem }}
+          sx={{
+            alignItems: 'center',
+            '@media (min-width: 620px)': {
+              justifyContent: 'flex-end',
+            },
+            '@media (max-width: 619px)': {
+              justifyContent: 'space-evenly',
+            },
+          }}
           style={{ paddingLeft: '5vw' }}
         >
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DesktopDatePicker
               inputFormat="MM/dd/yyyy"
-              className={classes.datePicker}
               value={startDate}
               onChange={handleStartDateChange}
-              renderInput={params => <TextField {...params} sx={{ input: { color: 'white' } }} />}
+              renderInput={params => <TextField {...params} sx={{ input: { maxWidth: 150, color: 'white' } }} />}
             />
           </LocalizationProvider>
         </Grid>
         <Grid
           container
           xs={maxWidth620 ? 12 : 6}
-          classes={{ root: classes.actionRowItem }}
+          sx={{
+            alignItems: 'center',
+            '@media (min-width: 620px)': {
+              justifyContent: 'flex-end',
+            },
+            '@media (max-width: 619px)': {
+              justifyContent: 'space-evenly',
+            },
+          }}
           style={{ paddingRight: '5vw' }}
         >
           <Button

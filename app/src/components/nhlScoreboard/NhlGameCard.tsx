@@ -2,7 +2,6 @@ import Card from '@mui/material/Card'
 import CardActionArea from '@mui/material/CardActionArea'
 import Collapse from '@mui/material/Collapse'
 import Grid from '@mui/material/Grid'
-import makeStyles from '@mui/styles/makeStyles'
 import React, { useEffect, useState } from 'react'
 
 import { AbstractGameState, NhlGame } from '../../store/nhlScoreboard'
@@ -14,39 +13,7 @@ interface Props {
   showAllExpanded: boolean
 }
 
-const useStyles = makeStyles(() => ({
-  card: {
-    '@media (min-width: 1280px)': {
-      width: 1000,
-    },
-    '@media (max-width: 1279px)': {
-      width: 800,
-    },
-    '@media (max-width: 1000px)': {
-      width: 650,
-    },
-    '@media (max-width: 850px)': {
-      width: 500,
-    },
-    '@media (max-width: 620px)': {
-      width: 350,
-    },
-    background: '#b4c6e9',
-    boxShadow:
-      '0px 3px 3px -2px rgba(255, 255, 255, 0.2),0px 3px 4px 0px rgba(255, 255, 255, 0.14),0px 1px 8px 0px rgba(255, 255, 255, 0.52)',
-  },
-  logoSmall: {
-    width: 45,
-    height: 34.5,
-    margin: 2.5,
-  },
-  tabs: {
-    background: '#b4c6e9',
-  },
-}))
-
 export const NhlGameCard = (props: Props): JSX.Element => {
-  const classes = useStyles()
   const [expanded, setExpanded] = useState(false)
   const canExpand: boolean =
     props.game.status.abstractGameState === AbstractGameState.LIVE ||
@@ -85,7 +52,28 @@ export const NhlGameCard = (props: Props): JSX.Element => {
    */
   const gameScoreCard = () => {
     return (
-      <Card classes={{ root: classes.card }}>
+      <Card
+        sx={{
+          '@media (min-width: 1280px)': {
+            width: 1000,
+          },
+          '@media (max-width: 1279px)': {
+            width: 800,
+          },
+          '@media (max-width: 1000px)': {
+            width: 650,
+          },
+          '@media (max-width: 850px)': {
+            width: 500,
+          },
+          '@media (max-width: 620px)': {
+            width: 350,
+          },
+          background: '#b4c6e9',
+          boxShadow:
+            '0px 3px 3px -2px rgba(255, 255, 255, 0.2),0px 3px 4px 0px rgba(255, 255, 255, 0.14),0px 1px 8px 0px rgba(255, 255, 255, 0.52)',
+        }}
+      >
         <NhlGameOuterCard game={props.game} />
         <Collapse in={canExpand && expanded} timeout="auto" unmountOnExit>
           <NhlGameInnerCard game={props.game} />
