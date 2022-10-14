@@ -5,9 +5,9 @@ import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 
 import { App } from './App'
-import { sagaMiddleware, STORE } from './reducers/Root'
 import rootSaga from './sagas/RootSaga'
 import * as serviceWorker from './serviceWorker'
+import { sagaMiddleware, STORE } from './state/store'
 
 sagaMiddleware.run(rootSaga)
 

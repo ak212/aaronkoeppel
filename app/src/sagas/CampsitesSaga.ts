@@ -1,17 +1,22 @@
+import cloneDeep from 'lodash/cloneDeep'
 import range from 'lodash/range'
 import moment from 'moment'
-import { all, AllEffect, call, delay, ForkEffect, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
+import { all, call, delay, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
 
-import { loadingActions } from '../reducers/Loading'
 import CampsitesApi from '../remote/CampsitesApi'
+import { finishLoading, startLoading } from '../state/Loading'
 import {
   Campground,
   CampgroundRA,
   Campsite,
-  campsiteActions,
   campsitesSelectors,
   CampsiteType,
   EntityType,
+  getAutocomplete,
+  getAutocompleteSuccess,
+  getCampgroundAvailability,
+  getCampsites,
+  getCampsitesSuccess,
   GET_AUTOCOMPLETE,
   GET_CAMPGROUND_AVAILABILITY,
   GET_CAMPSITES,
@@ -19,25 +24,26 @@ import {
   RecreationArea,
   ReservationStatus,
   ReservationType,
+  setCampgrounds,
+  setRecreationAreas,
   SET_RECREATION_AREAS,
 } from '../store/campsites'
 
 const emptyRecreationAreas: RecreationArea[] = []
 
-function* getCampsites({ entity_id }: ReturnType<typeof campsiteActions.getCampsites>) {
+function* getCampsitesGenerator({ payload: { entity_id } }: ReturnType<typeof getCampsites>) {
   const campsites: { results: CampgroundRA[] } = yield call(CampsitesApi.getCampgroundsForRecArea, entity_id)
   const campsiteValues: CampgroundRA[] = campsites['results'] as CampgroundRA[]
-  yield put(campsiteActions.getCampsitesSuccess(campsiteValues))
+  yield put(getCampsitesSuccess(campsiteValues))
 }
 
-function* getCampsiteAvailability({
-  recreationAreas,
-  startDate,
-  endDate,
-}: ReturnType<typeof campsiteActions.getCampgroundAvailability>) {
-  yield put(loadingActions.startLoading('campsiteTable'))
+function* getCampgroundAvailabilityGenerator({
+  payload: { recreationAreas, startDate, endDate },
+}: ReturnType<typeof getCampgroundAvailability>) {
+  yield put(startLoading('campsiteTable'))
 
-  const campgrounds: Campground[] = yield select(campsitesSelectors.getCampgrounds)
+  const selectorCampgrounds: Campground[] = yield select(campsitesSelectors.getCampgrounds)
+  const campgrounds: Campground[] = cloneDeep(selectorCampgrounds)
 
   const startMonth = moment(startDate).get('month')
   const endMonth = moment(endDate).get('month')
@@ -46,7 +52,7 @@ function* getCampsiteAvailability({
   for (const recreationArea of recreationAreas) {
     if (recreationArea.entity_type === EntityType.CAMPGROUND) {
       const campgroundObj: { campground: Campground } = yield call(CampsitesApi.getCampground, recreationArea.entity_id)
-      let campground: Campground = campgroundObj['campground']
+      let campground: Campground = cloneDeep(campgroundObj['campground'])
       const existingCampground = campgrounds.find(camp => camp.facility_id === recreationArea.entity_id)
 
       if (campground.facility_type !== ReservationType.CAMPING_LOTTERY) {
@@ -58,17 +64,17 @@ function* getCampsiteAvailability({
       }
 
       insertOrUpdateCampground(campgrounds, [campground])
-      yield put(campsiteActions.setCampgrounds(campgrounds))
+      yield put(setCampgrounds(campgrounds))
     } else {
       const recAreaCampgrounds: { results: CampgroundRA[] } = yield call(
         CampsitesApi.getCampgroundsForRecArea,
         recreationArea.entity_id,
       )
-      const campgroundValues: CampgroundRA[] = recAreaCampgrounds['results']
+      const campgroundValues: CampgroundRA[] = cloneDeep(recAreaCampgrounds['results'])
 
       /* Set campgrounds when the number of campgrounds is known so the loading indicator is representitive of the final size */
       insertOrUpdateCampground(campgrounds, campgroundValues.map(mapCampgroundRAtoCampground))
-      yield put(campsiteActions.setCampgrounds(campgrounds))
+      yield put(setCampgrounds(campgrounds))
 
       for (const campground of campgroundValues) {
         const existingCampground = campgrounds.find(camp => camp.facility_id === campground.entity_id)
@@ -78,12 +84,13 @@ function* getCampsiteAvailability({
 
         campgroundValues.splice(campgroundValues.indexOf(campground), 1, { ...campground, campsites })
       }
-      insertOrUpdateCampground(campgrounds, campgroundValues.map(mapCampgroundRAtoCampground))
-      yield put(campsiteActions.setCampgrounds(campgrounds))
+      const updatedCampgrounds = cloneDeep(campgrounds)
+      insertOrUpdateCampground(updatedCampgrounds, campgroundValues.map(mapCampgroundRAtoCampground))
+      yield put(setCampgrounds(updatedCampgrounds))
     }
   }
 
-  yield put(loadingActions.finishLoading('campsiteTable'))
+  yield put(finishLoading('campsiteTable'))
 }
 
 function insertOrUpdateCampground(campgrounds: Campground[], campgroundsToAdd: Campground[]) {
@@ -97,6 +104,7 @@ function insertOrUpdateCampground(campgrounds: Campground[], campgroundsToAdd: C
       )
     } else {
       campgrounds.push(campground)
+      console.log(campgrounds)
     }
   }
 }
@@ -108,7 +116,8 @@ function* getCampsitesAvailability(campsites: Campsite[], entity_id: string, sta
       entity_id,
       moment(startDate).set('month', month).valueOf(),
     )
-    const campsiteMap = campsitesObj['campsites']
+
+    const campsiteMap = cloneDeep(campsitesObj['campsites'])
     Object.keys(campsiteMap).forEach(entry => {
       const mapCampsite: Campsite = campsiteMap[entry]
       const index = campsites.findIndex(campsite => campsite.campsite_id === mapCampsite.campsite_id)
@@ -134,21 +143,21 @@ function* getCampsitesAvailability(campsites: Campsite[], entity_id: string, sta
   }
 }
 
-function* getAutocomplete({ query }: ReturnType<typeof campsiteActions.getAutocomplete>) {
+function* getAutocompleteGenerator({ payload: { query } }: ReturnType<typeof getAutocomplete>) {
   yield delay(250)
   if (query === '') {
-    yield put(campsiteActions.getAutocompleteSuccess([]))
+    yield put(getAutocompleteSuccess([]))
   } else {
     const autocompleteValues: { inventory_suggestions: RecreationArea[] } = yield call(
       CampsitesApi.getAutocomplete,
       query,
     )
     const recAreas: RecreationArea[] = autocompleteValues['inventory_suggestions']
-    yield put(campsiteActions.getAutocompleteSuccess(recAreas || emptyRecreationAreas))
+    yield put(getAutocompleteSuccess(recAreas || emptyRecreationAreas))
   }
 }
 
-function* setRecreationAreas({ recAreas }: ReturnType<typeof campsiteActions.setRecreationAreas>) {
+function* setRecreationAreasGenerator({ payload: { recAreas } }: ReturnType<typeof setRecreationAreas>) {
   const campgrounds: Campground[] = yield select(campsitesSelectors.getCampgrounds)
   const filteredCampgrounds = campgrounds.filter(campground =>
     recAreas.some(
@@ -156,15 +165,15 @@ function* setRecreationAreas({ recAreas }: ReturnType<typeof campsiteActions.set
     ),
   )
   if (campgrounds.length !== filteredCampgrounds.length) {
-    yield put(campsiteActions.setCampgrounds(filteredCampgrounds))
+    yield put(setCampgrounds(filteredCampgrounds))
   }
 }
 
-export function* campsitesSaga(): Generator<AllEffect<ForkEffect<never>>, void, unknown> {
+export function* campsitesSaga() {
   yield all([
-    takeEvery(GET_CAMPSITES, getCampsites),
-    takeEvery(GET_CAMPGROUND_AVAILABILITY, getCampsiteAvailability),
-    takeLatest(GET_AUTOCOMPLETE, getAutocomplete),
-    takeEvery(SET_RECREATION_AREAS, setRecreationAreas),
+    takeEvery(GET_CAMPSITES, getCampsitesGenerator),
+    takeEvery(GET_CAMPGROUND_AVAILABILITY, getCampgroundAvailabilityGenerator),
+    takeLatest(GET_AUTOCOMPLETE, getAutocompleteGenerator),
+    takeEvery(SET_RECREATION_AREAS, setRecreationAreasGenerator),
   ])
 }

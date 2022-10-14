@@ -1,16 +1,10 @@
-import { Reducer } from 'redux'
+import { createReducer } from '@reduxjs/toolkit'
 
-import { GET_GAMES_SUCCESS } from './NhlScoreboard.actions'
-import { initialScoreboardState, NhlScoreboard } from './NhlScoreboard.types'
+import { getGamesSuccess } from './NhlScoreboard.actions'
+import { initialScoreboardState } from './NhlScoreboard.types'
 
-export const nhlScoreboardReducer: Reducer<NhlScoreboard> = (state = initialScoreboardState, action): NhlScoreboard => {
-  switch (action.type) {
-    case GET_GAMES_SUCCESS:
-      if (action.games) {
-        return { ...state, games: [...action.games] }
-      }
-      return state
-    default:
-      return state
-  }
-}
+export const nhlScoreboardReducer = createReducer(initialScoreboardState, builder => {
+  builder.addCase(getGamesSuccess, (state, action) => {
+    state.games = [...action.payload.games]
+  })
+})

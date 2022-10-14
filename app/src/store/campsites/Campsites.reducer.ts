@@ -1,14 +1,14 @@
-import { Reducer } from 'redux'
+import { createReducer } from '@reduxjs/toolkit'
+import { getAutocompleteSuccess, setCampgrounds } from './Campsites.actions'
 
-import { Campsites, GET_AUTOCOMPLETE_SUCCESS, initialCampsitesState, SET_CAMPGROUNDS } from './Campsites.types'
+import { initialCampsitesState } from './Campsites.types'
 
-export const campsitesReducer: Reducer<Campsites> = (state = initialCampsitesState, action): Campsites => {
-  switch (action.type) {
-    case GET_AUTOCOMPLETE_SUCCESS:
-      return { ...state, autocompleteValues: action.values }
-    case SET_CAMPGROUNDS:
-      return { ...state, campgrounds: action.campgrounds }
-    default:
-      return state
-  }
-}
+export const campsitesReducer = createReducer(initialCampsitesState, builder => {
+  builder
+    .addCase(setCampgrounds, (state, action) => {
+      state.campgrounds = action.payload.campgrounds
+    })
+    .addCase(getAutocompleteSuccess, (state, action) => {
+      state.autocompleteValues = action.payload.values
+    })
+})

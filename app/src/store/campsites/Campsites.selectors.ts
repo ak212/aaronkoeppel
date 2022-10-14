@@ -1,10 +1,10 @@
-import { State } from '../../reducers/Root'
+import { RootState } from '../../state/store'
 
 export const campsitesSelectors = {
-  getAutocomplete(state: State) {
+  getAutocomplete(state: RootState) {
     return state.campsites.autocompleteValues
   },
-  getCampgrounds(state: State) {
+  getCampgrounds(state: RootState) {
     return state.campsites.campgrounds
   },
 }

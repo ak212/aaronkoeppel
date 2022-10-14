@@ -1,16 +1,6 @@
 import { FitBoundsOptions, LatLngBoundsExpression } from 'leaflet'
 import { MapContainerProps } from 'react-leaflet'
 
-/* Action Definition */
-export const GET_CAMPSITES = 'GET_CAMPSITES'
-export const GET_CAMPSITES_SUCCESS = 'GET_CAMPSITES_SUCCESS'
-export const SET_CAMPGROUNDS = 'SET_CAMPSITES'
-export const SET_RECREATION_AREAS = 'SET_RECREATION_AREAS'
-export const GET_CAMPGROUND_AVAILABILITY = 'GET_CAMPGROUND_AVAILABILITY'
-export const GET_CAMPGROUND_AVAILABILITY_SUCCESS = 'GET_CAMPGROUND_AVAILABILITY_SUCCESS'
-export const GET_AUTOCOMPLETE = 'GET_AUTOCOMPLETE'
-export const GET_AUTOCOMPLETE_SUCCESS = 'GET_AUTOCOMPLETE_SUCCESS'
-
 export type Campsites = {
   autocompleteValues: RecreationArea[]
   campgrounds: Campground[]

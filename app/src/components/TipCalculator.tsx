@@ -4,6 +4,7 @@ import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
 import Stepper from '@mui/material/Stepper'
 import Typography from '@mui/material/Typography'
+import uniqueId from 'lodash/uniqueId'
 import React from 'react'
 
 interface State {
@@ -113,7 +114,7 @@ class TipCalculator extends React.Component<{}, State> {
       <div /* className={style.root} */>
         <Stepper activeStep={this.state.activeStep} alternativeLabel>
           {steps.map(label => (
-            <Step key={label}>
+            <Step key={uniqueId()}>
               <StepLabel>{label}</StepLabel>
             </Step>
           ))}

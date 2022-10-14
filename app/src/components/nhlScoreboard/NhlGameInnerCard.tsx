@@ -11,6 +11,8 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Tabs from '@mui/material/Tabs'
 import Typography from '@mui/material/Typography'
+import cloneDeep from 'lodash/cloneDeep'
+import uniqueId from 'lodash/uniqueId'
 import React, { useState } from 'react'
 
 import {
@@ -32,7 +34,7 @@ enum NhlGameCardTab {
   HIGHLIGHTS = 'HIGHLIGHTS',
 }
 
-export const NhlGameInnerCard = (props: Props): JSX.Element => {
+export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
   const [tabPanelValue, setTabPanelValue] = useState<string>(NhlGameCardTab.SCORING_PLAYS)
 
   /**
@@ -92,7 +94,7 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
    * @returns
    */
   const displayScoringPlays = (periodText: string, period: number) => {
-    const scoringPlays: ScoringPlay[] = filterScoringPlays(props.game.scoringPlays, period)
+    const scoringPlays: ScoringPlay[] = filterScoringPlays(game.scoringPlays, period)
     return (
       <Table size="small" aria-label="Scoring Summary" style={{ maxWidth: '750px' }}>
         <TableHead>
@@ -101,9 +103,9 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow key={'row.name'}>
+          <TableRow key={uniqueId()}>
             <TableCell component="th" scope="row" style={{ borderBottomWidth: '0px', paddingLeft: '8px' }}>
-              {filterScoringPlays(props.game.scoringPlays, period).map(createScoringPlayLine)}
+              {filterScoringPlays(game.scoringPlays, period).map(createScoringPlayLine)}
               {scoringPlays.length === 0 && (
                 <Typography paragraph variant="caption" style={{ marginBottom: '2px' }}>
                   No Goals Scored
@@ -125,7 +127,7 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
     setTabPanelValue(newValue)
   }
 
-  const epgs = [...props.game.content.media.epg]
+  const epgs = cloneDeep(game.content.media.epg)
   epgs.forEach(epg => {
     epg.items = epg.items.map(highlight => {
       return { ...highlight, title: epg.title }
@@ -135,7 +137,7 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
     ...epgs
       .filter(epg => epg.title === EpgTypes.EXTENDED_HIGHLIGHTS || epg.title === EpgTypes.RECAP)
       .flatMap(epg => epg.items),
-    ...props.game.content.highlights.scoreboard.items.sort(
+    ...cloneDeep(game.content.highlights.scoreboard.items).sort(
       (highlightA: Highlight, highlightB: Highlight) => Number(highlightA.id) - Number(highlightB.id),
     ),
   ]
@@ -158,11 +160,11 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
       <CardContent style={{ padding: '0 0 0 0' }}>
         {tabPanelValue === NhlGameCardTab.SCORING_PLAYS && (
           <>
-            {props.game.linescore.currentPeriod > 0 && displayScoringPlays('1st Period', 1)}
-            {props.game.linescore.currentPeriod > 1 && displayScoringPlays('2nd Period', 2)}
-            {props.game.linescore.currentPeriod > 2 && displayScoringPlays('3rd Period', 3)}
-            {props.game.linescore.currentPeriod === 4 && displayScoringPlays('OT', 4)}
-            {props.game.linescore.currentPeriod === 5 && displayScoringPlays('Shootout', 5)}
+            {game.linescore.currentPeriod > 0 && displayScoringPlays('1st Period', 1)}
+            {game.linescore.currentPeriod > 1 && displayScoringPlays('2nd Period', 2)}
+            {game.linescore.currentPeriod > 2 && displayScoringPlays('3rd Period', 3)}
+            {game.linescore.currentPeriod === 4 && displayScoringPlays('OT', 4)}
+            {game.linescore.currentPeriod === 5 && displayScoringPlays('Shootout', 5)}
           </>
         )}
         {tabPanelValue === NhlGameCardTab.HIGHLIGHTS && (
@@ -184,7 +186,7 @@ export const NhlGameInnerCard = (props: Props): JSX.Element => {
               cols={highlights.length}
             >
               {highlights.map(item => (
-                <NhlHighlightCard key={item.id} highlight={item} />
+                <NhlHighlightCard key={uniqueId()} highlight={item} />
               ))}
             </ImageList>
           </div>

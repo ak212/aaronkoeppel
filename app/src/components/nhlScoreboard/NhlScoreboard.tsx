@@ -9,14 +9,15 @@ import Typography from '@mui/material/Typography'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { AnyAction } from '@reduxjs/toolkit'
+import uniqueId from 'lodash/uniqueId'
 import { useSnackbar } from 'notistack'
 import React, { Dispatch, MutableRefObject, useCallback, useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { AnyAction } from 'redux'
+import { useAppDispatch, useAppSelector } from '../../state/hooks'
 
-import { loadingSelectors } from '../../reducers/Loading'
-import { State as RootState } from '../../reducers/Root'
-import { NhlGame, nhlScoreboardActions, nhlScoreboardSelectors } from '../../store/nhlScoreboard'
+import { loadingSelectors } from '../../state/Loading'
+import { RootState } from '../../state/store'
+import { getGames, NhlGame, nhlScoreboardSelectors } from '../../store/nhlScoreboard'
 import { NhlGameCard } from './NhlGameCard'
 
 export function usePrevious<T>(value: T, initial?: T): MutableRefObject<T | undefined>['current'] {
@@ -36,8 +37,8 @@ export const NhlScoreboard = (): JSX.Element => {
   const maxWidth620: boolean = useMediaQuery('(max-width:620px)')
 
   /* Props */
-  const games: NhlGame[] = useSelector((state: RootState) => nhlScoreboardSelectors.getGames(state))
-  const loading: boolean = useSelector((state: RootState) => loadingSelectors.getNhlScoresLoading(state))
+  const games: NhlGame[] = useAppSelector((state: RootState) => nhlScoreboardSelectors.getGames(state))
+  const loading: boolean = useAppSelector((state: RootState) => loadingSelectors.getNhlScoresLoading(state))
 
   /* State */
   const [showAllExpanded, setShowAllExpanded] = useState<boolean>(false)
@@ -45,19 +46,19 @@ export const NhlScoreboard = (): JSX.Element => {
   const [startDate, setStartDate] = useState<number>(Date.now())
 
   /* Dispatch */
-  const dispatch: Dispatch<AnyAction> = useDispatch()
-  const getGames = useCallback(() => {
-    dispatch(nhlScoreboardActions.getGames(startDate))
+  const dispatch: Dispatch<AnyAction> = useAppDispatch()
+  const getGamesCallback = useCallback(() => {
+    dispatch(getGames(startDate))
   }, [dispatch, startDate])
 
   useEffect(() => {
-    getGames()
+    getGamesCallback()
   }, [startDate])
 
   /* Auto retrieve game updates every 20 seconds */
   useEffect(() => {
     const interval = setInterval(() => {
-      getGames()
+      getGamesCallback()
     }, 20000)
     return () => clearInterval(interval)
   })
@@ -119,8 +120,8 @@ export const NhlScoreboard = (): JSX.Element => {
             '@media (max-width: 619px)': {
               justifyContent: 'space-evenly',
             },
+            paddingLeft: '5vw',
           }}
-          style={{ paddingLeft: '5vw' }}
         >
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DesktopDatePicker
@@ -167,7 +168,7 @@ export const NhlScoreboard = (): JSX.Element => {
         style={{ marginTop: '1vh', width: '100%', minHeight: '70vh' }}
       >
         {games.map(game => (
-          <NhlGameCard key={game.gamePk} game={game} showAllExpanded={showAllExpanded} />
+          <NhlGameCard key={uniqueId()} game={game} showAllExpanded={showAllExpanded} />
         ))}
         {games.length === 0 && <Alert severity="warning">No games scheduled on the date you selected.</Alert>}
       </Grid>

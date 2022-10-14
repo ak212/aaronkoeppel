@@ -1,7 +1,7 @@
-import { State } from '../../reducers/Root'
+import { RootState } from '../../state/store'
 
 export const nhlScoreboardSelectors = {
-  getGames(state: State) {
+  getGames(state: RootState) {
     return state.nhlScoreboard.games
   },
 }

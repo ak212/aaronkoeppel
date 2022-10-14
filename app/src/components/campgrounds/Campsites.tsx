@@ -8,22 +8,25 @@ import range from 'lodash/range'
 import startCase from 'lodash/startCase'
 import moment from 'moment'
 import React, { Dispatch, useCallback, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { AnyAction } from 'redux'
 
-import { loadingSelectors } from '../../reducers/Loading'
-import { State as RootState } from '../../reducers/Root'
+import { AnyAction } from '@reduxjs/toolkit'
+import uniqueId from 'lodash/uniqueId'
+import { useAppDispatch, useAppSelector } from '../../state/hooks'
+import { loadingSelectors } from '../../state/Loading'
+import { RootState } from '../../state/store'
 import {
   Campground,
-  campsiteActions,
   campsitesSelectors,
   DayOfWeek,
   DaysOfWeek,
   EntityType,
+  getAutocomplete,
+  getCampgroundAvailability,
   initialDaysOfWeek,
   isRecreationArea,
   RecreationArea,
   ReservationStatus,
+  setRecreationAreas,
 } from '../../store/campsites'
 import { CampgroundIcon } from '../icons/CampgroundIcon'
 import { RecreationAreaIcon } from '../icons/RecreationAreaIcon'
@@ -33,32 +36,34 @@ import { CampgroundMap } from './CampgroundMap'
 
 export const Campsites = (): JSX.Element => {
   /* Props */
-  const autocompleteValues: RecreationArea[] = useSelector((state: RootState) =>
+  const autocompleteValues: RecreationArea[] = useAppSelector((state: RootState) =>
     campsitesSelectors.getAutocomplete(state),
   )
-  const campgrounds: Campground[] = useSelector((state: RootState) => campsitesSelectors.getCampgrounds(state))
-  const loading: boolean = useSelector((state: RootState) => loadingSelectors.getCampsiteLoading(state))
+  const campgrounds: Campground[] = useAppSelector((state: RootState) =>
+    campsitesSelectors.getCampgrounds(state),
+  ).slice()
+  const loading: boolean = useAppSelector((state: RootState) => loadingSelectors.getCampsiteLoading(state))
 
   /* Dispatch */
-  const dispatch: Dispatch<AnyAction> = useDispatch()
+  const dispatch: Dispatch<AnyAction> = useAppDispatch()
 
-  const getCampsiteAvailability = useCallback(
+  const getCampsiteAvailabilityCallback = useCallback(
     (recreationAreas: RecreationArea[], startDate: number, endDate: number) => {
-      dispatch(campsiteActions.getCampgroundAvailability(recreationAreas, startDate, endDate))
+      dispatch(getCampgroundAvailability(recreationAreas, startDate, endDate))
     },
     [dispatch],
   )
 
-  const getAutoComplete = useCallback(
+  const getAutoCompleteCallback = useCallback(
     (name: string) => {
-      dispatch(campsiteActions.getAutocomplete(name))
+      dispatch(getAutocomplete(name))
     },
     [dispatch],
   )
 
-  const setRecreationAreas = useCallback(
+  const setRecreationAreasCallback = useCallback(
     (recAreas: RecreationArea[]) => {
-      dispatch(campsiteActions.setRecreationAreas(recAreas))
+      dispatch(setRecreationAreas(recAreas))
     },
     [dispatch],
   )
@@ -78,7 +83,7 @@ export const Campsites = (): JSX.Element => {
    */
   const getCampsitesOnClick = (): void => {
     if (startDate && endDate) {
-      getCampsiteAvailability(selectedRecAreas, startDate, endDate)
+      getCampsiteAvailabilityCallback(selectedRecAreas, startDate, endDate)
     }
   }
 
@@ -90,7 +95,7 @@ export const Campsites = (): JSX.Element => {
    */
   const onInputChange = (event: React.ChangeEvent<unknown>, value: string): void => {
     setAutoCompleteText(value)
-    getAutoComplete(value)
+    getAutoCompleteCallback(value)
   }
 
   /**
@@ -101,7 +106,7 @@ export const Campsites = (): JSX.Element => {
    */
   const onChange = (event: React.ChangeEvent<unknown>, value: (string | RecreationArea)[]): void => {
     if (value.every(val => isRecreationArea(val)) || value.length === 0) {
-      setRecreationAreas(value as RecreationArea[])
+      setRecreationAreasCallback(value as RecreationArea[])
       setSelectedRecAreas(value as RecreationArea[])
     }
   }
@@ -166,7 +171,7 @@ export const Campsites = (): JSX.Element => {
         end = moment(end)
           .set('month', monthRange[monthRange.length - 1])
           .valueOf()
-        getCampsiteAvailability(selectedRecAreas, start, end)
+        getCampsiteAvailabilityCallback(selectedRecAreas, start, end)
       }
     }
   }
@@ -263,7 +268,7 @@ export const Campsites = (): JSX.Element => {
           onChange={onChange}
           renderTags={(value: RecreationArea[], getTagProps) =>
             value.map((recArea: RecreationArea, index: number) => (
-              <div key={index}>
+              <div key={uniqueId()}>
                 <Chip
                   variant="outlined"
                   label={startCase(recArea.name.toLowerCase())}

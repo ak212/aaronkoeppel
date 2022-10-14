@@ -3,6 +3,7 @@ import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import ImageListItem from '@mui/material/ImageListItem'
 import Typography from '@mui/material/Typography'
+import uniqueId from 'lodash/uniqueId'
 import React from 'react'
 
 import { Highlight, HIGHLIGHT_PLAYBACK_NAME } from '../../store/nhlScoreboard'
@@ -13,7 +14,7 @@ type Props = {
 
 export const NhlHighlightCard = (props: Props): JSX.Element => {
   return (
-    <ImageListItem key={props.highlight.title}>
+    <ImageListItem key={uniqueId()}>
       <Card sx={{ minWidth: 345, margin: '0 1vw 1vh 0' }}>
         <CardMedia
           component="video"

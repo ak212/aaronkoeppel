@@ -1,5 +1,4 @@
 import './Campsites.css'
-import 'date-fns'
 
 import {
   Link,

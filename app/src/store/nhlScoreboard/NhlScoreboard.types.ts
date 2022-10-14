@@ -312,5 +312,5 @@ export const isGameLive = (game: NhlGame): boolean => {
 }
 
 export const initialScoreboardState = {
-  games: [],
+  games: [] as NhlGame[],
 }

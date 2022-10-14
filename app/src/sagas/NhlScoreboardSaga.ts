@@ -1,23 +1,23 @@
-import { all, AllEffect, call, ForkEffect, put, takeEvery } from 'redux-saga/effects'
+import { all, call, put, takeEvery } from 'redux-saga/effects'
 
-import { loadingActions } from '../reducers/Loading'
 import NhlScoreboardApi from '../remote/NhlScoreboardApi'
-import { GET_GAMES, nhlScoreboardActions, NhlScoreboardResponse } from '../store/nhlScoreboard'
+import { finishLoading, startLoading } from '../state/Loading'
+import { getGames, getGamesSuccess, GET_GAMES, NhlScoreboardResponse } from '../store/nhlScoreboard'
 
-function* getGames({ gameDate }: ReturnType<typeof nhlScoreboardActions.getGames>) {
-  yield put(loadingActions.startLoading('nhlScores'))
+function* getGamesGenerator({ payload: { gameDate } }: ReturnType<typeof getGames>) {
+  yield put(startLoading('nhlScores'))
 
   const scoreboard: NhlScoreboardResponse = yield call(NhlScoreboardApi.getGames, gameDate)
 
   if (scoreboard && scoreboard.totalGames > 0) {
-    yield put(nhlScoreboardActions.getGamesSuccess(scoreboard.dates[0].games))
+    yield put(getGamesSuccess(scoreboard.dates[0].games))
   } else {
-    yield put(nhlScoreboardActions.getGamesSuccess([]))
+    yield put(getGamesSuccess([]))
   }
 
-  yield put(loadingActions.finishLoading('nhlScores'))
+  yield put(finishLoading('nhlScores'))
 }
 
-export function* nhlScoreboardSaga(): Generator<AllEffect<ForkEffect<never>>, void, unknown> {
-  yield all([takeEvery(GET_GAMES, getGames)])
+export function* nhlScoreboardSaga() {
+  yield all([takeEvery(GET_GAMES, getGamesGenerator)])
 }

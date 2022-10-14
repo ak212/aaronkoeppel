@@ -1,15 +1,22 @@
+import { createAction } from '@reduxjs/toolkit'
 import { NhlGame } from './NhlScoreboard.types'
 
 /* Action Definition */
 export const GET_GAMES = 'GET_GAMES'
 export const GET_GAMES_SUCCESS = 'GET_GAMES_SUCCESS'
-export const SET_TEAM_LOGOS = 'SET_TEAM_LOGOS'
 
-export const nhlScoreboardActions = {
-  getGames: (gameDate: number) => {
-    return { type: GET_GAMES, gameDate }
-  },
-  getGamesSuccess: (games: NhlGame[]) => {
-    return { type: GET_GAMES_SUCCESS, games }
-  },
-}
+export const getGames = createAction(GET_GAMES, function prepare(gameDate: number) {
+  return {
+    payload: {
+      gameDate,
+    },
+  }
+})
+
+export const getGamesSuccess = createAction(GET_GAMES_SUCCESS, function prepare(games: NhlGame[]) {
+  return {
+    payload: {
+      games,
+    },
+  }
+})
