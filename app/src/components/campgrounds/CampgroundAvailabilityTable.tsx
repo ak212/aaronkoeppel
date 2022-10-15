@@ -1,8 +1,7 @@
-import './Campsites.css'
-
 import {
   Link,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -19,11 +18,12 @@ import React from 'react'
 import { Campground, DaysOfWeek, ReservationStatus, ReservationType, showDayOfWeek } from '../../store/campsites'
 
 type Props = {
-  campgrounds: Campground[]
-  startDate?: number
-  endDate?: number
-  daysOfWeek: DaysOfWeek
   advancedDate: boolean
+  campgrounds: Campground[]
+  daysOfWeek: DaysOfWeek
+  loading: boolean
+  endDate?: number
+  startDate?: number
 }
 
 /**
@@ -32,7 +32,14 @@ type Props = {
  * @param {Campground[]} campgrounds
  * @returns {(JSX.Element)}
  */
-export const CampgroundAvailabilityTable = (props: Props): JSX.Element => {
+export const CampgroundAvailabilityTable = ({
+  advancedDate,
+  campgrounds,
+  daysOfWeek,
+  loading,
+  endDate,
+  startDate,
+}: Props): JSX.Element | null => {
   /**
    * Get the individual days based on the date range.
    *
@@ -40,7 +47,7 @@ export const CampgroundAvailabilityTable = (props: Props): JSX.Element => {
    */
   const getDates = (): string[] => {
     const days: string[] = []
-    for (let d = props.startDate!; d < props.endDate!; d = moment(d).add(1, 'days').toDate().valueOf()) {
+    for (let d = startDate!; d < endDate!; d = moment(d).add(1, 'days').toDate().valueOf()) {
       days.push(moment(d).format('YYYY-MM-DD').concat('T00:00:00Z'))
     }
 
@@ -79,9 +86,9 @@ export const CampgroundAvailabilityTable = (props: Props): JSX.Element => {
    */
   const campgroundToTableRow = (campground: Campground): JSX.Element => {
     const campgroundAvailability: Map<string, number> = campsitesAvailabilityRange(campground)
-    if (props.advancedDate) {
+    if (advancedDate) {
       for (const k of campgroundAvailability.keys()) {
-        if (!showDayOfWeek(props.daysOfWeek, moment(k).day())) {
+        if (!showDayOfWeek(daysOfWeek, moment(k).day())) {
           campgroundAvailability.delete(k)
         }
       }
@@ -115,23 +122,41 @@ export const CampgroundAvailabilityTable = (props: Props): JSX.Element => {
     )
   }
 
-  return (
-    <TableContainer component={Paper} className="campgroundTable">
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Campground</TableCell>
-            {getDates()
-              .filter(date => {
-                return props.advancedDate ? showDayOfWeek(props.daysOfWeek, moment(date).day()) : true
-              })
-              .map(date => (
-                <TableCell key={uniqueId()}>{moment(date.replace('T00:00:00Z', '')).format('DD MMM YYYY')}</TableCell>
-              ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>{props.campgrounds.map(campgroundToTableRow)}</TableBody>
-      </Table>
-    </TableContainer>
-  )
+  const renderTable = () => {
+    return (
+      <TableContainer
+        component={Paper}
+        sx={{
+          marginTop: '2vh',
+          '@media (min-width: 801px)': {
+            gridTemplateColumns: '80vw',
+          },
+        }}
+      >
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Campground</TableCell>
+              {getDates()
+                .filter(date => {
+                  return advancedDate ? showDayOfWeek(daysOfWeek, moment(date).day()) : true
+                })
+                .map(date => (
+                  <TableCell key={uniqueId()}>{moment(date.replace('T00:00:00Z', '')).format('DD MMM YYYY')}</TableCell>
+                ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>{campgrounds.map(campgroundToTableRow)}</TableBody>
+        </Table>
+      </TableContainer>
+    )
+  }
+
+  if (loading) {
+    return <Skeleton variant="rectangular" sx={{ marginTop: '2vh' }} height={`${33 * (campgrounds.length + 1)}px`} />
+  } else if (campgrounds.length > 0) {
+    return renderTable()
+  } else {
+    return null
+  }
 }
