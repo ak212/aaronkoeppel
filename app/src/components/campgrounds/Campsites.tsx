@@ -27,9 +27,6 @@ import { CampgroundSearchbar } from './CampgroundSearchbar'
 
 export const Campsites = (): JSX.Element => {
   /* Props */
-  const autocompleteValues: RecreationArea[] = useAppSelector((state: RootState) =>
-    campsitesSelectors.getAutocomplete(state),
-  )
   const campgrounds: Campground[] = useAppSelector((state: RootState) =>
     campsitesSelectors.getCampgrounds(state),
   ).slice()
