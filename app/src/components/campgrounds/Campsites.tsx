@@ -1,16 +1,8 @@
-/* eslint-ignore */
-import './Campsites.css'
-
-import { Button, Chip, TextField } from '@mui/material'
-import Autocomplete from '@mui/material/Autocomplete'
-import Skeleton from '@mui/material/Skeleton'
 import range from 'lodash/range'
-import startCase from 'lodash/startCase'
 import moment from 'moment'
 import React, { Dispatch, useCallback, useState } from 'react'
 
 import { AnyAction } from '@reduxjs/toolkit'
-import uniqueId from 'lodash/uniqueId'
 import { useAppDispatch, useAppSelector } from '../../state/hooks'
 import { loadingSelectors } from '../../state/Loading'
 import { RootState } from '../../state/store'
@@ -19,7 +11,6 @@ import {
   campsitesSelectors,
   DayOfWeek,
   DaysOfWeek,
-  EntityType,
   getAutocomplete,
   getCampgroundAvailability,
   initialDaysOfWeek,
@@ -28,17 +19,15 @@ import {
   ReservationStatus,
   setRecreationAreas,
 } from '../../store/campsites'
-import { CampgroundIcon } from '../icons/CampgroundIcon'
-import { RecreationAreaIcon } from '../icons/RecreationAreaIcon'
 import { CampgroundAvailabilityTable } from './CampgroundAvailabilityTable'
 import { CampgroundDates } from './CampgroundDates'
 import { CampgroundMap } from './CampgroundMap'
+import { CampgroundSearchbar } from './CampgroundSearchbar'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 
 export const Campsites = (): JSX.Element => {
   /* Props */
-  const autocompleteValues: RecreationArea[] = useAppSelector((state: RootState) =>
-    campsitesSelectors.getAutocomplete(state),
-  )
   const campgrounds: Campground[] = useAppSelector((state: RootState) =>
     campsitesSelectors.getCampgrounds(state),
   ).slice()
@@ -216,80 +205,28 @@ export const Campsites = (): JSX.Element => {
     setAdvancedDate(!advancedDate)
   }
 
-  /**
-   * Creates the table of campground availability.
-   *
-   * @param {Campground[]} campgrounds
-   * @returns {(JSX.Element | undefined)}
-   */
-  const campgroundAvailabilityTable = (campgrounds: Campground[]): JSX.Element | undefined => {
-    if (loading) {
-      return (
-        <Skeleton variant="rectangular" className="campgroundTable" height={`${33 * (campgrounds.length + 1)}px`} />
-      )
-    } else if (campgrounds.length > 0) {
-      return (
-        <CampgroundAvailabilityTable
-          advancedDate={advancedDate}
-          campgrounds={campgrounds}
-          daysOfWeek={daysOfWeek}
-          endDate={endDate}
-          startDate={startDate}
-        />
-      )
-    } else {
-      return undefined
-    }
-  }
-
-  const options: RecreationArea[] = autocompleteValues.filter(
-    ra => [EntityType.REC_AREA, EntityType.CAMPGROUND].indexOf(ra.entity_type) !== -1,
-  )
-
-  const tg = (tbd: any): tbd is RecreationArea => {
-    if ((tbd as RecreationArea).entity_id) {
-      return true
-    }
-    return false
-  }
-
   return (
-    <div>
-      <div className="interactive">
-        <Autocomplete
-          multiple
-          freeSolo
-          limitTags={4}
-          id="recreation-areas"
-          options={options}
-          getOptionLabel={option => (tg(option) ? startCase(option.name.toLowerCase()) : option)}
+    <Box>
+      <Box
+        sx={{
+          display: 'grid',
+          gridGap: '1vw 1vh',
+          justifyContent: 'center',
+          color: 'white',
+          '@media (min-width: 801px)': {
+            gridTemplateColumns: '50vw',
+          },
+          '@media (max-width: 800px)': {
+            gridTemplateColumns: '80vw',
+            gridGap: '2vh',
+          },
+        }}
+      >
+        <CampgroundSearchbar
+          autoCompleteText={autoCompleteText}
+          selectedRecAreas={selectedRecAreas}
           onInputChange={onInputChange}
-          value={selectedRecAreas}
           onChange={onChange}
-          renderTags={(value: RecreationArea[], getTagProps) =>
-            value.map((recArea: RecreationArea, index: number) => (
-              <div key={uniqueId()}>
-                <Chip
-                  variant="outlined"
-                  label={startCase(recArea.name.toLowerCase())}
-                  icon={recArea.entity_type === EntityType.REC_AREA ? <RecreationAreaIcon /> : <CampgroundIcon />}
-                  {...getTagProps({ index })}
-                  color="primary"
-                />
-              </div>
-            ))
-          }
-          renderInput={params => (
-            <TextField
-              {...params}
-              label="Search Recreation Areas"
-              margin="normal"
-              variant="outlined"
-              InputProps={{ ...params.InputProps, type: 'search' }}
-              value={autoCompleteText}
-              className="interactive"
-            />
-          )}
         />
         <CampgroundDates
           startDate={startDate}
@@ -309,11 +246,16 @@ export const Campsites = (): JSX.Element => {
         >
           Get campsites
         </Button>
-        {campgroundAvailabilityTable(
-          campgrounds.sort((a: Campground, b: Campground) => (a.facility_name > b.facility_name ? 1 : -1)),
-        )}
+        <CampgroundAvailabilityTable
+          advancedDate={advancedDate}
+          campgrounds={campgrounds.sort((a: Campground, b: Campground) => (a.facility_name > b.facility_name ? 1 : -1))}
+          daysOfWeek={daysOfWeek}
+          loading={loading}
+          endDate={endDate}
+          startDate={startDate}
+        />
         <CampgroundMap campgrounds={campgrounds} />
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }

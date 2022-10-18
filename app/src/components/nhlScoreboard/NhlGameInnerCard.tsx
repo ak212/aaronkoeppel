@@ -1,5 +1,4 @@
 import CardContent from '@mui/material/CardContent'
-import CardMedia from '@mui/material/CardMedia'
 import Grid from '@mui/material/Grid'
 import ImageList from '@mui/material/ImageList'
 import Paper from '@mui/material/Paper'
@@ -24,6 +23,7 @@ import {
   ScoringPlayPlayerType,
 } from '../../store/nhlScoreboard'
 import { NhlHighlightCard } from './NhlHighlightCard'
+import { NhlTeamLogo } from './NhlTeamLogo'
 
 interface Props {
   game: NhlGame
@@ -68,12 +68,7 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
     return (
       <Grid container direction="row" alignContent="center">
         <Typography paragraph style={{ marginTop: '9px' }}>{`${scoringPlay.about.periodTimeRemaining}`}</Typography>
-        <CardMedia
-          sx={{ width: 45, height: 34.5, margin: '0.25vh 1vw 0.25vh 1vw' }}
-          component="img"
-          image={`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${scoringPlay.team.id}.svg`}
-          title={`${scoringPlay.team.name} Logo`}
-        />
+        <NhlTeamLogo size="small" teamId={scoringPlay.team.id} teamName={scoringPlay.team.name} />
         <Grid container direction="column" xs>
           <Typography variant="subtitle2" style={{ marginBottom: '2px' }}>
             {goalScorer}

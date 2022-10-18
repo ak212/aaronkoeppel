@@ -20,7 +20,10 @@ import { RootState } from '../../state/store'
 import { getGames, NhlGame, nhlScoreboardSelectors } from '../../store/nhlScoreboard'
 import { NhlGameCard } from './NhlGameCard'
 
-export function usePrevious<T>(value: T, initial?: T): MutableRefObject<T | undefined>['current'] {
+const MILLISECOND = 1000
+const MINUTE = 60
+
+function usePrevious<T>(value: T, initial?: T): MutableRefObject<T | undefined>['current'] {
   const ref = useRef({ target: value, previous: initial })
 
   if (ref.current.target !== value) {
@@ -30,6 +33,10 @@ export function usePrevious<T>(value: T, initial?: T): MutableRefObject<T | unde
   }
 
   return ref.current.previous
+}
+
+const noGameInProgress = (games: NhlGame[]): boolean => {
+  return games.every(game => ['1', '7'].includes(game.status.statusCode))
 }
 
 export const NhlScoreboard = (): JSX.Element => {
@@ -55,11 +62,11 @@ export const NhlScoreboard = (): JSX.Element => {
     getGamesCallback()
   }, [startDate])
 
-  /* Auto retrieve game updates every 20 seconds */
+  /* Auto retrieve game updates every 30 seconds when games are in progress, 20 minutes when not */
   useEffect(() => {
     const interval = setInterval(() => {
       getGamesCallback()
-    }, 20000)
+    }, MILLISECOND * MINUTE * (noGameInProgress(games) ? 20 : 0.5))
     return () => clearInterval(interval)
   })
 
@@ -128,7 +135,17 @@ export const NhlScoreboard = (): JSX.Element => {
               inputFormat="MM/dd/yyyy"
               value={startDate}
               onChange={handleStartDateChange}
-              renderInput={params => <TextField {...params} sx={{ input: { maxWidth: 150, color: 'white' } }} />}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  sx={{
+                    maxWidth: '300px',
+                    label: { color: '#1976d2' },
+                    input: { color: 'white' },
+                    svg: { color: '#1976d2' },
+                  }}
+                />
+              )}
             />
           </LocalizationProvider>
         </Grid>

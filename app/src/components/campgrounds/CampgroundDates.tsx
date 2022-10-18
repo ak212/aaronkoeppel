@@ -1,14 +1,15 @@
 import add from 'date-fns/add'
 import toDate from 'date-fns/toDate'
-import './Campsites.css'
 
-import { Button, TextField } from '@mui/material'
 import React from 'react'
 
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DayOfWeek, DaysOfWeek } from '../../store/campsites'
 import { WeekdayPicker } from '../common/WeekdayPicker'
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 
 interface DateProps {
   startDate?: number
@@ -25,29 +26,55 @@ interface DateProps {
 export const CampgroundDates = (props: DateProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <div className="dateRow">
+      <Box
+        sx={{
+          display: 'grid',
+          alignItems: 'center',
+          paddingBottom: '2vh',
+          '@media (min-width: 901px)': {
+            gridTemplateColumns: '20vw 20vw 10vw',
+          },
+          '@media (max-width: 900px)': {
+            gridGap: '2vh',
+          },
+        }}
+      >
         <DesktopDatePicker
           inputFormat="MM/dd/yyyy"
-          className="date-picker"
           label="Start Date"
           minDate={new Date()}
           maxDate={props.startDate ? add(toDate(props.startDate), { months: 3 }) : undefined}
           value={props.startDate}
           onChange={props.handleStartDateChange}
           renderInput={params => (
-            <TextField {...params} sx={{ label: { color: '#1976d2' }, input: { color: 'white' } }} />
+            <TextField
+              {...params}
+              sx={{
+                maxWidth: '300px',
+                label: { color: '#1976d2' },
+                input: { color: 'white' },
+                svg: { color: '#1976d2' },
+              }}
+            />
           )}
         />
         <DesktopDatePicker
           inputFormat="MM/dd/yyyy"
-          className="date-picker"
           label="End Date"
           minDate={add(new Date(), { days: 1 })}
           maxDate={props.startDate ? add(toDate(props.startDate), { weeks: 4 }) : undefined}
           value={props.endDate}
           onChange={props.handleEndDateChange}
           renderInput={params => (
-            <TextField {...params} sx={{ label: { color: '#1976d2' }, input: { color: 'white' } }} />
+            <TextField
+              {...params}
+              sx={{
+                maxWidth: '300px',
+                label: { color: '#1976d2' },
+                input: { color: 'white' },
+                svg: { color: '#1976d2' },
+              }}
+            />
           )}
         />
         <Button
@@ -61,7 +88,7 @@ export const CampgroundDates = (props: DateProps) => {
         {props.advancedDate && (
           <WeekdayPicker daysOfWeek={props.daysOfWeek} toggleSelectedDaysOfWeek={props.toggleSelectedDaysOfWeek} />
         )}
-      </div>
+      </Box>
     </LocalizationProvider>
   )
 }

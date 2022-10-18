@@ -1,74 +1,73 @@
-import './WeekdayPicker.css'
-
-import { Button } from '@mui/material'
+import Box from '@mui/material/Box'
 import React from 'react'
 
 import { DayOfWeek, DaysOfWeek } from '../../store/campsites'
+import { WeekdayButton } from './WeekdayButton'
 
 interface Props {
-  toggleSelectedDaysOfWeek(dayOfWeek: DayOfWeek): void
   daysOfWeek: DaysOfWeek
+  toggleSelectedDaysOfWeek(dayOfWeek: DayOfWeek): void
 }
 
-export const WeekdayPicker = (props: Props) => {
+export const WeekdayPicker = ({ daysOfWeek, toggleSelectedDaysOfWeek }: Props) => {
   return (
-    <div className="weekdayGrid">
-      <Button
-        onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.SUNDAY)}
-        variant={props.daysOfWeek.sunday ? 'contained' : 'outlined'}
-        color="primary"
-        className="weekdayButton"
-      >
-        Su
-      </Button>
-      <Button
-        onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.MONDAY)}
-        variant={props.daysOfWeek.monday ? 'contained' : 'outlined'}
-        color="primary"
-        className="weekdayButton"
-      >
-        M
-      </Button>
-      <Button
-        onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.TUESDAY)}
-        variant={props.daysOfWeek.tuesday ? 'contained' : 'outlined'}
-        color="primary"
-        className="weekdayButton"
-      >
-        Tu
-      </Button>
-      <Button
-        onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.WEDNESDAY)}
-        variant={props.daysOfWeek.wednesday ? 'contained' : 'outlined'}
-        color="primary"
-        className="weekdayButton"
-      >
-        W
-      </Button>
-      <Button
-        onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.THURSDAY)}
-        variant={props.daysOfWeek.thursday ? 'contained' : 'outlined'}
-        color="primary"
-        className="weekdayButton"
-      >
-        Th
-      </Button>
-      <Button
-        onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.FRIDAY)}
-        variant={props.daysOfWeek.friday ? 'contained' : 'outlined'}
-        color="primary"
-        className="weekdayButton"
-      >
-        F
-      </Button>
-      <Button
-        onClick={() => props.toggleSelectedDaysOfWeek(DayOfWeek.SATURDAY)}
-        variant={props.daysOfWeek.saturday ? 'contained' : 'outlined'}
-        color="primary"
-        className="weekdayButton"
-      >
-        Sa
-      </Button>
-    </div>
+    <Box
+      sx={{
+        display: 'grid',
+        gridGap: '1vw',
+        paddingTop: '2vh',
+        '@media (max-width: 900px)': {
+          gridTemplateColumns: '5vw 5vw 5vw 5vw 5vw 5vw 5vw',
+          gridGap: '4vw',
+        },
+        '@media (max-width: 600px)': {
+          gridTemplateColumns: '5vw 5vw 5vw 5vw 5vw 5vw 5vw',
+          gridGap: '5vw',
+        },
+        '@media (max-width: 400px)': {
+          gridTemplateColumns: '5vw 5vw 5vw 5vw 5vw 5vw 5vw',
+          gridGap: '6vw',
+        },
+        '@media (min-width: 901px)': {
+          gridTemplateColumns: '6vw 6vw 6vw 6vw 6vw 6vw 6vw',
+        },
+      }}
+    >
+      <WeekdayButton
+        onClick={() => toggleSelectedDaysOfWeek(DayOfWeek.SUNDAY)}
+        variant={daysOfWeek.sunday ? 'contained' : 'outlined'}
+        label={'Su'}
+      />
+      <WeekdayButton
+        onClick={() => toggleSelectedDaysOfWeek(DayOfWeek.MONDAY)}
+        variant={daysOfWeek.sunday ? 'contained' : 'outlined'}
+        label={'M'}
+      />
+      <WeekdayButton
+        onClick={() => toggleSelectedDaysOfWeek(DayOfWeek.TUESDAY)}
+        variant={daysOfWeek.tuesday ? 'contained' : 'outlined'}
+        label={'Tu'}
+      />
+      <WeekdayButton
+        onClick={() => toggleSelectedDaysOfWeek(DayOfWeek.WEDNESDAY)}
+        variant={daysOfWeek.wednesday ? 'contained' : 'outlined'}
+        label={'W'}
+      />
+      <WeekdayButton
+        onClick={() => toggleSelectedDaysOfWeek(DayOfWeek.THURSDAY)}
+        variant={daysOfWeek.thursday ? 'contained' : 'outlined'}
+        label={'Th'}
+      />
+      <WeekdayButton
+        onClick={() => toggleSelectedDaysOfWeek(DayOfWeek.FRIDAY)}
+        variant={daysOfWeek.friday ? 'contained' : 'outlined'}
+        label={'F'}
+      />
+      <WeekdayButton
+        onClick={() => toggleSelectedDaysOfWeek(DayOfWeek.SATURDAY)}
+        variant={daysOfWeek.saturday ? 'contained' : 'outlined'}
+        label={'Sa'}
+      />
+    </Box>
   )
 }
