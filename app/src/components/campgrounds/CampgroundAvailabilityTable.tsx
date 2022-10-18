@@ -8,9 +8,13 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
+import add from 'date-fns/add'
+import format from 'date-fns/format'
+import getDay from 'date-fns/getDay'
+import parseISO from 'date-fns/parseISO'
+import toDate from 'date-fns/toDate'
 import startCase from 'lodash/startCase'
 import uniqueId from 'lodash/uniqueId'
-import moment from 'moment'
 import React from 'react'
 
 import { Campground, DaysOfWeek, ReservationStatus, ReservationType, showDayOfWeek } from '../../store/campsites'
@@ -45,8 +49,8 @@ export const CampgroundAvailabilityTable = ({
    */
   const getDates = (): string[] => {
     const days: string[] = []
-    for (let d = startDate!; d < endDate!; d = moment(d).add(1, 'days').toDate().valueOf()) {
-      days.push(moment(d).format('YYYY-MM-DD').concat('T00:00:00Z'))
+    for (let d = startDate!; d < endDate!; d = add(toDate(d), { days: 1 }).valueOf()) {
+      days.push(format(d, 'yyyy-MM-dd').concat('T00:00:00Z'))
     }
 
     return days
@@ -71,7 +75,7 @@ export const CampgroundAvailabilityTable = ({
           }
         }
       }
-      availabilities.set(moment(day.replace('T00:00:00Z', '')).format('DD MMM YYYY'), avail)
+      availabilities.set(format(new Date(day.replace('T00:00:00Z', '')), 'dd MMM yyyy'), avail)
     }
     return availabilities
   }
@@ -86,7 +90,7 @@ export const CampgroundAvailabilityTable = ({
     const campgroundAvailability: Map<string, number> = campsitesAvailabilityRange(campground)
     if (advancedDate) {
       for (const k of campgroundAvailability.keys()) {
-        if (!showDayOfWeek(daysOfWeek, moment(k).day())) {
+        if (!showDayOfWeek(daysOfWeek, getDay(new Date(k)))) {
           campgroundAvailability.delete(k)
         }
       }
@@ -137,10 +141,12 @@ export const CampgroundAvailabilityTable = ({
               <TableCell>Campground</TableCell>
               {getDates()
                 .filter(date => {
-                  return advancedDate ? showDayOfWeek(daysOfWeek, moment(date).day()) : true
+                  return advancedDate ? showDayOfWeek(daysOfWeek, getDay(new Date(date))) : true
                 })
                 .map(date => (
-                  <TableCell key={uniqueId()}>{moment(date.replace('T00:00:00Z', '')).format('DD MMM YYYY')}</TableCell>
+                  <TableCell key={uniqueId()}>
+                    {format(parseISO(date.replace('T00:00:00Z', '')), 'dd MMM yyyy')}
+                  </TableCell>
                 ))}
             </TableRow>
           </TableHead>

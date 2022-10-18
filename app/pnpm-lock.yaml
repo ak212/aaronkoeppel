@@ -35,7 +35,6 @@ specifiers:
   leaflet: 1.9.2
   lodash: 4.17.21
   memoize-one: ^5.2.1
-  moment: 2.29.4
   notistack: 2.0.5
   prettier: 2.7.1
   react: 18.2.0
@@ -55,14 +54,13 @@ dependencies:
   '@mui/icons-material': 5.10.6_lrxyqjzvf7pkknwtk2aj65ruy4
   '@mui/lab': 5.0.0-alpha.102_ej5cswvk7ic6gea53ovjkapqie
   '@mui/material': 5.10.8_ikcgkdnp4bn3rgptamntbhbo7e
-  '@mui/x-date-pickers': 5.0.4_ahbqwlmggayqxypmvcngvpiff4
+  '@mui/x-date-pickers': 5.0.4_yav2f3w5t4hpavni7kp5sfxq3q
   '@reduxjs/toolkit': 1.8.6_kuo2ie247izvzll3jejufdtq3q
   axios: 1.1.2
   date-fns: 2.29.3
   leaflet: 1.9.2
   lodash: 4.17.21
   memoize-one: 5.2.1
-  moment: 2.29.4
   notistack: 2.0.5_m2cq3x7wrnfkfcfs2mwnru2wnq
   react: 18.2.0
   react-burger-menu: 3.0.8_biqbaboplfbrettd7655fr4n2y
@@ -1684,7 +1682,7 @@ packages:
       '@date-io/core': 2.16.0
     dev: false
 
-  /@date-io/moment/2.16.0_moment@2.29.4:
+  /@date-io/moment/2.16.0:
     resolution: {integrity: sha512-wvu/40k128kF6P0jPbiyZcPR14VjJAgYEs+mYtsXz/AyWpC2DEJKly7ub+dpevUywbTzzpZysyCxCdzLzxD/uw==}
     peerDependencies:
       moment: ^2.24.0
@@ -1693,7 +1691,6 @@ packages:
         optional: true
     dependencies:
       '@date-io/core': 2.16.0
-      moment: 2.29.4
     dev: false
 
   /@emotion/babel-plugin/11.10.2_@babel+core@7.19.3:
@@ -2370,7 +2367,7 @@ packages:
       react-is: 18.2.0
     dev: false
 
-  /@mui/x-date-pickers/5.0.4_ahbqwlmggayqxypmvcngvpiff4:
+  /@mui/x-date-pickers/5.0.4_yav2f3w5t4hpavni7kp5sfxq3q:
     resolution: {integrity: sha512-Co4tbwqXSdHfR8UoZSHQpDZqnFdikzQr0lQPG2AjGh9BdB4EdY3YE2+sZyAltjk/AXxp5JzIWDZ2Kj83ClzjwA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -2403,7 +2400,7 @@ packages:
       '@date-io/date-fns': 2.16.0_date-fns@2.29.3
       '@date-io/dayjs': 2.16.0
       '@date-io/luxon': 2.16.0
-      '@date-io/moment': 2.16.0_moment@2.29.4
+      '@date-io/moment': 2.16.0
       '@emotion/react': 11.10.4_bjroym7kxlcs2vvwnej4p3gzwu
       '@emotion/styled': 11.10.4_ogudqqhlstsi7uge4lir7ff3ty
       '@mui/material': 5.10.8_ikcgkdnp4bn3rgptamntbhbo7e
@@ -2412,7 +2409,6 @@ packages:
       '@types/react-transition-group': 4.4.5
       clsx: 1.2.1
       date-fns: 2.29.3
-      moment: 2.29.4
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -7404,10 +7400,6 @@ packages:
     hasBin: true
     dependencies:
       minimist: 1.2.6
-    dev: false
-
-  /moment/2.29.4:
-    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
     dev: false
 
   /ms/2.0.0:

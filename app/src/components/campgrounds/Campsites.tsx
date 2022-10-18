@@ -1,8 +1,16 @@
 import range from 'lodash/range'
-import moment from 'moment'
 import React, { Dispatch, useCallback, useState } from 'react'
 
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import { AnyAction } from '@reduxjs/toolkit'
+import add from 'date-fns/add'
+import getMonth from 'date-fns/getMonth'
+import isAfter from 'date-fns/isAfter'
+import isBefore from 'date-fns/isBefore'
+import isSameDay from 'date-fns/isSameDay'
+import parseISO from 'date-fns/parseISO'
+import setMonth from 'date-fns/setMonth'
 import { useAppDispatch, useAppSelector } from '../../state/hooks'
 import { loadingSelectors } from '../../state/Loading'
 import { RootState } from '../../state/store'
@@ -23,8 +31,6 @@ import { CampgroundAvailabilityTable } from './CampgroundAvailabilityTable'
 import { CampgroundDates } from './CampgroundDates'
 import { CampgroundMap } from './CampgroundMap'
 import { CampgroundSearchbar } from './CampgroundSearchbar'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 
 export const Campsites = (): JSX.Element => {
   /* Props */
@@ -61,7 +67,7 @@ export const Campsites = (): JSX.Element => {
   const [autoCompleteText, setAutoCompleteText] = useState<string>('')
   const [selectedRecAreas, setSelectedRecAreas] = useState<RecreationArea[]>([])
   const [startDate, setStartDate] = useState<number | undefined>(Date.now())
-  const [endDate, setEndDate] = useState<number | undefined>(moment(Date.now()).add(1, 'days').toDate().valueOf())
+  const [endDate, setEndDate] = useState<number | undefined>(add(Date.now(), { days: 1 }).valueOf())
   const [advancedDate, setAdvancedDate] = useState<boolean>(false)
   const [daysOfWeek, setDaysOfWeek] = useState<DaysOfWeek>(initialDaysOfWeek)
 
@@ -144,22 +150,20 @@ export const Campsites = (): JSX.Element => {
    */
   const shouldGetAvailability = (start: number | undefined, end: number | undefined): void => {
     if (campgrounds.length > 0 && campgrounds[0].campsites && start && end) {
-      const startMonth = moment(start).get('month')
-      const endMonth = moment(end).get('month')
+      const startMonth = getMonth(start)
+      const endMonth = getMonth(end)
       /* Adding another +1 to endMonth because range is not inclusive */
       let monthRange = range(startMonth, endMonth + 1)
       const statusMap: Map<string, ReservationStatus> = new Map(
         Object.entries(campgrounds[0].campsites[0].availabilities),
       )
       for (const key of Array.from(statusMap.keys())) {
-        monthRange = monthRange.filter(month => month !== moment(key).get('month'))
+        monthRange = monthRange.filter(month => month !== getMonth(parseISO(key)))
       }
 
       if (selectedRecAreas !== undefined && monthRange.length > 0) {
-        start = moment(start).set('month', monthRange[0]).valueOf()
-        end = moment(end)
-          .set('month', monthRange[monthRange.length - 1])
-          .valueOf()
+        start = setMonth(start, monthRange[0]).valueOf()
+        end = setMonth(end, monthRange[monthRange.length - 1]).valueOf()
         getCampsiteAvailabilityCallback(selectedRecAreas, start, end)
       }
     }
@@ -172,9 +176,9 @@ export const Campsites = (): JSX.Element => {
    * @param {(string | null | undefined)} [value]
    */
   const handleStartDateChange = (date: Date): void => {
-    if (endDate && date && moment(date).isSameOrAfter(endDate, 'day')) {
+    if (endDate && date && (isSameDay(date, endDate) || isAfter(date, endDate))) {
       setStartDate(date.valueOf())
-      setEndDate(moment(date).add(1, 'days').toDate().valueOf())
+      setEndDate(add(date, { days: 1 }).valueOf())
     } else {
       setStartDate((date && date.valueOf()) || undefined)
     }
@@ -188,7 +192,7 @@ export const Campsites = (): JSX.Element => {
    * @param {(string | null | undefined)} [value]
    */
   const handleEndDateChange = (date: Date): void => {
-    if (startDate && date && moment(date).isSameOrBefore(startDate, 'day')) {
+    if (startDate && date && (isSameDay(date, startDate) || isBefore(date, startDate))) {
       setStartDate(date.valueOf())
     } else {
       setEndDate((date && date.valueOf()) || undefined)
