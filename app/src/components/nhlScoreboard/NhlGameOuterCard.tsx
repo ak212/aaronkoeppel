@@ -1,4 +1,3 @@
-import CardMedia from '@mui/material/CardMedia'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -6,6 +5,7 @@ import moment from 'moment'
 import React from 'react'
 
 import { DetailedGameState, NhlGame } from '../../store/nhlScoreboard'
+import { NhlTeamLogo } from './NhlTeamLogo'
 
 interface Props {
   game: NhlGame
@@ -89,28 +89,7 @@ export const NhlGameOuterCard = (props: Props): JSX.Element => {
           },
         }}
       >
-        <CardMedia
-          sx={{
-            '@media (min-width: 850px)': {
-              width: 90,
-              height: 70,
-              margin: '0.25rem',
-            },
-            '@media (max-width: 849px)': {
-              width: 80,
-              height: 62,
-              margin: '0.25rem',
-            },
-            '@media (max-width: 620px)': {
-              width: 60,
-              height: 46,
-              margin: '0.25rem',
-            },
-          }}
-          component="img"
-          image={`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${props.game.teams.away.team.id}.svg`}
-          title={`${props.game.teams.away.team.name} Logo`}
-        />
+        <NhlTeamLogo size="large" teamId={props.game.teams.away.team.id} teamName={props.game.teams.away.team.name} />
         <Grid container xs justifyContent="center" direction="column">
           {!maxWidth620 && (
             <Typography variant={maxWidth850 ? 'h6' : 'h5'} color={homeScoreGreater ? 'textSecondary' : 'textPrimary'}>
@@ -167,28 +146,7 @@ export const NhlGameOuterCard = (props: Props): JSX.Element => {
             {props.game.teams.home.score}
           </Typography>
         </Grid>
-        <CardMedia
-          sx={{
-            '@media (min-width: 850px)': {
-              width: 90,
-              height: 70,
-              margin: '0.25rem',
-            },
-            '@media (max-width: 849px)': {
-              width: 80,
-              height: 62,
-              margin: '0.25rem',
-            },
-            '@media (max-width: 620px)': {
-              width: 60,
-              height: 46,
-              margin: '0.25rem',
-            },
-          }}
-          component="img"
-          image={`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${props.game.teams.home.team.id}.svg`}
-          title={`${props.game.teams.home.team.name} Logo`}
-        />
+        <NhlTeamLogo size="large" teamId={props.game.teams.home.team.id} teamName={props.game.teams.home.team.name} />
       </Grid>
     </Grid>
   )

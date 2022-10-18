@@ -135,7 +135,17 @@ export const NhlScoreboard = (): JSX.Element => {
               inputFormat="MM/dd/yyyy"
               value={startDate}
               onChange={handleStartDateChange}
-              renderInput={params => <TextField {...params} sx={{ input: { maxWidth: 150, color: 'white' } }} />}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  sx={{
+                    maxWidth: '300px',
+                    label: { color: '#1976d2' },
+                    input: { color: 'white' },
+                    svg: { color: '#1976d2' },
+                  }}
+                />
+              )}
             />
           </LocalizationProvider>
         </Grid>
