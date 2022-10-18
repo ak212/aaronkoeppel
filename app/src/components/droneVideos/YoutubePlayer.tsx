@@ -1,4 +1,6 @@
-import { Box, Button, styled } from '@mui/material'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import { styled } from '@mui/material/styles'
 import React, { useState } from 'react'
 
 const YOUTUBE_IDS = ['m0NUCkFd4cE', 'UZ5npDxJPn0', 'Op0iYsVucP4', 'geAa8QbpvTI']

@@ -1,4 +1,6 @@
-import { Autocomplete, Chip, TextField } from '@mui/material'
+import Autocomplete from '@mui/material/Autocomplete'
+import Chip from '@mui/material/Chip'
+import TextField from '@mui/material/TextField'
 import { startCase, uniqueId } from 'lodash'
 import React from 'react'
 import { useAppSelector } from '../../state/hooks'
