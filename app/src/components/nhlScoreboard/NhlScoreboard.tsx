@@ -117,7 +117,7 @@ export const NhlScoreboard = (): JSX.Element => {
     <>
       <Grid container direction="row" sx={{ paddingTop: '2vh', minHeight: '90px' }}>
         <Grid
-          container
+          item
           xs={maxWidth620 ? 12 : 6}
           sx={{
             alignItems: 'center',
@@ -150,7 +150,7 @@ export const NhlScoreboard = (): JSX.Element => {
           </LocalizationProvider>
         </Grid>
         <Grid
-          container
+          item
           xs={maxWidth620 ? 12 : 6}
           sx={{
             alignItems: 'center',

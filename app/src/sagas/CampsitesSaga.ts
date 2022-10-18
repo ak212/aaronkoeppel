@@ -1,6 +1,7 @@
+import getMonth from 'date-fns/getMonth'
+import setMonth from 'date-fns/setMonth'
 import cloneDeep from 'lodash/cloneDeep'
 import range from 'lodash/range'
-import moment from 'moment'
 import { all, call, delay, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
 
 import CampsitesApi from '../remote/CampsitesApi'
@@ -45,8 +46,8 @@ function* getCampgroundAvailabilityGenerator({
   const selectorCampgrounds: Campground[] = yield select(campsitesSelectors.getCampgrounds)
   const campgrounds: Campground[] = cloneDeep(selectorCampgrounds)
 
-  const startMonth = moment(startDate).get('month')
-  const endMonth = moment(endDate).get('month')
+  const startMonth = getMonth(startDate)
+  const endMonth = getMonth(endDate)
   /* Adding another +1 to endMonth because range is not inclusive */
   const monthRange = range(startMonth, endMonth + 1)
   for (const recreationArea of recreationAreas) {
@@ -104,7 +105,6 @@ function insertOrUpdateCampground(campgrounds: Campground[], campgroundsToAdd: C
       )
     } else {
       campgrounds.push(campground)
-      console.log(campgrounds)
     }
   }
 }
@@ -114,7 +114,7 @@ function* getCampsitesAvailability(campsites: Campsite[], entity_id: string, sta
     const campsitesObj: { campsites: { [entry: string]: Campsite } } = yield call(
       CampsitesApi.getCampgroundAvailablity,
       entity_id,
-      moment(startDate).set('month', month).valueOf(),
+      setMonth(startDate, month).valueOf(),
     )
 
     const campsiteMap = cloneDeep(campsitesObj['campsites'])

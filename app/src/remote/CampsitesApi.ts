@@ -1,5 +1,5 @@
 import axios from 'axios'
-import moment from 'moment'
+import format from 'date-fns/format'
 
 import { Campsite } from '../store/campsites'
 import { RestManager } from './RestManager'
@@ -42,9 +42,9 @@ export default class CampsitesApi {
 
   public static async getCampgroundAvailablity(entity_id: string, startDate: number): Promise<Campsite[]> {
     return rest.get(
-      `camps/availability/campground/${entity_id}/month?start_date=${moment(startDate)
-        .format('YYYY-MM-01')
-        .concat(encodeURIComponent('T00:00:00.000Z'))}`,
+      `camps/availability/campground/${entity_id}/month?start_date=${format(startDate, 'yyyy-MM-01').concat(
+        encodeURIComponent('T00:00:00.000Z'),
+      )}`,
     )
   }
 }

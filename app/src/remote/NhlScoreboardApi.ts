@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import moment from 'moment'
+import format from 'date-fns/format'
 
 import { RestManager } from './RestManager'
 
@@ -12,7 +12,7 @@ const statsApiRestManager = new RestManager(statsApiAxios)
 
 export default class NhlScoreboardApi {
   public static async getGames(gameDate: number) {
-    const date: string = moment(gameDate).format('YYYY-MM-DD')
+    const date: string = format(gameDate, 'yyyy-MM-dd')
     const config: AxiosRequestConfig = {
       params: {
         startDate: date,

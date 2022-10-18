@@ -301,6 +301,7 @@ export enum AbstractGameState {
 }
 
 export enum DetailedGameState {
+  SCHEDULED = 'Scheduled',
   IN_PROGRESS = 'In Progress',
   IN_PROGRESS_CRITICAL = 'In Progress - Critical',
   FINAL = 'Final',
