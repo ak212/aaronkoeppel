@@ -1,30 +1,89 @@
+import * as L from 'leaflet'
 import startCase from 'lodash/startCase'
 import uniqueId from 'lodash/uniqueId'
 import React from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
-
-import { Campground, campgroundsToLocations, getLeafletProps } from '../../store/campgrounds'
+import { Campground, DaysOfWeek } from '../../store/campgrounds'
+import {
+  campgroundAvailabileFully,
+  campgroundAvailabilePartially,
+  campgroundsToLocations,
+  getLeafletProps,
+} from './utils'
 
 interface Props {
+  advancedDate: boolean
   campgrounds: Campground[]
+  daysOfWeek: DaysOfWeek
+  endDate: number
+  startDate: number
 }
 
-export const CampgroundMap = ({ campgrounds }: Props): JSX.Element | null => {
+const greenIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+})
+
+const greyIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+})
+
+const yellowIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+})
+
+interface CampgroundMarkerProps {
+  advancedDate: boolean
+  campground: Campground
+  daysOfWeek: DaysOfWeek
+  endDate: number
+  startDate: number
+}
+
+const CampgroundMarker = ({ advancedDate, campground, daysOfWeek, endDate, startDate }: CampgroundMarkerProps) => {
+  const icon = campgroundAvailabileFully(startDate, endDate, advancedDate, daysOfWeek, campground)
+    ? greenIcon
+    : campgroundAvailabilePartially(startDate, endDate, advancedDate, daysOfWeek, campground)
+    ? yellowIcon
+    : greyIcon
+
+  return (
+    <Marker key={uniqueId()} position={[campground.facility_latitude, campground.facility_longitude]} icon={icon}>
+      <Popup>
+        <h3>{startCase(campground.facility_name.toLowerCase())}</h3>
+        <br />
+        {campground.facility_type}
+      </Popup>
+    </Marker>
+  )
+}
+
+export const CampgroundMap = ({
+  advancedDate,
+  campgrounds,
+  daysOfWeek,
+  endDate,
+  startDate,
+}: Props): JSX.Element | null => {
   const filteredCampgrounds: Campground[] = campgrounds.filter(
     campground => campground.facility_latitude !== undefined && campground.facility_longitude !== undefined,
   )
+
   if (filteredCampgrounds.length > 0) {
-    const markers = filteredCampgrounds.map(campground => {
-      return (
-        <Marker key={uniqueId()} position={[campground.facility_latitude, campground.facility_longitude]}>
-          <Popup>
-            <h3>{startCase(campground.facility_name.toLowerCase())}</h3>
-            <br />
-            {campground.facility_type}
-          </Popup>
-        </Marker>
-      )
-    })
     return (
       <MapContainer
         {...getLeafletProps(campgroundsToLocations(campgrounds))}
@@ -34,7 +93,16 @@ export const CampgroundMap = ({ campgrounds }: Props): JSX.Element | null => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        {markers}
+        {filteredCampgrounds.map(campground => (
+          <CampgroundMarker
+            key={uniqueId()}
+            campground={campground}
+            startDate={startDate}
+            endDate={endDate}
+            advancedDate={advancedDate}
+            daysOfWeek={daysOfWeek}
+          />
+        ))}
       </MapContainer>
     )
   } else {

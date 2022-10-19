@@ -40,7 +40,7 @@ export const WeekdayPicker = ({ daysOfWeek, toggleSelectedDaysOfWeek }: Props) =
       />
       <WeekdayButton
         onClick={() => toggleSelectedDaysOfWeek(DayOfWeek.MONDAY)}
-        variant={daysOfWeek.sunday ? 'contained' : 'outlined'}
+        variant={daysOfWeek.monday ? 'contained' : 'outlined'}
         label={'M'}
       />
       <WeekdayButton

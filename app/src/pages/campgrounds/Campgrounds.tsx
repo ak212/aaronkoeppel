@@ -263,15 +263,27 @@ const Campgrounds = (): JSX.Element => {
             Get campsites
           </Button>
         </Box>
-        <CampgroundAvailabilityTable
-          advancedDate={advancedDate}
-          campgrounds={campgrounds.sort((a: Campground, b: Campground) => (a.facility_name > b.facility_name ? 1 : -1))}
-          daysOfWeek={daysOfWeek}
-          loading={loading}
-          endDate={endDate}
-          startDate={startDate}
-        />
-        <CampgroundMap campgrounds={campgrounds} />
+        {startDate && endDate && (
+          <>
+            <CampgroundAvailabilityTable
+              advancedDate={advancedDate}
+              campgrounds={campgrounds.sort((a: Campground, b: Campground) =>
+                a.facility_name > b.facility_name ? 1 : -1,
+              )}
+              daysOfWeek={daysOfWeek}
+              loading={loading}
+              endDate={endDate}
+              startDate={startDate}
+            />
+            <CampgroundMap
+              campgrounds={campgrounds}
+              startDate={startDate}
+              endDate={endDate}
+              advancedDate={advancedDate}
+              daysOfWeek={daysOfWeek}
+            />
+          </>
+        )}
       </Box>
     </Box>
   )
