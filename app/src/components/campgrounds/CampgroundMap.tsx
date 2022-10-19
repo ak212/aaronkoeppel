@@ -26,7 +26,10 @@ export const CampgroundMap = ({ campgrounds }: Props): JSX.Element | null => {
       )
     })
     return (
-      <MapContainer {...getLeafletProps(campgroundsToLocations(campgrounds))} style={{ height: '40vh' }}>
+      <MapContainer
+        {...getLeafletProps(campgroundsToLocations(campgrounds))}
+        style={{ height: '40vh', borderRadius: '4px' }}
+      >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
