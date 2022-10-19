@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { slide as Menu } from 'react-burger-menu'
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom'
 
 import { Calculator } from './components/calculator/Calculator'
-import { Campsites } from './components/campgrounds/Campsites'
-import { YoutubePlayer } from './components/droneVideos/YoutubePlayer'
 import { MainPage } from './components/MainPage'
-import { NhlScoreboard } from './components/nhlScoreboard/NhlScoreboard'
+
+const YoutubePlayer = React.lazy(() => import('./components/droneVideos/YoutubePlayer'))
+const Campsites = React.lazy(() => import('./components/campgrounds/Campsites'))
+const NhlScoreboard = React.lazy(() => import('./components/nhlScoreboard/NhlScoreboard'))
 
 export const AppRouter = (): JSX.Element => {
   return (
@@ -19,13 +20,15 @@ export const AppRouter = (): JSX.Element => {
         <Link to="/nhl-scoreboard">NHL Scoreboard</Link>
       </Menu>
 
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/calculator/" element={<Calculator />} />
-        <Route path="/drone-videos/" element={<YoutubePlayer />} />
-        <Route path="/campsites/" element={<Campsites />} />
-        <Route path="/nhl-scoreboard/" element={<NhlScoreboard />} />
-      </Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/calculator/" element={<Calculator />} />
+          <Route path="/drone-videos/" element={<YoutubePlayer />} />
+          <Route path="/campsites/" element={<Campsites />} />
+          <Route path="/nhl-scoreboard/" element={<NhlScoreboard />} />
+        </Routes>
+      </Suspense>
     </Router>
   )
 }

@@ -15,7 +15,7 @@ interface Props {
 const formatIntermissionTime = (seconds: number) => {
   const minutes = secondsToMinutes(seconds)
   const remainingSeconds = seconds - 60 * minutes
-  return `${minutes}:${remainingSeconds}`
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
 }
 
 export const NhlGameOuterCard = ({ game }: Props): JSX.Element => {
