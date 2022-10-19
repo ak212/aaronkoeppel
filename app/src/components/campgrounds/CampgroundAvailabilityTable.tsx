@@ -8,31 +8,22 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
-import add from 'date-fns/add'
 import format from 'date-fns/format'
-import getDay from 'date-fns/getDay'
 import parseISO from 'date-fns/parseISO'
-import toDate from 'date-fns/toDate'
 import startCase from 'lodash/startCase'
 import uniqueId from 'lodash/uniqueId'
 import React from 'react'
 
-import {
-  Campground,
-  DaysOfWeek,
-  numDaysSelected,
-  ReservationStatus,
-  ReservationType,
-  showDayOfWeek,
-} from '../../store/campgrounds'
+import { Campground, DaysOfWeek, ReservationType } from '../../store/campgrounds'
+import { campsitesAvailabilityRange, getDates } from './utils'
 
 type Props = {
   advancedDate: boolean
   campgrounds: Campground[]
   daysOfWeek: DaysOfWeek
   loading: boolean
-  endDate?: number
-  startDate?: number
+  endDate: number
+  startDate: number
 }
 
 /**
@@ -50,58 +41,20 @@ export const CampgroundAvailabilityTable = ({
   startDate,
 }: Props): JSX.Element | null => {
   /**
-   * Get the individual days based on the date range.
-   *
-   * @returns {string[]}
-   */
-  const getDates = (): string[] => {
-    const days: string[] = []
-    for (let d = startDate!; d < endDate!; d = add(toDate(d), { days: 1 }).valueOf()) {
-      days.push(format(d, 'yyyy-MM-dd').concat('T00:00:00Z'))
-    }
-
-    return days
-  }
-
-  /**
-   * Creates a map between a date in the start/end range and the number of available campsites.
-   *
-   * @param {Campground} campground
-   * @returns {Map<string, number>}
-   */
-  const campsitesAvailabilityRange = (campground: Campground): Map<string, number> => {
-    const days: string[] = getDates()
-    const availabilities: Map<string, number> = new Map()
-    for (const day of days) {
-      let avail = 0
-      if (campground.campsites) {
-        for (const campsite of campground.campsites) {
-          const statusMap: Map<string, ReservationStatus> = new Map(Object.entries(campsite.availabilities))
-          if (statusMap.get(day) === ReservationStatus.AVAILABLE) {
-            avail += 1
-          }
-        }
-      }
-      availabilities.set(format(new Date(day.replace('T00:00:00Z', '')), 'dd MMM yyyy'), avail)
-    }
-    return availabilities
-  }
-
-  /**
    * Creates a row in the table for a campground.
    *
    * @param {Campground} campground
    * @returns {JSX.Element}
    */
   const campgroundToTableRow = (campground: Campground): JSX.Element => {
-    const campgroundAvailability: Map<string, number> = campsitesAvailabilityRange(campground)
-    if (advancedDate && numDaysSelected(daysOfWeek) > 0) {
-      for (const k of campgroundAvailability.keys()) {
-        if (!showDayOfWeek(daysOfWeek, getDay(new Date(k)))) {
-          campgroundAvailability.delete(k)
-        }
-      }
-    }
+    const campgroundAvailability: Map<string, number> = campsitesAvailabilityRange(
+      startDate,
+      endDate,
+      advancedDate,
+      daysOfWeek,
+      campground,
+    )
+
     return (
       <TableRow key={uniqueId()}>
         <TableCell component="th" scope="row">
@@ -146,17 +99,11 @@ export const CampgroundAvailabilityTable = ({
           <TableHead>
             <TableRow>
               <TableCell>Campground</TableCell>
-              {getDates()
-                .filter(date => {
-                  return advancedDate && numDaysSelected(daysOfWeek) > 0
-                    ? showDayOfWeek(daysOfWeek, getDay(new Date(date)))
-                    : true
-                })
-                .map(date => (
-                  <TableCell key={uniqueId()}>
-                    {format(parseISO(date.replace('T00:00:00Z', '')), 'dd MMM yyyy')}
-                  </TableCell>
-                ))}
+              {getDates(startDate, endDate, advancedDate, daysOfWeek).map(date => (
+                <TableCell key={uniqueId()}>
+                  {format(parseISO(date.replace('T00:00:00Z', '')), 'dd MMM yyyy')}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>{campgrounds.map(campgroundToTableRow)}</TableBody>
