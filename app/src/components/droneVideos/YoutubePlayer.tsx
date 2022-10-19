@@ -27,7 +27,7 @@ const style = {
   },
 } as const
 
-export const YoutubePlayer = (): JSX.Element => {
+const YoutubePlayer = (): JSX.Element => {
   const [youtubeIdIndex, setYoutubeIdIndex] = useState<number>(0)
 
   const onForwardClick = () => {
@@ -68,3 +68,5 @@ export const YoutubePlayer = (): JSX.Element => {
     </Box>
   )
 }
+
+export default YoutubePlayer

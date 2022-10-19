@@ -19,6 +19,7 @@ import { loadingSelectors } from '../../state/Loading'
 import { RootState } from '../../state/store'
 import { getGames, NhlGame, nhlScoreboardSelectors } from '../../store/nhlScoreboard'
 import { NhlGameCard } from './NhlGameCard'
+import { NhlTeamLogo } from './NhlTeamLogo'
 
 const MILLISECOND = 1000
 const MINUTE = 60
@@ -39,7 +40,7 @@ const noGameInProgress = (games: NhlGame[]): boolean => {
   return games.every(game => ['1', '7'].includes(game.status.statusCode))
 }
 
-export const NhlScoreboard = (): JSX.Element => {
+const NhlScoreboard = (): JSX.Element => {
   const { enqueueSnackbar } = useSnackbar()
   const maxWidth620: boolean = useMediaQuery('(max-width:620px)')
 
@@ -82,14 +83,9 @@ export const NhlScoreboard = (): JSX.Element => {
               <Grid container direction="row" alignContent="center">
                 <Typography
                   paragraph
-                  style={{ marginBottom: '2px' }}
+                  sx={{ marginBottom: '2px' }}
                 >{`${scoringPlay.about.periodTimeRemaining}`}</Typography>
-                <CardMedia
-                  sx={{ width: 22, height: 16, margin: 2.5 }}
-                  component="img"
-                  image={`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${scoringPlay.team.id}.svg`}
-                  title={`${scoringPlay.team.name} Logo`}
-                />
+                <NhlTeamLogo size="x-small" teamId={scoringPlay.team.id} teamName={scoringPlay.team.name} />
                 <Typography paragraph style={{ marginBottom: '2px' }}>{`${scoringPlay.result.description}`}</Typography>
               </Grid>,
               {
@@ -203,3 +199,5 @@ export const NhlScoreboard = (): JSX.Element => {
     </>
   )
 }
+
+export default NhlScoreboard

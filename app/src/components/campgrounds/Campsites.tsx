@@ -32,7 +32,7 @@ import { CampgroundDates } from './CampgroundDates'
 import { CampgroundMap } from './CampgroundMap'
 import { CampgroundSearchbar } from './CampgroundSearchbar'
 
-export const Campsites = (): JSX.Element => {
+const Campsites = (): JSX.Element => {
   /* Props */
   const campgrounds: Campground[] = useAppSelector((state: RootState) =>
     campsitesSelectors.getCampgrounds(state),
@@ -210,17 +210,17 @@ export const Campsites = (): JSX.Element => {
   }
 
   return (
-    <Box>
+    <Box sx={{ justifyContent: 'center' }}>
       <Box
         sx={{
           display: 'grid',
           gridGap: '1vw 1vh',
           justifyContent: 'center',
           color: 'white',
-          '@media (min-width: 801px)': {
+          '@media (min-width: 901px)': {
             gridTemplateColumns: '50vw',
           },
-          '@media (max-width: 800px)': {
+          '@media (max-width: 900px)': {
             gridTemplateColumns: '80vw',
             gridGap: '2vh',
           },
@@ -242,14 +242,25 @@ export const Campsites = (): JSX.Element => {
           advancedToggle={advancedToggle}
           toggleSelectedDaysOfWeek={toggleSelectedDaysOfWeek}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={selectedRecAreas.length === 0}
-          onClick={getCampsitesOnClick}
-        >
-          Get campsites
-        </Button>
+        <Box sx={{ justifyContent: 'center' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={selectedRecAreas.length === 0}
+            sx={{
+              '@media (min-width: 901px)': {
+                maxWidth: '25em',
+                width: '16vw',
+              },
+              '@media (max-width: 900px)': {
+                width: '75vw',
+              },
+            }}
+            onClick={getCampsitesOnClick}
+          >
+            Get campsites
+          </Button>
+        </Box>
         <CampgroundAvailabilityTable
           advancedDate={advancedDate}
           campgrounds={campgrounds.sort((a: Campground, b: Campground) => (a.facility_name > b.facility_name ? 1 : -1))}
@@ -263,3 +274,5 @@ export const Campsites = (): JSX.Element => {
     </Box>
   )
 }
+
+export default Campsites
