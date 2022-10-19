@@ -6,7 +6,7 @@ import uniqueId from 'lodash/uniqueId'
 import React from 'react'
 import { useAppSelector } from '../../state/hooks'
 import { RootState } from '../../state/store'
-import { campsitesSelectors, EntityType, isRecreationArea, RecreationArea } from '../../store/campsites'
+import { campsitesSelectors, EntityType, isRecreationArea, RecreationArea } from '../../store/campgrounds'
 import { CampgroundIcon } from '../icons/CampgroundIcon'
 import { RecreationAreaIcon } from '../icons/RecreationAreaIcon'
 

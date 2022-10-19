@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
 
-import { campsitesReducer } from '../store/campsites'
-import { nhlScoreboardReducer } from '../store/nhlScoreboard/'
-import loadingReducer from './Loading'
+import { campsitesReducer } from '../store/campgrounds'
+import { nhlScoreboardReducer } from '../store/nhl-scoreboard'
+import loadingReducer from './loading'
 
 export const sagaMiddleware = createSagaMiddleware()
 

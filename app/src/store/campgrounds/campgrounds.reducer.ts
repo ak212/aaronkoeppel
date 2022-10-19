@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { getAutocompleteSuccess, setCampgrounds } from './Campsites.actions'
+import { getAutocompleteSuccess, setCampgrounds } from './campgrounds.actions'
 
-import { initialCampsitesState } from './Campsites.types'
+import { initialCampsitesState } from './campgrounds.types'
 
 export const campsitesReducer = createReducer(initialCampsitesState, builder => {
   builder

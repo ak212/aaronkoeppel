@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import React from 'react'
 
-import { DayOfWeek, DaysOfWeek } from '../../store/campsites'
+import { DayOfWeek, DaysOfWeek } from '../../store/campgrounds'
 import { WeekdayButton } from './WeekdayButton'
 
 interface Props {

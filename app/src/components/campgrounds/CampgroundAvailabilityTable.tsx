@@ -17,7 +17,7 @@ import startCase from 'lodash/startCase'
 import uniqueId from 'lodash/uniqueId'
 import React from 'react'
 
-import { Campground, DaysOfWeek, ReservationStatus, ReservationType, showDayOfWeek } from '../../store/campsites'
+import { Campground, DaysOfWeek, ReservationStatus, ReservationType, showDayOfWeek } from '../../store/campgrounds'
 
 type Props = {
   advancedDate: boolean

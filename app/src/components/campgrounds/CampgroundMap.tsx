@@ -3,7 +3,7 @@ import uniqueId from 'lodash/uniqueId'
 import React from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 
-import { Campground, campgroundsToLocations, getLeafletProps } from '../../store/campsites'
+import { Campground, campgroundsToLocations, getLeafletProps } from '../../store/campgrounds'
 
 interface Props {
   campgrounds: Campground[]

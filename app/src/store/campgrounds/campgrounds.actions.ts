@@ -1,15 +1,16 @@
 import { createAction } from '@reduxjs/toolkit'
-import { Campground, CampgroundRA, RecreationArea } from './Campsites.types'
+import { Campground, CampgroundRA, RecreationArea } from './campgrounds.types'
 
 /* Action Definition */
-export const GET_CAMPSITES = 'GET_CAMPSITES'
-export const GET_CAMPSITES_SUCCESS = 'GET_CAMPSITES_SUCCESS'
-export const SET_CAMPGROUNDS = 'SET_CAMPSITES'
-export const SET_RECREATION_AREAS = 'SET_RECREATION_AREAS'
-export const GET_CAMPGROUND_AVAILABILITY = 'GET_CAMPGROUND_AVAILABILITY'
-export const GET_CAMPGROUND_AVAILABILITY_SUCCESS = 'GET_CAMPGROUND_AVAILABILITY_SUCCESS'
-export const GET_AUTOCOMPLETE = 'GET_AUTOCOMPLETE'
-export const GET_AUTOCOMPLETE_SUCCESS = 'GET_AUTOCOMPLETE_SUCCESS'
+const PREFIX = 'campgrounds'
+export const GET_CAMPSITES = `${PREFIX}/getCampsites`
+export const GET_CAMPSITES_SUCCESS = `${PREFIX}/getCampsitesSuccess`
+export const SET_CAMPGROUNDS = `${PREFIX}/setCampsites`
+export const SET_RECREATION_AREAS = `${PREFIX}/setRecreationAreas`
+export const GET_CAMPGROUND_AVAILABILITY = `${PREFIX}/getCampgroundAvailability`
+export const GET_CAMPGROUND_AVAILABILITY_SUCCESS = `${PREFIX}/getCampgroundAvailabilitySuccess`
+export const GET_AUTOCOMPLETE = `${PREFIX}/getAutoComplete`
+export const GET_AUTOCOMPLETE_SUCCESS = `${PREFIX}/getAutoCompleteSuccess`
 
 export const getCampsites = createAction(GET_CAMPSITES, function prepare(entity_id: string) {
   return {
