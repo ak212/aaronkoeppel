@@ -5,7 +5,7 @@ import React from 'react'
 
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { DayOfWeek, DaysOfWeek } from '../../store/campsites'
+import { DayOfWeek, DaysOfWeek } from '../../store/campgrounds'
 import { WeekdayPicker } from '../common/WeekdayPicker'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'

@@ -28,7 +28,7 @@ import {
   setCampgrounds,
   setRecreationAreas,
   SET_RECREATION_AREAS,
-} from '../store/campsites'
+} from '../store/campgrounds'
 
 const emptyRecreationAreas: RecreationArea[] = []
 

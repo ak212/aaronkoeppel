@@ -21,7 +21,7 @@ import {
   ScoringPlay,
   ScoringPlayCode,
   ScoringPlayPlayerType,
-} from '../../store/nhlScoreboard'
+} from '../../store/nhl-scoreboard'
 import { NhlHighlightCard } from './NhlHighlightCard'
 import { NhlTeamLogo } from './NhlTeamLogo'
 

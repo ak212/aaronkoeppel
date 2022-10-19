@@ -11,6 +11,12 @@ import isBefore from 'date-fns/isBefore'
 import isSameDay from 'date-fns/isSameDay'
 import parseISO from 'date-fns/parseISO'
 import setMonth from 'date-fns/setMonth'
+import {
+  CampgroundAvailabilityTable,
+  CampgroundDates,
+  CampgroundMap,
+  CampgroundSearchbar,
+} from '../../components/campgrounds'
 import { useAppDispatch, useAppSelector } from '../../state/hooks'
 import { loadingSelectors } from '../../state/Loading'
 import { RootState } from '../../state/store'
@@ -26,13 +32,9 @@ import {
   RecreationArea,
   ReservationStatus,
   setRecreationAreas,
-} from '../../store/campsites'
-import { CampgroundAvailabilityTable } from './CampgroundAvailabilityTable'
-import { CampgroundDates } from './CampgroundDates'
-import { CampgroundMap } from './CampgroundMap'
-import { CampgroundSearchbar } from './CampgroundSearchbar'
+} from '../../store/campgrounds'
 
-const Campsites = (): JSX.Element => {
+const Campgrounds = (): JSX.Element => {
   /* Props */
   const campgrounds: Campground[] = useAppSelector((state: RootState) =>
     campsitesSelectors.getCampgrounds(state),
@@ -275,4 +277,4 @@ const Campsites = (): JSX.Element => {
   )
 }
 
-export default Campsites
+export default Campgrounds

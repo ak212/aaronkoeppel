@@ -1,3 +1,4 @@
+import { Skeleton } from '@mui/material'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import Fade from '@mui/material/Fade'
@@ -12,13 +13,12 @@ import { AnyAction } from '@reduxjs/toolkit'
 import uniqueId from 'lodash/uniqueId'
 import { useSnackbar } from 'notistack'
 import React, { Dispatch, MutableRefObject, useCallback, useEffect, useRef, useState } from 'react'
+import { NhlGameCard, NhlTeamLogo } from '../../components/nhl-scoreboard'
 import { useAppDispatch, useAppSelector } from '../../state/hooks'
 
 import { loadingSelectors } from '../../state/Loading'
 import { RootState } from '../../state/store'
-import { getGames, NhlGame, nhlScoreboardSelectors } from '../../store/nhlScoreboard'
-import { NhlGameCard } from './NhlGameCard'
-import { NhlTeamLogo } from './NhlTeamLogo'
+import { getGames, NhlGame, nhlScoreboardSelectors } from '../../store/nhl-scoreboard'
 
 const MILLISECOND = 1000
 const MINUTE = 60
@@ -179,10 +179,38 @@ const NhlScoreboard = (): JSX.Element => {
         spacing={2}
         style={{ marginTop: '1vh', width: '100%', minHeight: '70vh' }}
       >
-        {games.map(game => (
-          <NhlGameCard key={uniqueId()} game={game} showAllExpanded={showAllExpanded} />
-        ))}
-        {games.length === 0 && <Alert severity="warning">No games scheduled on the date you selected.</Alert>}
+        {loading && (
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              marginTop: '2vh',
+              height: '50vh',
+              '@media (min-width: 1280px)': {
+                width: 1000,
+              },
+              '@media (max-width: 1279px)': {
+                width: 800,
+              },
+              '@media (max-width: 1000px)': {
+                width: 650,
+              },
+              '@media (max-width: 850px)': {
+                width: 500,
+              },
+              '@media (max-width: 620px)': {
+                width: 350,
+              },
+            }}
+          />
+        )}
+        {!loading && (
+          <>
+            {games.map(game => (
+              <NhlGameCard key={uniqueId()} game={game} showAllExpanded={showAllExpanded} />
+            ))}
+            {games.length === 0 && <Alert severity="warning">No games scheduled on the date you selected.</Alert>}
+          </>
+        )}
       </Grid>
 
       <Snackbar

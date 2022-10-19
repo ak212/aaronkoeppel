@@ -1,7 +1,7 @@
 import axios from 'axios'
 import format from 'date-fns/format'
 
-import { Campsite } from '../store/campsites'
+import { Campsite } from '../store/campgrounds'
 import { RestManager } from './RestManager'
 
 const PROXY_URL = 'https://cors-anywhere-49a7m0q7vcpoxggi.herokuapp.com'

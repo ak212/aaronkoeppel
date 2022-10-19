@@ -5,7 +5,7 @@ import format from 'date-fns/format'
 import secondsToMinutes from 'date-fns/secondsToMinutes'
 import React from 'react'
 
-import { DetailedGameState, NhlGame } from '../../store/nhlScoreboard'
+import { DetailedGameState, NhlGame } from '../../store/nhl-scoreboard'
 import { NhlTeamLogo } from './NhlTeamLogo'
 
 interface Props {
@@ -37,7 +37,7 @@ export const NhlGameOuterCard = ({ game }: Props): JSX.Element => {
           {game.status.detailedState}
         </Grid>
       )
-    } else if (game.status.detailedState === DetailedGameState.SCHEDULED) {
+    } else if ([DetailedGameState.SCHEDULED, DetailedGameState.PRE_GAME].includes(game.status.detailedState)) {
       return format(new Date(game.gameDate), 'h:mm aa')
     } else if (game.linescore.currentPeriod !== 0) {
       if (game.linescore.currentPeriodTimeRemaining === 'END') {

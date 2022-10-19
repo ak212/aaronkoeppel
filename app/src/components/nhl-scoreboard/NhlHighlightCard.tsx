@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import uniqueId from 'lodash/uniqueId'
 import React from 'react'
 
-import { Highlight, HIGHLIGHT_PLAYBACK_NAME } from '../../store/nhlScoreboard'
+import { Highlight, HIGHLIGHT_PLAYBACK_NAME } from '../../store/nhl-scoreboard'
 
 type Props = {
   highlight: Highlight

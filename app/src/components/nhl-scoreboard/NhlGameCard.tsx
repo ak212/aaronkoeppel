@@ -4,7 +4,7 @@ import Collapse from '@mui/material/Collapse'
 import Grid from '@mui/material/Grid'
 import React, { useEffect, useState } from 'react'
 
-import { AbstractGameState, NhlGame } from '../../store/nhlScoreboard'
+import { AbstractGameState, NhlGame } from '../../store/nhl-scoreboard'
 import { NhlGameInnerCard } from './NhlGameInnerCard'
 import { NhlGameOuterCard } from './NhlGameOuterCard'
 
@@ -83,6 +83,10 @@ export const NhlGameCard = (props: Props): JSX.Element => {
   }
 
   return (
-    <Grid item>{props.game.linescore.currentPeriod !== 0 ? clickableWrapper(gameScoreCard()) : gameScoreCard()}</Grid>
+    <Grid item>
+      {props.game.status.abstractGameState !== AbstractGameState.PREVIEW
+        ? clickableWrapper(gameScoreCard())
+        : gameScoreCard()}
+    </Grid>
   )
 }

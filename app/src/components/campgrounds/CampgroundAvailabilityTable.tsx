@@ -17,7 +17,14 @@ import startCase from 'lodash/startCase'
 import uniqueId from 'lodash/uniqueId'
 import React from 'react'
 
-import { Campground, DaysOfWeek, ReservationStatus, ReservationType, showDayOfWeek } from '../../store/campsites'
+import {
+  Campground,
+  DaysOfWeek,
+  numDaysSelected,
+  ReservationStatus,
+  ReservationType,
+  showDayOfWeek,
+} from '../../store/campgrounds'
 
 type Props = {
   advancedDate: boolean
@@ -88,7 +95,7 @@ export const CampgroundAvailabilityTable = ({
    */
   const campgroundToTableRow = (campground: Campground): JSX.Element => {
     const campgroundAvailability: Map<string, number> = campsitesAvailabilityRange(campground)
-    if (advancedDate) {
+    if (advancedDate && numDaysSelected(daysOfWeek) > 0) {
       for (const k of campgroundAvailability.keys()) {
         if (!showDayOfWeek(daysOfWeek, getDay(new Date(k)))) {
           campgroundAvailability.delete(k)
@@ -141,7 +148,9 @@ export const CampgroundAvailabilityTable = ({
               <TableCell>Campground</TableCell>
               {getDates()
                 .filter(date => {
-                  return advancedDate ? showDayOfWeek(daysOfWeek, getDay(new Date(date))) : true
+                  return advancedDate && numDaysSelected(daysOfWeek) > 0
+                    ? showDayOfWeek(daysOfWeek, getDay(new Date(date)))
+                    : true
                 })
                 .map(date => (
                   <TableCell key={uniqueId()}>

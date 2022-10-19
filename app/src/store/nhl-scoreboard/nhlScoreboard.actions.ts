@@ -1,9 +1,10 @@
 import { createAction } from '@reduxjs/toolkit'
-import { NhlGame } from './NhlScoreboard.types'
+import { NhlGame } from './nhlScoreboard.types'
 
 /* Action Definition */
-export const GET_GAMES = 'GET_GAMES'
-export const GET_GAMES_SUCCESS = 'GET_GAMES_SUCCESS'
+const PREFIX = 'nhlScoreboard'
+export const GET_GAMES = `${PREFIX}/getGames`
+export const GET_GAMES_SUCCESS = `${PREFIX}/getGamesSuccess`
 
 export const getGames = createAction(GET_GAMES, function prepare(gameDate: number) {
   return {
