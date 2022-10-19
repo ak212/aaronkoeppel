@@ -1,6 +1,5 @@
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
-import CardMedia from '@mui/material/CardMedia'
 import Fade from '@mui/material/Fade'
 import Grid from '@mui/material/Grid'
 import Snackbar from '@mui/material/Snackbar'
