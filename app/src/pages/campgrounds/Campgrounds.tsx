@@ -18,7 +18,7 @@ import {
   CampgroundSearchbar,
 } from '../../components/campgrounds'
 import { useAppDispatch, useAppSelector } from '../../state/hooks'
-import { loadingSelectors } from '../../state/loading'
+import { loadingSelectors } from '../../state/Loading'
 import { RootState } from '../../state/store'
 import {
   Campground,

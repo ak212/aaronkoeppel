@@ -5,7 +5,7 @@ import range from 'lodash/range'
 import { all, call, delay, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
 
 import CampsitesApi from '../remote/CampsitesApi'
-import { finishLoading, startLoading } from '../state/loading'
+import { finishLoading, startLoading } from '../state/Loading'
 import {
   Campground,
   CampgroundRA,

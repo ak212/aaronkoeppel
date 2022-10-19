@@ -16,7 +16,7 @@ import React, { Dispatch, MutableRefObject, useCallback, useEffect, useRef, useS
 import { NhlGameCard, NhlTeamLogo } from '../../components/nhl-scoreboard'
 import { useAppDispatch, useAppSelector } from '../../state/hooks'
 
-import { loadingSelectors } from '../../state/loading'
+import { loadingSelectors } from '../../state/Loading'
 import { RootState } from '../../state/store'
 import { getGames, NhlGame, nhlScoreboardSelectors } from '../../store/nhl-scoreboard'
 

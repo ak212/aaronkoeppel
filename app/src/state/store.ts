@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga'
 
 import { campsitesReducer } from '../store/campgrounds'
 import { nhlScoreboardReducer } from '../store/nhl-scoreboard'
-import loadingReducer from './loading'
+import loadingReducer from './Loading'
 
 export const sagaMiddleware = createSagaMiddleware()
 

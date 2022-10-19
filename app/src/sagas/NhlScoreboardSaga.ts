@@ -1,7 +1,7 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects'
 
 import NhlScoreboardApi from '../remote/NhlScoreboardApi'
-import { finishLoading, startLoading } from '../state/loading'
+import { finishLoading, startLoading } from '../state/Loading'
 import { getGames, getGamesSuccess, GET_GAMES, NhlScoreboardResponse } from '../store/nhl-scoreboard'
 
 function* getGamesGenerator({ payload: { gameDate } }: ReturnType<typeof getGames>) {
