@@ -17,6 +17,8 @@ interface Props {
   daysOfWeek: DaysOfWeek
   endDate: number
   startDate: number
+
+  onClick(facilityId: string): void
 }
 
 const greenIcon = new L.Icon({
@@ -52,9 +54,18 @@ interface CampgroundMarkerProps {
   daysOfWeek: DaysOfWeek
   endDate: number
   startDate: number
+
+  onClick(facilityId: string): void
 }
 
-const CampgroundMarker = ({ advancedDate, campground, daysOfWeek, endDate, startDate }: CampgroundMarkerProps) => {
+const CampgroundMarker = ({
+  advancedDate,
+  campground,
+  daysOfWeek,
+  endDate,
+  startDate,
+  onClick,
+}: CampgroundMarkerProps) => {
   const icon = campgroundAvailabileFully(startDate, endDate, advancedDate, daysOfWeek, campground)
     ? greenIcon
     : campgroundAvailabilePartially(startDate, endDate, advancedDate, daysOfWeek, campground)
@@ -62,7 +73,16 @@ const CampgroundMarker = ({ advancedDate, campground, daysOfWeek, endDate, start
     : greyIcon
 
   return (
-    <Marker key={uniqueId()} position={[campground.facility_latitude, campground.facility_longitude]} icon={icon}>
+    <Marker
+      key={campground.facility_id}
+      position={[campground.facility_latitude, campground.facility_longitude]}
+      icon={icon}
+      eventHandlers={{
+        click: () => {
+          onClick(campground.facility_id)
+        },
+      }}
+    >
       <Popup>
         <h3>{startCase(campground.facility_name.toLowerCase())}</h3>
         <br />
@@ -78,6 +98,7 @@ export const CampgroundMap = ({
   daysOfWeek,
   endDate,
   startDate,
+  onClick,
 }: Props): JSX.Element | null => {
   const filteredCampgrounds: Campground[] = campgrounds.filter(
     campground => campground.facility_latitude !== undefined && campground.facility_longitude !== undefined,
@@ -101,6 +122,7 @@ export const CampgroundMap = ({
             endDate={endDate}
             advancedDate={advancedDate}
             daysOfWeek={daysOfWeek}
+            onClick={onClick}
           />
         ))}
       </MapContainer>

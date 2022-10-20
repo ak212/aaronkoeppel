@@ -72,6 +72,7 @@ const Campgrounds = (): JSX.Element => {
   const [endDate, setEndDate] = useState<number | undefined>(add(Date.now(), { days: 1 }).valueOf())
   const [advancedDate, setAdvancedDate] = useState<boolean>(false)
   const [daysOfWeek, setDaysOfWeek] = useState<DaysOfWeek>(initialDaysOfWeek)
+  const [selected, setSelected] = useState<string>('')
 
   /**
    * On click listener to get the the campsite availability for the selected recreation areas for the date range (stateDate -> endDate)
@@ -106,6 +107,10 @@ const Campgrounds = (): JSX.Element => {
       setRecreationAreasCallback(value as RecreationArea[])
       setSelectedRecAreas(value as RecreationArea[])
     }
+  }
+
+  const onMapCampgroundSelect = (campgroundFacilityId: string) => {
+    setSelected(campgroundFacilityId)
   }
 
   /**
@@ -274,6 +279,7 @@ const Campgrounds = (): JSX.Element => {
               loading={loading}
               endDate={endDate}
               startDate={startDate}
+              selected={selected}
             />
             <CampgroundMap
               campgrounds={campgrounds}
@@ -281,6 +287,7 @@ const Campgrounds = (): JSX.Element => {
               endDate={endDate}
               advancedDate={advancedDate}
               daysOfWeek={daysOfWeek}
+              onClick={onMapCampgroundSelect}
             />
           </>
         )}

@@ -24,6 +24,7 @@ type Props = {
   loading: boolean
   endDate: number
   startDate: number
+  selected: string
 }
 
 /**
@@ -39,6 +40,7 @@ export const CampgroundAvailabilityTable = ({
   loading,
   endDate,
   startDate,
+  selected,
 }: Props): JSX.Element | null => {
   /**
    * Creates a row in the table for a campground.
@@ -56,7 +58,7 @@ export const CampgroundAvailabilityTable = ({
     )
 
     return (
-      <TableRow key={uniqueId()}>
+      <TableRow key={uniqueId()} selected={selected === campground.facility_id}>
         <TableCell component="th" scope="row">
           <Typography>
             <Link
@@ -84,12 +86,15 @@ export const CampgroundAvailabilityTable = ({
     )
   }
 
-  const renderTable = () => {
+  if (loading) {
+    return <Skeleton variant="rectangular" sx={{ marginTop: '2vh' }} height={`${37 * (campgrounds.length + 1)}px`} />
+  } else if (campgrounds.length > 0) {
     return (
       <TableContainer
         component={Paper}
         sx={{
           marginTop: '2vh',
+          height: '40vh',
           '@media (min-width: 801px)': {
             gridTemplateColumns: '80vw',
           },
@@ -110,12 +115,6 @@ export const CampgroundAvailabilityTable = ({
         </Table>
       </TableContainer>
     )
-  }
-
-  if (loading) {
-    return <Skeleton variant="rectangular" sx={{ marginTop: '2vh' }} height={`${33 * (campgrounds.length + 1)}px`} />
-  } else if (campgrounds.length > 0) {
-    return renderTable()
   } else {
     return null
   }
