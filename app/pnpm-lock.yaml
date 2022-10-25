@@ -10,7 +10,7 @@ specifiers:
   '@redux-devtools/extension': 3.2.3
   '@reduxjs/toolkit': 1.8.6
   '@types/jest': 24.0.18
-  '@types/leaflet': 1.8.0
+  '@types/leaflet': 1.9.0
   '@types/lodash': 4.14.186
   '@types/node': 18.11.5
   '@types/react': 18.0.21
@@ -75,7 +75,7 @@ dependencies:
 devDependencies:
   '@redux-devtools/extension': 3.2.3_redux@4.2.0
   '@types/jest': 24.0.18
-  '@types/leaflet': 1.8.0
+  '@types/leaflet': 1.9.0
   '@types/lodash': 4.14.186
   '@types/node': 18.11.5
   '@types/react': 18.0.21
@@ -2932,8 +2932,8 @@ packages:
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
 
-  /@types/leaflet/1.8.0:
-    resolution: {integrity: sha512-+sXFmiJTFdhaXXIGFlV5re9AdqtAODoXbGAvxx02e5SHXL3ir7ClP5J7pahO8VmzKY3dth4RUS1nf2BTT+DW1A==}
+  /@types/leaflet/1.9.0:
+    resolution: {integrity: sha512-7LeOSj7EloC5UcyOMo+1kc3S1UT3MjJxwqsMT1d2PTyvQz53w0Y0oSSk9nwZnOZubCmBvpSNGceucxiq+ZPEUw==}
     dependencies:
       '@types/geojson': 7946.0.10
     dev: true
@@ -2992,7 +2992,7 @@ packages:
   /@types/react-leaflet/2.8.2:
     resolution: {integrity: sha512-Iel8Vd1bSCD38Yhiqcmm/+9hjPEdd39LFE3tBMbOytq3QAQsC3LDrbo6ifoh8JbpqPbCsQPo9Wx5OELHixEShg==}
     dependencies:
-      '@types/leaflet': 1.8.0
+      '@types/leaflet': 1.9.0
       '@types/react': 18.0.21
     dev: true
 
