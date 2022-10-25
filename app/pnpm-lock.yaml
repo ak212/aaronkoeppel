@@ -21,7 +21,7 @@ specifiers:
   '@types/react-router-dom': 5.3.3
   '@typescript-eslint/eslint-plugin': 5.39.0
   '@typescript-eslint/parser': 5.39.0
-  axios: 1.1.2
+  axios: 1.1.3
   date-fns: 2.29.3
   eslint: 8.26.0
   eslint-config-prettier: 8.5.0
@@ -56,7 +56,7 @@ dependencies:
   '@mui/material': 5.10.8_ikcgkdnp4bn3rgptamntbhbo7e
   '@mui/x-date-pickers': 5.0.4_yav2f3w5t4hpavni7kp5sfxq3q
   '@reduxjs/toolkit': 1.8.6_kuo2ie247izvzll3jejufdtq3q
-  axios: 1.1.2
+  axios: 1.1.3
   date-fns: 2.29.3
   leaflet: 1.9.2
   lodash: 4.17.21
@@ -3649,8 +3649,8 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
-  /axios/1.1.2:
-    resolution: {integrity: sha512-bznQyETwElsXl2RK7HLLwb5GPpOLlycxHCtrpDR/4RqqBzjARaOTo3jz4IgtntWUYee7Ne4S8UHd92VCuzPaWA==}
+  /axios/1.1.3:
+    resolution: {integrity: sha512-00tXVRwKx/FZr/IDVFt4C+f9FYairX517WoGCL6dpOntqLkZofjhu43F/Xl44UOpqa+9sLFDrG/XAnFsUYgkDA==}
     dependencies:
       follow-redirects: 1.15.2
       form-data: 4.0.0
