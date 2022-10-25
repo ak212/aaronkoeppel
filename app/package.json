@@ -8,7 +8,9 @@
       "build": "react-scripts build",
       "test": "react-scripts test",
       "eject": "react-scripts eject",
-      "lint": "eslint ."
+      "lint": "eslint .",
+      "build-storybook": "build-storybook",
+      "storybook": "start-storybook -p 4201"
    },
    "eslintConfig": {
       "extends": "react-app"
@@ -32,7 +34,7 @@
       "@mui/lab": "5.0.0-alpha.102",
       "@mui/material": "5.10.8",
       "@mui/x-date-pickers": "5.0.4",
-      "@reduxjs/toolkit": "1.8.6",
+      "@reduxjs/toolkit": "^1.8.6",
       "axios": "1.1.2",
       "date-fns": "2.29.3",
       "leaflet": "1.9.2",
@@ -50,7 +52,18 @@
       "source-map-explorer": "2.5.3"
    },
    "devDependencies": {
+      "@babel/core": "^7.19.6",
       "@redux-devtools/extension": "3.2.3",
+      "@storybook/addon-actions": "^6.5.12",
+      "@storybook/addon-essentials": "^6.5.12",
+      "@storybook/addon-interactions": "^6.5.12",
+      "@storybook/addon-links": "^6.5.12",
+      "@storybook/builder-webpack5": "^6.5.12",
+      "@storybook/manager-webpack5": "^6.5.12",
+      "@storybook/preset-create-react-app": "^4.1.2",
+      "@storybook/react": "^6.5.12",
+      "@storybook/testing-library": "^0.0.13",
+      "@testing-library/react": "13.4.0",
       "@types/jest": "24.0.18",
       "@types/leaflet": "1.8.0",
       "@types/lodash": "4.14.186",
@@ -63,6 +76,7 @@
       "@types/react-router-dom": "5.3.3",
       "@typescript-eslint/eslint-plugin": "5.39.0",
       "@typescript-eslint/parser": "5.39.0",
+      "babel-loader": "^8.2.5",
       "eslint": "8.25.0",
       "eslint-config-prettier": "8.5.0",
       "eslint-config-standard-with-typescript": "23.0.0",
@@ -76,11 +90,7 @@
       "typescript": "4.4.4"
    },
    "peerDependencies": {
-      "@emotion/react": "^11.10.4",
-      "@emotion/styled": "^11.10.4",
-      "@mui/icons-material": "5.10.6",
-      "@mui/material": "5.10.8",
       "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
       "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
-   }
+    }
 }
