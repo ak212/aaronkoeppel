@@ -35,7 +35,7 @@ specifiers:
   leaflet: 1.9.2
   lodash: 4.17.21
   memoize-one: 5.2.1
-  notistack: 2.0.5
+  notistack: 2.0.8
   prettier: 2.7.1
   react: 18.2.0
   react-burger-menu: 3.0.8
@@ -61,7 +61,7 @@ dependencies:
   leaflet: 1.9.2
   lodash: 4.17.21
   memoize-one: 5.2.1
-  notistack: 2.0.5_m2cq3x7wrnfkfcfs2mwnru2wnq
+  notistack: 2.0.8_m2cq3x7wrnfkfcfs2mwnru2wnq
   react: 18.2.0
   react-burger-menu: 3.0.8_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
@@ -7477,8 +7477,8 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /notistack/2.0.5_m2cq3x7wrnfkfcfs2mwnru2wnq:
-    resolution: {integrity: sha512-Ig2T1Muqkc1PaSQcEDrK7diKv6cBxw02Iq6uv074ySfgq524TV5lK41diAb6OSsaiWfp3aRt+T3+0MF8m2EcJQ==}
+  /notistack/2.0.8_m2cq3x7wrnfkfcfs2mwnru2wnq:
+    resolution: {integrity: sha512-/IY14wkFp5qjPgKNvAdfL5Jp6q90+MjgKTPh4c81r/lW70KeuX6b9pE/4f8L4FG31cNudbN9siiFS5ql1aSLRw==}
     peerDependencies:
       '@emotion/react': ^11.4.1
       '@emotion/styled': ^11.3.0
