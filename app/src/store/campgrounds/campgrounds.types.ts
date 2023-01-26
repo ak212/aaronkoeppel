@@ -108,6 +108,17 @@ export enum CampsiteType {
   STANDARD_NONELECTRIC = 'STANDARD NONELECTRIC',
 }
 
+export type CampgroundAvailability = {
+  availabilityByDate: Map<string, AvailablityByDate>
+  sitesAvailableAllDates?: string[]
+  sitesAvailableNoDates?: string[]
+}
+
+export type AvailablityByDate = {
+  count: number
+  sitesAvailableCurrentDate?: string[]
+}
+
 export type Campsite = {
   availabilities: Map<string, ReservationStatus>
   campsite_id: string

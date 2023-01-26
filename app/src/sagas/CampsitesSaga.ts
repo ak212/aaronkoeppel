@@ -71,6 +71,9 @@ function* getCampgroundAvailabilityGenerator({
         CampsitesApi.getCampgroundsForRecArea,
         recreationArea.entity_id,
       )
+
+      /* TODO: Check to see recAreaCampgrounds is non-null */
+
       const campgroundValues: CampgroundRA[] = cloneDeep(recAreaCampgrounds['results'])
 
       /* Set campgrounds when the number of campgrounds is known so the loading indicator is representitive of the final size */
