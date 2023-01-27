@@ -22,7 +22,7 @@ export const MainPage = (): JSX.Element => {
         flexDirection: 'column',
         alignItems: 'center',
         color: 'white',
-        marginTop: '20rem',
+        marginTop: '10rem',
         paddingLeft: '3rem',
         paddingRight: '3rem',
       }}
@@ -34,7 +34,7 @@ export const MainPage = (): JSX.Element => {
         <Typography variant="body1">
           {`I'm a passionate full-stack software engineer emphasizing on front-end development with ${
             new Date().getFullYear() - 2015
-          } years of experience. I enjoy building featureful applications that make users lives easier.`}
+          } years of experience. I enjoy building featureful applications that make users' lives easier.`}
         </Typography>
       </Box>
       <Box sx={{ marginTop: '5rem' }}>
