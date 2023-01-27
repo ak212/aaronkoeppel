@@ -1,4 +1,4 @@
-import Button from '@mui/material/Button/Button'
+import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
 import Paper from '@mui/material/Paper'
 import Skeleton from '@mui/material/Skeleton'
