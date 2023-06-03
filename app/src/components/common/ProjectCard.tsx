@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import uniqueId from 'lodash/uniqueId'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
   header: string
@@ -18,6 +19,7 @@ interface Props {
 
 export const ProjectCard = ({ header, body, link, image }: Props) => {
   const [hover, setHover] = useState<boolean>(false)
+  const navigate = useNavigate()
 
   return (
     <Grid key={uniqueId()} item xs>
@@ -37,7 +39,7 @@ export const ProjectCard = ({ header, body, link, image }: Props) => {
               </Box>
             </CardContent>
             <CardActions>
-              <Button size="small" href={link}>
+              <Button size="small" onClick={() => navigate(link)}>
                 Learn More
               </Button>
             </CardActions>
