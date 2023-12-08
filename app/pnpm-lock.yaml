@@ -7,7 +7,7 @@ specifiers:
   '@mui/lab': 5.0.0-alpha.102
   '@mui/material': 5.10.8
   '@mui/x-date-pickers': 5.0.9
-  '@redux-devtools/extension': 3.2.3
+  '@redux-devtools/extension': 3.3.0
   '@reduxjs/toolkit': 1.8.6
   '@types/jest': 24.9.1
   '@types/leaflet': 1.9.0
@@ -73,7 +73,7 @@ dependencies:
   source-map-explorer: 2.5.3
 
 devDependencies:
-  '@redux-devtools/extension': 3.2.3_redux@4.2.0
+  '@redux-devtools/extension': 3.3.0_redux@4.2.0
   '@types/jest': 24.9.1
   '@types/leaflet': 1.9.0
   '@types/lodash': 4.14.186
@@ -1445,6 +1445,13 @@ packages:
     dependencies:
       regenerator-runtime: 0.13.9
 
+  /@babel/runtime/7.23.5:
+    resolution: {integrity: sha512-NdUTHcPe4C99WxPub+K9l9tK5/lV4UXIoaHSYgzco9BCyjKAAwzdBI+wWtYqHt7LJdbo74ZjRPJgzVweq1sz0w==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.14.0
+    dev: true
+
   /@babel/template/7.18.10:
     resolution: {integrity: sha512-TI+rCtooWHr3QJ27kJxfjutghu44DLnasDMwpDqCXVTal9RLp3RSYNh4NdBrRP2cQAoG9A8juOQl6P6oZG4JxA==}
     engines: {node: '>=6.9.0'}
@@ -2498,13 +2505,13 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@redux-devtools/extension/3.2.3_redux@4.2.0:
-    resolution: {integrity: sha512-y90IIqdQF6kIkP4KfBCfiFrnu9KMrEPUmcnb5A3v12tjfwRJUXecX8vCEbFqqJLjOomvVmis0Aal7QdFjk6CRQ==}
+  /@redux-devtools/extension/3.3.0_redux@4.2.0:
+    resolution: {integrity: sha512-X34S/rC8S/M1BIrkYD1mJ5f8vlH0BDqxXrs96cvxSBo4FhMdbhU+GUGsmNYov1xjSyLMHgo8NYrUG8bNX7525g==}
     peerDependencies:
-      redux: ^3.1.0 || ^4.0.0
+      redux: ^3.1.0 || ^4.0.0 || ^5.0.0
     dependencies:
-      '@babel/runtime': 7.19.0
-      immutable: 4.1.0
+      '@babel/runtime': 7.23.5
+      immutable: 4.3.4
       redux: 4.2.0
     dev: true
 
@@ -6155,8 +6162,8 @@ packages:
     resolution: {integrity: sha512-2eB/sswms9AEUSkOm4SbV5Y7Vmt/bKRwByd52jfLkW4OLYeaTP3EEiJ9agqU0O/tq6Dk62Zfj+TJSqfm1rLVGQ==}
     dev: false
 
-  /immutable/4.1.0:
-    resolution: {integrity: sha512-oNkuqVTA8jqG1Q6c+UglTOD1xhC1BtjKI7XkCXRkZHrN5m18/XsnUp8Q89GkQO/z+0WjonSvl0FLhDYftp46nQ==}
+  /immutable/4.3.4:
+    resolution: {integrity: sha512-fsXeu4J4i6WNWSikpI88v/PcVflZz+6kMhUfIwc5SY+poQRPnaf5V7qds6SUyUN3cVxEzuCab7QIoLOQ+DQ1wA==}
     dev: true
 
   /import-fresh/3.3.0:
@@ -9083,6 +9090,10 @@ packages:
 
   /regenerator-runtime/0.13.9:
     resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}
+
+  /regenerator-runtime/0.14.0:
+    resolution: {integrity: sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==}
+    dev: true
 
   /regenerator-transform/0.15.0:
     resolution: {integrity: sha512-LsrGtPmbYg19bcPHwdtmXwbW+TqNvtY4riE3P83foeHRroMbH6/2ddFBfab3t7kbzc7v7p4wbkIecHImqt0QNg==}
