@@ -11,7 +11,7 @@ specifiers:
   '@reduxjs/toolkit': 1.8.6
   '@types/jest': 24.9.1
   '@types/leaflet': 1.9.0
-  '@types/lodash': 4.14.186
+  '@types/lodash': 4.17.12
   '@types/node': 18.11.5
   '@types/react': 18.0.21
   '@types/react-burger-menu': 2.8.3
@@ -76,7 +76,7 @@ devDependencies:
   '@redux-devtools/extension': 3.2.3_redux@4.2.0
   '@types/jest': 24.9.1
   '@types/leaflet': 1.9.0
-  '@types/lodash': 4.14.186
+  '@types/lodash': 4.17.12
   '@types/node': 18.11.5
   '@types/react': 18.0.21
   '@types/react-burger-menu': 2.8.3
@@ -2939,8 +2939,8 @@ packages:
       '@types/geojson': 7946.0.10
     dev: true
 
-  /@types/lodash/4.14.186:
-    resolution: {integrity: sha512-eHcVlLXP0c2FlMPm56ITode2AgLMSa6aJ05JTTbYbI+7EMkCEE5qk2E41d5g2lCVTqRe0GnnRFurmlCsDODrPw==}
+  /@types/lodash/4.17.12:
+    resolution: {integrity: sha512-sviUmCE8AYdaF/KIHLDJBQgeYzPBI0vf/17NaYehBJfYD1j6/L95Slh07NlyK2iNyBNaEkb3En2jRt+a8y3xZQ==}
     dev: true
 
   /@types/mime/3.0.1:
