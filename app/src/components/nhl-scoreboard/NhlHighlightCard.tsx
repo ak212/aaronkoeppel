@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography'
 import uniqueId from 'lodash/uniqueId'
 import React from 'react'
 
-import { Highlight, HIGHLIGHT_PLAYBACK_NAME } from '../../store/nhl-scoreboard'
 
 type Props = {
   highlight: Highlight
@@ -19,13 +18,14 @@ export const NhlHighlightCard = (props: Props): JSX.Element => {
         <CardMedia
           component="video"
           height="190"
-          image={props.highlight.playbacks.find(playback => playback.name === HIGHLIGHT_PLAYBACK_NAME)?.url || ''}
+          src={'https://nhl.com/6340923731112'}
+          
           controls
-          title={props.highlight.title}
+          title={'x'}
         />
         <CardContent style={{ padding: '1vh 0 1vh 0' }}>
           <Typography gutterBottom variant="subtitle2">
-            {props.highlight.title}
+            {'x'}
           </Typography>
         </CardContent>
       </Card>

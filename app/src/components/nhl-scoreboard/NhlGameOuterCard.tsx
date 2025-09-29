@@ -1,162 +1,173 @@
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import format from 'date-fns/format'
-import secondsToMinutes from 'date-fns/secondsToMinutes'
-import React from 'react'
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { format, formatDate } from 'date-fns/format';
+import { secondsToMinutes } from 'date-fns/secondsToMinutes';
+import React from 'react';
 
-import { DetailedGameState, NhlGame } from '../../store/nhl-scoreboard'
-import { NhlTeamLogo } from './NhlTeamLogo'
+import { NhlTeamLogo } from './NhlTeamLogo';
+import { NhlGame, GameState } from '../../store/nhl-scoreboard/nhlScoreboard.types';
+import { Box, Paper, Stack } from '@mui/material';
 
 interface Props {
-  game: NhlGame
+  game: NhlGame;
 }
 
 const formatIntermissionTime = (seconds: number) => {
-  const minutes = secondsToMinutes(seconds)
-  const remainingSeconds = seconds - 60 * minutes
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
-}
+  const minutes = secondsToMinutes(seconds);
+  const remainingSeconds = seconds - 60 * minutes;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+};
 
 export const NhlGameOuterCard = ({ game }: Props): JSX.Element => {
-  const homeScoreGreater: boolean = game.teams.home.score > game.teams.away.score
-  const awayScoreGreater: boolean = game.teams.away.score > game.teams.home.score
-  const minWidth1000: boolean = useMediaQuery('(min-width:1000px)')
-  const maxWidth850: boolean = useMediaQuery('(max-width:850px)')
-  const maxWidth620: boolean = useMediaQuery('(max-width:620px)')
-
-  /**
-   * Logic to produce middle display depending on if it is pregame, live, or postgame.
-   *
-   * @returns
-   */
-  const buildMiddleContainer = () => {
-    if (game.status.detailedState === DetailedGameState.POSTPONED) {
-      return (
-        <Grid container justifyContent="center" alignContent="center">
-          {game.status.detailedState}
-        </Grid>
-      )
-    } else if ([DetailedGameState.SCHEDULED, DetailedGameState.PRE_GAME].includes(game.status.detailedState)) {
-      return format(new Date(game.gameDate), 'h:mm aa')
-    } else if (game.linescore.currentPeriod !== 0) {
-      if (game.linescore.currentPeriodTimeRemaining === 'END') {
-        return (
-          <>
-            <Grid container justifyContent="center" alignContent="center">
-              {game.linescore.currentPeriodTimeRemaining} - {game.linescore.currentPeriodOrdinal}
-            </Grid>
-            <Grid container justifyContent="center" alignContent="center">
-              {`${maxWidth850 ? '' : 'Intermission'} ${formatIntermissionTime(
-                game.linescore.intermissionInfo.intermissionTimeRemaining,
-              )}`}
-            </Grid>
-          </>
-        )
-      } else {
-        if (game.linescore.currentPeriodTimeRemaining === 'Final') {
-          return (
-            <>
-              <Grid container justifyContent="center" alignContent="center">
-                {game.linescore.currentPeriodTimeRemaining}
-              </Grid>
-              {(game.linescore.currentPeriod === 4 || game.linescore.currentPeriod === 5) && (
-                <Grid container justifyContent="center" alignContent="center">
-                  {game.linescore.currentPeriodOrdinal}
-                </Grid>
-              )}
-            </>
-          )
-        } else {
-          return `${game.linescore.currentPeriodTimeRemaining} - ${game.linescore.currentPeriodOrdinal}`
-        }
-      }
-    } else {
-      return format(new Date(game.gameDate), 'h:mm aa')
-    }
-  }
+  const homeScoreGreater: boolean = game.homeTeam.score > game.awayTeam.score;
+  const awayScoreGreater: boolean = game.awayTeam.score > game.homeTeam.score;
 
   return (
-    <Grid container justifyContent="space-between" alignContent="center" style={{ height: '100%' }}>
-      <Grid
-        container
-        sx={{
-          '@media (min-width: 1280px)': {
-            maxWidth: '450px',
-          },
-          '@media (max-width: 1279px)': {
-            maxWidth: '350px',
-          },
-          '@media (max-width: 1000px)': {
-            maxWidth: '275px',
-          },
-          '@media (max-width: 850px)': {
-            maxWidth: '225px',
-          },
-          '@media (max-width: 620px)': {
-            maxWidth: '140px',
-          },
-        }}
-      >
-        <NhlTeamLogo size="large" teamId={game.teams.away.team.id} teamName={game.teams.away.team.name} />
-        <Grid container item xs justifyContent="center" direction="column">
-          {!maxWidth620 && (
-            <Typography variant={maxWidth850 ? 'h6' : 'h5'} color={homeScoreGreater ? 'textSecondary' : 'textPrimary'}>
-              {minWidth1000 ? game.teams.away.team.name : game.teams.away.team.teamName}
+    <Paper
+      elevation={1}
+      sx={{
+        bgcolor: 'white',
+        border: 1,
+        borderColor: 'grey.300',
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        p: 2,
+      }}
+    >
+      <Grid container spacing={2} alignItems="center">
+        {/* Away team side */}
+        <Grid
+          container
+          size={5}
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ color: awayScoreGreater ? 'inherit' : 'text.secondary' }}
+        >
+          {/* Left logo (desktop only) */}
+          <Grid
+            sx={{
+              display: { xs: 'none', sm: 'flex' },
+              alignItems: 'center',
+              justifyContent: 'center',
+              p: 0,
+            }}
+          >
+            <NhlTeamLogo size="large" teamAbbrev={game.awayTeam.abbrev} url={game.awayTeam.logo} />
+          </Grid>
+
+          {/* Team name/abbr + mobile logo */}
+          <Grid sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <Box sx={{ display: { xs: 'flex', sm: 'none' }, p: 0 }}>
+              <NhlTeamLogo size="large" teamAbbrev={game.awayTeam.abbrev} url={game.awayTeam.logo} />
+            </Box>
+            <Grid>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', display: { xs: 'none', lg: 'block' } }}>
+                {game.awayTeam.name.default}
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 'bold',
+                  display: { xs: 'flex', lg: 'none' },
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {game.awayTeam.abbrev}
+              </Typography>
+            </Grid>
+          </Grid>
+
+          {/* Away score */}
+          <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+              {game.awayTeam.score !== undefined ? game.awayTeam.score : ''}
             </Typography>
+          </Grid>
+        </Grid>
+
+        {/* Middle info column */}
+        <Grid
+          size="grow"
+          sx={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {game.gameState === GameState.FUTURE && (
+            <Typography variant="body2">{formatDate(game.startTimeUTC, 'p')}</Typography>
           )}
-          <Typography variant="h6" color={homeScoreGreater ? 'textSecondary' : 'textPrimary'}>
-            {game.teams.away.score}
-          </Typography>
+          {game.gameState === GameState.PREGAME && (
+            <Typography variant="body2">Pregame</Typography>
+          )}
+          {game.gameState === GameState.LIVE && (
+            <>
+              <Typography variant="body2">
+                {game.clock?.inIntermission
+                  ? `Intermission ${game.period}`
+                  : game.period! < 4
+                    ? `Period ${game.period}`
+                    : 'OT'}
+              </Typography>
+              <Typography variant="body2">{game.clock?.timeRemaining}</Typography>
+            </>
+          )}
+          {game.gameState === GameState.FINAL && (
+            <Typography variant="body2">Final{game.period === 4 && '/OT'}</Typography>
+          )}
+        </Grid>
+
+        {/* Home team side */}
+        <Grid
+          container
+          size={5}
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ color: homeScoreGreater ? 'inherit' : 'text.secondary' }}
+        >
+          {/* Home score */}
+          <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+              {game.homeTeam.score !== undefined ? game.homeTeam.score : ''}
+            </Typography>
+          </Grid>
+
+          {/* Team name/abbr + mobile logo */}
+          <Grid sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <Box sx={{ display: { xs: 'flex', sm: 'none' }, p: 0 }}>
+              <NhlTeamLogo size="large" teamAbbrev={game.homeTeam.abbrev} url={game.homeTeam.logo} />
+            </Box>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', display: { xs: 'none', lg: 'block' } }}>
+              {game.homeTeam.name.default}
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 'bold',
+                display: { xs: 'flex', lg: 'none' },
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {game.homeTeam.abbrev}
+            </Typography>
+          </Grid>
+
+          {/* Right logo (desktop only) */}
+          <Grid
+            sx={{
+              display: { xs: 'none', sm: 'flex' },
+              alignItems: 'center',
+              justifyContent: 'center',
+              p: 0,
+            }}
+          >
+            <NhlTeamLogo size="large" teamAbbrev={game.homeTeam.abbrev} url={game.homeTeam.logo} />
+          </Grid>
         </Grid>
       </Grid>
-      <Grid
-        container
-        justifyContent="center"
-        alignContent="center"
-        sx={{
-          '@media (min-width: 850px)': {
-            maxWidth: '100px',
-          },
-          '@media (max-width: 849px)': {
-            maxWidth: '50px',
-          },
-        }}
-      >
-        {buildMiddleContainer()}
-      </Grid>
-      <Grid
-        container
-        sx={{
-          '@media (min-width: 1280px)': {
-            maxWidth: '450px',
-          },
-          '@media (max-width: 1279px)': {
-            maxWidth: '350px',
-          },
-          '@media (max-width: 1000px)': {
-            maxWidth: '275px',
-          },
-          '@media (max-width: 850px)': {
-            maxWidth: '225px',
-          },
-          '@media (max-width: 620px)': {
-            maxWidth: '140px',
-          },
-        }}
-      >
-        <Grid container item xs justifyContent="center" direction="column">
-          {!maxWidth620 && (
-            <Typography variant={maxWidth850 ? 'h6' : 'h5'} color={awayScoreGreater ? 'textSecondary' : 'textPrimary'}>
-              {minWidth1000 ? game.teams.home.team.name : game.teams.home.team.teamName}
-            </Typography>
-          )}
-          <Typography variant="h6" color={awayScoreGreater ? 'textSecondary' : 'textPrimary'}>
-            {game.teams.home.score}
-          </Typography>
-        </Grid>
-        <NhlTeamLogo size="large" teamId={game.teams.home.team.id} teamName={game.teams.home.team.name} />
-      </Grid>
-    </Grid>
-  )
-}
+    </Paper>
+  );
+};

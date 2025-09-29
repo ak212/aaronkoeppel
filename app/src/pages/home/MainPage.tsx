@@ -1,18 +1,17 @@
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import React from 'react'
-import cssSvg from '../../assets/css.svg'
-import graphqlSvg from '../../assets/graphql.svg'
-import html5Svg from '../../assets/html5.svg'
-import javaSvg from '../../assets/java.svg'
-import railsSvg from '../../assets/rails.svg'
-import reactSvg from '../../assets/react.svg'
-import recreationgov from '../../assets/recreationgov.svg'
-import reduxSvg from '../../assets/redux-saga.svg'
-import typescriptSvg from '../../assets/typescript.svg'
-import { ProjectCard } from '../../components/common/ProjectCard'
-import { ToolCard } from '../../components/common/ToolCard'
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import React from 'react';
+import cssSvg from '../../assets/css.svg';
+import graphqlSvg from '../../assets/graphql.svg';
+import html5Svg from '../../assets/html5.svg';
+import reactSvg from '../../assets/react.svg';
+import recreationgov from '../../assets/recreationgov.svg';
+import reduxSvg from '../../assets/redux-saga.svg';
+import typescriptSvg from '../../assets/typescript.svg';
+import nhl from '../../assets/nhl.svg';
+import { ProjectCard } from '../../components/common/ProjectCard';
+import { ToolCard } from '../../components/common/ToolCard';
 
 export const MainPage = (): JSX.Element => {
   return (
@@ -50,8 +49,6 @@ export const MainPage = (): JSX.Element => {
           <ToolCard image={cssSvg} title="CSS" />
           <ToolCard image={reduxSvg} title="Redux" />
           <ToolCard image={graphqlSvg} title="Graphql" />
-          <ToolCard image={javaSvg} title="Java" />
-          <ToolCard image={railsSvg} title="Rails" />
         </Grid>
       </Box>
       <Box sx={{ marginTop: '5rem' }}>
@@ -71,7 +68,7 @@ export const MainPage = (): JSX.Element => {
             header="NHL Scoreboard"
             body={`I'm a big fan of hockey and like to keep up scores and highlights for the NHL. I built an NHL Scoreboard that will show the games of the day, scoring plays, and highlights using the NHL API. It'll also give scoring notification snackbar if you are on the page when a team scores.`}
             link="/nhl-scoreboard"
-            image={`https://www-league.nhlstatic.com/images/logos/league-dark/133-flat.svg`}
+            image={nhl}
           />
           <ProjectCard
             header="Video Player"
@@ -82,5 +79,5 @@ export const MainPage = (): JSX.Element => {
         </Grid>
       </Box>
     </Box>
-  )
-}
+  );
+};
