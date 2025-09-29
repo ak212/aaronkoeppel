@@ -1,28 +1,28 @@
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import CardActions from '@mui/material/CardActions'
-import CardContent from '@mui/material/CardContent'
-import CardMedia from '@mui/material/CardMedia'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import uniqueId from 'lodash/uniqueId'
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import uniqueId from 'lodash/uniqueId';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
-  header: string
-  body: string
-  link: string
-  image: string
+  header: string;
+  body: string;
+  link: string;
+  image: string;
 }
 
 export const ProjectCard = ({ header, body, link, image }: Props) => {
-  const [hover, setHover] = useState<boolean>(false)
-  const navigate = useNavigate()
+  const [hover, setHover] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   return (
-    <Grid key={uniqueId()} item xs>
+    <Grid key={uniqueId()} size="auto">
       <Card
         sx={{ width: '17rem', height: '22rem', borderRadius: '20px' }}
         onMouseOver={() => setHover(true)}
@@ -51,5 +51,5 @@ export const ProjectCard = ({ header, body, link, image }: Props) => {
         )}
       </Card>
     </Grid>
-  )
-}
+  );
+};

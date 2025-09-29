@@ -1,14 +1,15 @@
-import Box from '@mui/material/Box'
-import Link from '@mui/material/Link'
-import Modal from '@mui/material/Modal'
-import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableRow from '@mui/material/TableRow'
-import Typography from '@mui/material/Typography'
-import React from 'react'
-import { CampgroundAvailability } from '../../store/campgrounds'
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
+import Modal from '@mui/material/Modal';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import React from 'react';
+
+import { CampgroundAvailability } from '../../store/campgrounds/campgrounds.types';
 
 const style = {
   position: 'absolute',
@@ -20,15 +21,15 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
-}
+};
 
 export type AvailableCampsitesModalProps = {
-  open: boolean
-  selectedCampgroundName?: string
-  campgroundAvailability?: CampgroundAvailability
-  date?: string
-  handleClose(): void
-}
+  open: boolean;
+  selectedCampgroundName?: string;
+  campgroundAvailability?: CampgroundAvailability;
+  date?: string;
+  handleClose(): void;
+};
 
 export const AvailableCampsitesModal = ({
   open,
@@ -37,10 +38,11 @@ export const AvailableCampsitesModal = ({
   date,
   handleClose,
 }: AvailableCampsitesModalProps) => {
-  const sitesAvailableAllDates = campgroundAvailability?.sitesAvailableAllDates || []
-  const availabilityByDate = campgroundAvailability?.availabilityByDate.get(date || '')?.sitesAvailableCurrentDate || []
-  const sitesAvailableNoDates = campgroundAvailability?.sitesAvailableNoDates || []
-  const link = `https://www.campsitephotos.com/?s=${selectedCampgroundName}`
+  const sitesAvailableAllDates = campgroundAvailability?.sitesAvailableAllDates || [];
+  const availabilityByDate =
+    campgroundAvailability?.availabilityByDate.get(date || '')?.sitesAvailableCurrentDate || [];
+  const sitesAvailableNoDates = campgroundAvailability?.sitesAvailableNoDates || [];
+  const link = `https://www.campsitephotos.com/?s=${selectedCampgroundName}`;
 
   return (
     <Modal
@@ -87,5 +89,5 @@ export const AvailableCampsitesModal = ({
         </Box>
       </Box>
     </Modal>
-  )
-}
+  );
+};

@@ -149,9 +149,9 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
       <CardContent style={{ padding: '0 0 0 0' }}>
         {tabPanelValue === NhlGameCardTab.SCORING_PLAYS && (
           <>
-            {game.period > 0 && displayScoringPlays('1st Period', 1)}
-            {game.period > 1 && displayScoringPlays('2nd Period', 2)}
-            {game.period > 2 && displayScoringPlays('3rd Period', 3)}
+            {game.period! > 0 && displayScoringPlays('1st Period', 1)}
+            {game.period! > 1 && displayScoringPlays('2nd Period', 2)}
+            {game.period! > 2 && displayScoringPlays('3rd Period', 3)}
             {game.period === 4 && displayScoringPlays('OT', 4)}
             {game.period === 5 && displayScoringPlays('Shootout', 5)}
           </>
@@ -166,7 +166,7 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
               margin: '1vh',
             }}
           >
-            <ImageList
+            {/* <ImageList
               sx={{
                 flexWrap: 'nowrap',
                 // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
@@ -175,7 +175,7 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
               cols={2}
             >
                 <NhlHighlightCard key={uniqueId()} highlight={undefined} />
-            </ImageList>
+            </ImageList> */}
           </div>
         )}
       </CardContent>

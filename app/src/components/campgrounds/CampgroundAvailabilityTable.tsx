@@ -1,19 +1,19 @@
-import Button from '@mui/material/Button'
-import Link from '@mui/material/Link'
-import Paper from '@mui/material/Paper'
-import Skeleton from '@mui/material/Skeleton'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import Typography from '@mui/material/Typography'
-import format from 'date-fns/format'
-import parseISO from 'date-fns/parseISO'
-import startCase from 'lodash/startCase'
-import uniqueId from 'lodash/uniqueId'
-import React, { useMemo, useState } from 'react'
+import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Skeleton from '@mui/material/Skeleton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import { format } from 'date-fns/format';
+import { parseISO } from 'date-fns/parseISO';
+import startCase from 'lodash/startCase';
+import uniqueId from 'lodash/uniqueId';
+import React, { useMemo, useState } from 'react';
 
 import {
   AvailablityByDate,
@@ -21,27 +21,27 @@ import {
   CampgroundAvailability,
   DaysOfWeek,
   ReservationType,
-} from '../../store/campgrounds'
-import { AvailableCampsitesModal } from './AvailableCampsitesModal'
-import { campsitesAvailabilityRange, getDates } from './utils'
+} from '../../store/campgrounds/campgrounds.types';
+import { AvailableCampsitesModal } from './AvailableCampsitesModal';
+import { campsitesAvailabilityRange, getDates } from './utils';
 
 type CampgroundAvailabilityTableProps = {
-  advancedDate: boolean
-  campgrounds: Campground[]
-  daysOfWeek: DaysOfWeek
-  loading: boolean
-  endDate: number
-  startDate: number
-}
+  advancedDate: boolean;
+  campgrounds: Campground[];
+  daysOfWeek: DaysOfWeek;
+  loading: boolean;
+  endDate: number;
+  startDate: number;
+};
 
 type CampgroundTableRowProps = {
-  advancedDate: boolean
-  campgrounds: Campground[]
-  daysOfWeek: DaysOfWeek
-  endDate: number
-  startDate: number
-  handleOpen(campground: string, campgroundAvailability: CampgroundAvailability, date: string): void
-}
+  advancedDate: boolean;
+  campgrounds: Campground[];
+  daysOfWeek: DaysOfWeek;
+  endDate: number;
+  startDate: number;
+  handleOpen(campground: string, campgroundAvailability: CampgroundAvailability, date: string): void;
+};
 
 /* Creating a table row for each campground. */
 const CampgroundTableRows = ({
@@ -64,13 +64,13 @@ const CampgroundTableRows = ({
     const campgroundAvailability: CampgroundAvailability = useMemo(
       () => campsitesAvailabilityRange(startDate, endDate, advancedDate, daysOfWeek, campground, true),
       [startDate, endDate, advancedDate, daysOfWeek, campground],
-    )
+    );
 
-    const campgroundTableCells = []
+    const campgroundTableCells = [];
     for (const date of campgroundAvailability.availabilityByDate.keys()) {
-      const available = campgroundAvailability.availabilityByDate.get(date)
+      const available = campgroundAvailability.availabilityByDate.get(date);
       if (available) {
-        campgroundTableCells.push(campgroundTableCell(campgroundAvailability, available, date, campground, handleOpen))
+        campgroundTableCells.push(campgroundTableCell(campgroundAvailability, available, date, campground, handleOpen));
       }
     }
 
@@ -89,8 +89,8 @@ const CampgroundTableRows = ({
         </TableCell>
         {campgroundTableCells}
       </TableRow>
-    )
-  }
+    );
+  };
 
   /**
    * It returns a TableCell component with a background color of lightgray if the available.count is 0,
@@ -126,11 +126,11 @@ const CampgroundTableRows = ({
           'Unknown'
         )}
       </TableCell>
-    )
-  }
+    );
+  };
 
-  return <TableBody>{campgrounds.map(campgroundToTableRow)}</TableBody>
-}
+  return <TableBody>{campgrounds.map(campgroundToTableRow)}</TableBody>;
+};
 
 /* A React component that returns a table with a row for each campground. The table has a column for
 each day of the week. The table cells are colored lightgray if there are no campsites available,
@@ -144,21 +144,21 @@ export const CampgroundAvailabilityTable = ({
   endDate,
   startDate,
 }: CampgroundAvailabilityTableProps): JSX.Element | null => {
-  const [open, setOpen] = useState<boolean>(false)
-  const [campgroundAvailability, setCampgroundAvailability] = useState<CampgroundAvailability | undefined>(undefined)
-  const [selectedDate, setSelectedDate] = useState<string | undefined>(undefined)
-  const [selectedCampgroundName, setSelectedCampgroundName] = useState<string | undefined>(undefined)
+  const [open, setOpen] = useState<boolean>(false);
+  const [campgroundAvailability, setCampgroundAvailability] = useState<CampgroundAvailability | undefined>(undefined);
+  const [selectedDate, setSelectedDate] = useState<string | undefined>(undefined);
+  const [selectedCampgroundName, setSelectedCampgroundName] = useState<string | undefined>(undefined);
 
   const handleOpen = (campgroundName: string, campgroundAvailability: CampgroundAvailability, date: string) => {
-    setOpen(true)
-    setCampgroundAvailability(campgroundAvailability)
-    setSelectedCampgroundName(campgroundName)
-    setSelectedDate(date)
-  }
-  const handleClose = () => setOpen(false)
+    setOpen(true);
+    setCampgroundAvailability(campgroundAvailability);
+    setSelectedCampgroundName(campgroundName);
+    setSelectedDate(date);
+  };
+  const handleClose = () => setOpen(false);
 
   if (loading) {
-    return <Skeleton variant="rectangular" sx={{ marginTop: '2vh' }} height={`${33 * (campgrounds.length + 1)}px`} />
+    return <Skeleton variant="rectangular" sx={{ marginTop: '2vh' }} height={`${33 * (campgrounds.length + 1)}px`} />;
   } else if (campgrounds.length > 0) {
     return (
       <>
@@ -200,8 +200,8 @@ export const CampgroundAvailabilityTable = ({
           handleClose={handleClose}
         />
       </>
-    )
+    );
   } else {
-    return null
+    return null;
   }
-}
+};
