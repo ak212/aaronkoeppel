@@ -1,27 +1,28 @@
-import Autocomplete from '@mui/material/Autocomplete'
-import Chip from '@mui/material/Chip'
-import TextField from '@mui/material/TextField'
-import startCase from 'lodash/startCase'
-import uniqueId from 'lodash/uniqueId'
-import React from 'react'
-import { useAppSelector } from '../../state/hooks'
-import { RootState } from '../../state/store'
-import { campsitesSelectors, EntityType, isRecreationArea, RecreationArea } from '../../store/campgrounds'
-import { CampgroundIcon } from '../icons/CampgroundIcon'
-import { RecreationAreaIcon } from '../icons/RecreationAreaIcon'
+import Autocomplete from '@mui/material/Autocomplete';
+import Chip from '@mui/material/Chip';
+import TextField from '@mui/material/TextField';
+import startCase from 'lodash/startCase';
+import uniqueId from 'lodash/uniqueId';
+import React from 'react';
+import { useAppSelector } from '../../state/hooks';
+import { RootState } from '../../state/store';
+import { campsitesSelectors } from '../../store/campgrounds/campgrounds.selectors';
+import { EntityType, isRecreationArea, RecreationArea } from '../../store/campgrounds/campgrounds.types';
+import { CampgroundIcon } from '../icons/CampgroundIcon';
+import { RecreationAreaIcon } from '../icons/RecreationAreaIcon';
 
 interface Props {
-  autoCompleteText: string
-  selectedRecAreas: RecreationArea[]
+  autoCompleteText: string;
+  selectedRecAreas: RecreationArea[];
 
-  onChange: (event: React.ChangeEvent<unknown>, value: (string | RecreationArea)[]) => void
-  onInputChange: (event: React.ChangeEvent<unknown>, value: string) => void
+  onChange: (event: React.ChangeEvent<unknown>, value: (string | RecreationArea)[]) => void;
+  onInputChange: (event: React.ChangeEvent<unknown>, value: string) => void;
 }
 
 export const CampgroundSearchbar = ({ autoCompleteText, selectedRecAreas, onChange, onInputChange }: Props) => {
   const autocompleteValues: RecreationArea[] = useAppSelector((state: RootState) =>
     campsitesSelectors.getAutocomplete(state),
-  )
+  );
 
   return (
     <Autocomplete
@@ -67,5 +68,5 @@ export const CampgroundSearchbar = ({ autoCompleteText, selectedRecAreas, onChan
         />
       )}
     />
-  )
-}
+  );
+};

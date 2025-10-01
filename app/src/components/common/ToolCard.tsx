@@ -1,17 +1,17 @@
-import CardMedia from '@mui/material/CardMedia'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import uniqueId from 'lodash/uniqueId'
-import React from 'react'
+import CardMedia from '@mui/material/CardMedia';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import uniqueId from 'lodash/uniqueId';
+import React from 'react';
 
 interface Props {
-  title: string
-  image: string
+  title: string;
+  image: string;
 }
 
 export const ToolCard = ({ title, image }: Props) => {
   return (
-    <Grid key={uniqueId()} item xs>
+    <Grid key={uniqueId()} size="auto">
       <Grid container direction={'column'} sx={{ width: '8rem' }}>
         <Grid sx={{ justifyContent: 'center', display: 'grid' }}>
           <Grid
@@ -31,5 +31,5 @@ export const ToolCard = ({ title, image }: Props) => {
         </Grid>
       </Grid>
     </Grid>
-  )
-}
+  );
+};

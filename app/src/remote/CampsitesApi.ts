@@ -4,10 +4,8 @@ import format from 'date-fns/format'
 import { Campsite } from '../store/campgrounds'
 import { RestManager } from './RestManager'
 
-const PROXY_URL = 'https://cors-anywhere-49a7m0q7vcpoxggi.herokuapp.com'
-
 const axiosInstance = axios.create({
-  baseURL: `${PROXY_URL}/https://www.recreation.gov/api/`,
+  baseURL: `https://www.recreation.gov/api/`,
 })
 const rest = new RestManager(axiosInstance)
 

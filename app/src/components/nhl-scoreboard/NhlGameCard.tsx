@@ -1,39 +1,37 @@
-import Card from '@mui/material/Card'
-import CardActionArea from '@mui/material/CardActionArea'
-import Collapse from '@mui/material/Collapse'
-import Grid from '@mui/material/Grid'
-import React, { useEffect, useState } from 'react'
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import Collapse from '@mui/material/Collapse';
+import Grid from '@mui/material/Grid';
+import React, { useEffect, useState } from 'react';
 
-import { AbstractGameState, NhlGame } from '../../store/nhl-scoreboard'
-import { NhlGameInnerCard } from './NhlGameInnerCard'
-import { NhlGameOuterCard } from './NhlGameOuterCard'
+import { GameState, NhlGame } from '../../store/nhl-scoreboard/nhlScoreboard.types';
+import { NhlGameInnerCard } from './NhlGameInnerCard';
+import { NhlGameOuterCard } from './NhlGameOuterCard';
 
 interface Props {
-  game: NhlGame
-  showAllExpanded: boolean
+  game: NhlGame;
+  showAllExpanded: boolean;
 }
 
 export const NhlGameCard = (props: Props): JSX.Element => {
-  const [expanded, setExpanded] = useState(false)
-  const canExpand: boolean =
-    props.game.status.abstractGameState === AbstractGameState.LIVE ||
-    props.game.status.abstractGameState === AbstractGameState.FINAL
+  const [expanded, setExpanded] = useState(false);
+  const canExpand: boolean = props.game.gameState === GameState.LIVE || props.game.gameState === GameState.FINAL;
 
   useEffect(() => {
     if (props.showAllExpanded) {
-      setExpanded(true)
+      setExpanded(true);
     } else if (!props.showAllExpanded) {
-      setExpanded(false)
+      setExpanded(false);
     }
-  }, [props.showAllExpanded])
+  }, [props.showAllExpanded]);
 
   /**
    * On click listener for the card itself to expand or collapse.
    *
    */
   const handleExpandClick = () => {
-    setExpanded(!expanded)
-  }
+    setExpanded(!expanded);
+  };
 
   /**
    * Wrap the card component to make it clickable.
@@ -42,8 +40,8 @@ export const NhlGameCard = (props: Props): JSX.Element => {
    * @returns
    */
   const clickableWrapper = (children: JSX.Element) => {
-    return <CardActionArea onClick={handleExpandClick}>{children}</CardActionArea>
-  }
+    return <CardActionArea onClick={handleExpandClick}>{children}</CardActionArea>;
+  };
 
   /**
    * Produces the card component.
@@ -79,14 +77,8 @@ export const NhlGameCard = (props: Props): JSX.Element => {
           <NhlGameInnerCard game={props.game} />
         </Collapse>
       </Card>
-    )
-  }
+    );
+  };
 
-  return (
-    <Grid item>
-      {props.game.status.abstractGameState !== AbstractGameState.PREVIEW
-        ? clickableWrapper(gameScoreCard())
-        : gameScoreCard()}
-    </Grid>
-  )
-}
+  return <Grid>{props.game.gameState !== GameState.FUTURE ? clickableWrapper(gameScoreCard()) : gameScoreCard()}</Grid>;
+};

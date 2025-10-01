@@ -1,12 +1,12 @@
-import Box from '@mui/material/Box'
-import React from 'react'
+import Box from '@mui/material/Box';
+import React from 'react';
 
-import { DayOfWeek, DaysOfWeek } from '../../store/campgrounds'
-import { WeekdayButton } from './WeekdayButton'
+import { DayOfWeek, DaysOfWeek } from '../../store/campgrounds/campgrounds.types';
+import { WeekdayButton } from './WeekdayButton';
 
 interface Props {
-  daysOfWeek: DaysOfWeek
-  toggleSelectedDaysOfWeek(dayOfWeek: DayOfWeek): void
+  daysOfWeek: DaysOfWeek;
+  toggleSelectedDaysOfWeek(dayOfWeek: DayOfWeek): void;
 }
 
 export const WeekdayPicker = ({ daysOfWeek, toggleSelectedDaysOfWeek }: Props) => {
@@ -69,5 +69,5 @@ export const WeekdayPicker = ({ daysOfWeek, toggleSelectedDaysOfWeek }: Props) =
         label={'Sa'}
       />
     </Box>
-  )
-}
+  );
+};

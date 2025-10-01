@@ -1,22 +1,23 @@
-import * as L from 'leaflet'
-import startCase from 'lodash/startCase'
-import uniqueId from 'lodash/uniqueId'
-import React from 'react'
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
-import { Campground, DaysOfWeek } from '../../store/campgrounds'
+import * as L from 'leaflet';
+import startCase from 'lodash/startCase';
+import uniqueId from 'lodash/uniqueId';
+import React from 'react';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+
+import { Campground, DaysOfWeek } from '../../store/campgrounds/campgrounds.types';
 import {
   campgroundAvailabileFully,
   campgroundAvailabilePartially,
   campgroundsToLocations,
   getLeafletProps,
-} from './utils'
+} from './utils';
 
 interface Props {
-  advancedDate: boolean
-  campgrounds: Campground[]
-  daysOfWeek: DaysOfWeek
-  endDate: number
-  startDate: number
+  advancedDate: boolean;
+  campgrounds: Campground[];
+  daysOfWeek: DaysOfWeek;
+  endDate: number;
+  startDate: number;
 }
 
 const greenIcon = new L.Icon({
@@ -26,7 +27,7 @@ const greenIcon = new L.Icon({
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
-})
+});
 
 const greyIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
@@ -35,7 +36,7 @@ const greyIcon = new L.Icon({
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
-})
+});
 
 const yellowIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
@@ -44,22 +45,22 @@ const yellowIcon = new L.Icon({
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
-})
+});
 
 interface CampgroundMarkerProps {
-  advancedDate: boolean
-  campground: Campground
-  daysOfWeek: DaysOfWeek
-  endDate: number
-  startDate: number
+  advancedDate: boolean;
+  campground: Campground;
+  daysOfWeek: DaysOfWeek;
+  endDate: number;
+  startDate: number;
 }
 
 const CampgroundMarker = ({ advancedDate, campground, daysOfWeek, endDate, startDate }: CampgroundMarkerProps) => {
   const icon = campgroundAvailabileFully(startDate, endDate, advancedDate, daysOfWeek, campground)
     ? greenIcon
     : campgroundAvailabilePartially(startDate, endDate, advancedDate, daysOfWeek, campground)
-    ? yellowIcon
-    : greyIcon
+      ? yellowIcon
+      : greyIcon;
 
   return (
     <Marker key={uniqueId()} position={[campground.facility_latitude, campground.facility_longitude]} icon={icon}>
@@ -69,8 +70,8 @@ const CampgroundMarker = ({ advancedDate, campground, daysOfWeek, endDate, start
         {campground.facility_type}
       </Popup>
     </Marker>
-  )
-}
+  );
+};
 
 export const CampgroundMap = ({
   advancedDate,
@@ -81,7 +82,7 @@ export const CampgroundMap = ({
 }: Props): JSX.Element | null => {
   const filteredCampgrounds: Campground[] = campgrounds.filter(
     campground => campground.facility_latitude !== undefined && campground.facility_longitude !== undefined,
-  )
+  );
 
   if (filteredCampgrounds.length > 0) {
     return (
@@ -104,8 +105,8 @@ export const CampgroundMap = ({
           />
         ))}
       </MapContainer>
-    )
+    );
   } else {
-    return null
+    return null;
   }
-}
+};

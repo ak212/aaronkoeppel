@@ -1,32 +1,25 @@
-import CardContent from '@mui/material/CardContent'
-import Grid from '@mui/material/Grid'
-import ImageList from '@mui/material/ImageList'
-import Paper from '@mui/material/Paper'
-import Tab from '@mui/material/Tab'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import Tabs from '@mui/material/Tabs'
-import Typography from '@mui/material/Typography'
-import cloneDeep from 'lodash/cloneDeep'
-import uniqueId from 'lodash/uniqueId'
-import React, { useState } from 'react'
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
+import ImageList from '@mui/material/ImageList';
+import Paper from '@mui/material/Paper';
+import Tab from '@mui/material/Tab';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
+import cloneDeep from 'lodash/cloneDeep';
+import uniqueId from 'lodash/uniqueId';
+import React, { useState } from 'react';
 
-import {
-  EpgTypes,
-  Highlight,
-  NhlGame,
-  ScoringPlay,
-  ScoringPlayCode,
-  ScoringPlayPlayerType,
-} from '../../store/nhl-scoreboard'
-import { NhlHighlightCard } from './NhlHighlightCard'
-import { NhlTeamLogo } from './NhlTeamLogo'
+import { GameGoal, NhlGame, ScoringPlayCode } from '../../store/nhl-scoreboard/nhlScoreboard.types';
+import { NhlHighlightCard } from './NhlHighlightCard';
+import { NhlTeamLogo } from './NhlTeamLogo';
 
 interface Props {
-  game: NhlGame
+  game: NhlGame;
 }
 
 enum NhlGameCardTab {
@@ -35,7 +28,7 @@ enum NhlGameCardTab {
 }
 
 export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
-  const [tabPanelValue, setTabPanelValue] = useState<string>(NhlGameCardTab.SCORING_PLAYS)
+  const [tabPanelValue, setTabPanelValue] = useState<string>(NhlGameCardTab.SCORING_PLAYS);
 
   /**
    * Filter scoring plays by period.
@@ -44,9 +37,9 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
    * @param {number} period
    * @returns {ScoringPlay[]}
    */
-  const filterScoringPlays = (scoringPlays: ScoringPlay[], period: number): ScoringPlay[] => {
-    return scoringPlays.filter(scoringPlay => scoringPlay.about.period === period)
-  }
+  const filterScoringPlays = (goals: GameGoal[], period: number): GameGoal[] => {
+    return goals.filter(goal => goal.period === period);
+  };
 
   /**
    * Creates display of a scoring play.
@@ -54,22 +47,23 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
    * @param {ScoringPlay} scoringPlay
    * @returns
    */
-  const createScoringPlayLine = (scoringPlay: ScoringPlay) => {
-    const assists = scoringPlay.players.filter(player => player.playerType === ScoringPlayPlayerType.ASSIST)
+  const createScoringPlayLine = (goal: GameGoal) => {
+    const assists = goal.assists;
     let assistString =
-      assists.length === 0 ? 'Unassisted' : `Assists: ${assists[0].player.fullName} (${assists[0].seasonTotal})`
-    assistString += assists.length === 2 ? ` and ${assists[1].player.fullName} (${assists[1].seasonTotal})` : ''
-    let goalScorer = `${scoringPlay.players[0].player.fullName} (${scoringPlay.players[0].seasonTotal})`
-    goalScorer +=
-      scoringPlay.result.strength.code !== ScoringPlayCode.EVEN
-        ? ` (${scoringPlay.result.strength.code.substring(0, 2)})`
-        : ''
+      assists.length === 0 ? 'Unassisted' : `Assists: ${assists[0].name.default} (${assists[0].assistsToDate})`;
+    assistString += assists.length === 2 ? ` and ${assists[1].name.default} (${assists[1].assistsToDate})` : '';
+    let goalScorer = `${goal.name.default} (${goal.goalsToDate})`;
+    goalScorer += goal.strength !== ScoringPlayCode.EVEN ? ` (${goal.strength.toUpperCase()})` : '';
 
     return (
       <Grid container direction="row" alignContent="center">
-        <Typography paragraph style={{ marginTop: '9px' }}>{`${scoringPlay.about.periodTimeRemaining}`}</Typography>
-        <NhlTeamLogo size="small" teamId={scoringPlay.team.id} teamName={scoringPlay.team.name} />
-        <Grid container direction="column" xs>
+        <Typography paragraph style={{ marginTop: '9px' }}>{`${goal.timeInPeriod}`}</Typography>
+        <NhlTeamLogo
+          size="small"
+          teamAbbrev={goal.teamAbbrev}
+          url={game.awayTeam.abbrev === goal.teamAbbrev ? game.awayTeam.logo : game.homeTeam.logo}
+        />
+        <Grid container direction="column" size="auto">
           <Typography variant="subtitle2" style={{ marginBottom: '2px' }}>
             {goalScorer}
           </Typography>
@@ -78,8 +72,8 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
           </Typography>
         </Grid>
       </Grid>
-    )
-  }
+    );
+  };
 
   /**
    * Creates table to show all scoring plays for a period.
@@ -89,7 +83,7 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
    * @returns
    */
   const displayScoringPlays = (periodText: string, period: number) => {
-    const scoringPlays: ScoringPlay[] = filterScoringPlays(game.scoringPlays, period)
+    const scoringPlays: GameGoal[] = filterScoringPlays(game.goals || [], period);
     return (
       <Table size="small" aria-label="Scoring Summary" style={{ maxWidth: '750px' }}>
         <TableHead>
@@ -100,7 +94,7 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
         <TableBody>
           <TableRow key={uniqueId()}>
             <TableCell component="th" scope="row" style={{ borderBottomWidth: '0px', paddingLeft: '8px' }}>
-              {filterScoringPlays(game.scoringPlays, period).map(createScoringPlayLine)}
+              {filterScoringPlays(game.goals || [], period).map(createScoringPlayLine)}
               {scoringPlays.length === 0 && (
                 <Typography paragraph variant="caption" style={{ marginBottom: '2px' }}>
                   No Goals Scored
@@ -110,8 +104,8 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
           </TableRow>
         </TableBody>
       </Table>
-    )
-  }
+    );
+  };
 
   /**
    * Changes the selected tab.
@@ -119,23 +113,23 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
    * @returns
    */
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: NhlGameCardTab) => {
-    setTabPanelValue(newValue)
-  }
+    setTabPanelValue(newValue);
+  };
 
-  const epgs = cloneDeep(game.content.media.epg)
-  epgs.forEach(epg => {
-    epg.items = epg.items.map(highlight => {
-      return { ...highlight, title: epg.title }
-    })
-  })
-  const highlights: Highlight[] = [
-    ...epgs
-      .filter(epg => epg.title === EpgTypes.EXTENDED_HIGHLIGHTS || epg.title === EpgTypes.RECAP)
-      .flatMap(epg => epg.items),
-    ...cloneDeep(game.content.highlights.scoreboard.items).sort(
-      (highlightA: Highlight, highlightB: Highlight) => Number(highlightA.id) - Number(highlightB.id),
-    ),
-  ]
+  // const epgs = cloneDeep(game.content.media.epg);
+  // epgs.forEach(epg => {
+  //   epg.items = epg.items.map(highlight => {
+  //     return { ...highlight, title: epg.title };
+  //   });
+  // });
+  // const highlights: Highlight[] = [
+  //   ...epgs
+  //     .filter(epg => epg.title === EpgTypes.EXTENDED_HIGHLIGHTS || epg.title === EpgTypes.RECAP)
+  //     .flatMap(epg => epg.items),
+  //   ...cloneDeep(game.content.highlights.scoreboard.items).sort(
+  //     (highlightA: Highlight, highlightB: Highlight) => Number(highlightA.id) - Number(highlightB.id),
+  //   ),
+  // ];
 
   return (
     <>
@@ -155,11 +149,11 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
       <CardContent style={{ padding: '0 0 0 0' }}>
         {tabPanelValue === NhlGameCardTab.SCORING_PLAYS && (
           <>
-            {game.linescore.currentPeriod > 0 && displayScoringPlays('1st Period', 1)}
-            {game.linescore.currentPeriod > 1 && displayScoringPlays('2nd Period', 2)}
-            {game.linescore.currentPeriod > 2 && displayScoringPlays('3rd Period', 3)}
-            {game.linescore.currentPeriod === 4 && displayScoringPlays('OT', 4)}
-            {game.linescore.currentPeriod === 5 && displayScoringPlays('Shootout', 5)}
+            {game.period! > 0 && displayScoringPlays('1st Period', 1)}
+            {game.period! > 1 && displayScoringPlays('2nd Period', 2)}
+            {game.period! > 2 && displayScoringPlays('3rd Period', 3)}
+            {game.period === 4 && displayScoringPlays('OT', 4)}
+            {game.period === 5 && displayScoringPlays('Shootout', 5)}
           </>
         )}
         {tabPanelValue === NhlGameCardTab.HIGHLIGHTS && (
@@ -172,21 +166,19 @@ export const NhlGameInnerCard = ({ game }: Props): JSX.Element => {
               margin: '1vh',
             }}
           >
-            <ImageList
+            {/* <ImageList
               sx={{
                 flexWrap: 'nowrap',
                 // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
                 transform: 'translateZ(0)',
               }}
-              cols={highlights.length}
+              cols={2}
             >
-              {highlights.map(item => (
-                <NhlHighlightCard key={uniqueId()} highlight={item} />
-              ))}
-            </ImageList>
+                <NhlHighlightCard key={uniqueId()} highlight={undefined} />
+            </ImageList> */}
           </div>
         )}
       </CardContent>
     </>
-  )
-}
+  );
+};

@@ -1,26 +1,24 @@
-import add from 'date-fns/add'
-import toDate from 'date-fns/toDate'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { add } from 'date-fns/add';
+import { toDate } from 'date-fns/toDate';
+import React from 'react';
 
-import React from 'react'
-
-import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { DayOfWeek, DaysOfWeek } from '../../store/campgrounds'
-import { WeekdayPicker } from '../common/WeekdayPicker'
-import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
+import { DayOfWeek, DaysOfWeek } from '../../store/campgrounds/campgrounds.types';
+import { WeekdayPicker } from '../common/WeekdayPicker';
 
 interface DateProps {
-  startDate?: number
-  endDate?: number
-  advancedDate: boolean
-  daysOfWeek: DaysOfWeek
+  startDate?: number;
+  endDate?: number;
+  advancedDate: boolean;
+  daysOfWeek: DaysOfWeek;
 
-  toggleSelectedDaysOfWeek(dayOfWeek: DayOfWeek): void
-  handleStartDateChange(date: Date | null, value?: string | null | undefined): void
-  handleEndDateChange(date: Date | null, value?: string | null | undefined): void
-  advancedToggle(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void
+  toggleSelectedDaysOfWeek(dayOfWeek: DayOfWeek): void;
+  handleStartDateChange(date: Date | null, value?: string | null | undefined): void;
+  handleEndDateChange(date: Date | null, value?: string | null | undefined): void;
+  advancedToggle(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
 }
 
 export const CampgroundDates = (props: DateProps) => {
@@ -46,17 +44,16 @@ export const CampgroundDates = (props: DateProps) => {
           maxDate={props.startDate ? add(toDate(props.startDate), { months: 3 }) : undefined}
           value={props.startDate}
           onChange={props.handleStartDateChange}
-          renderInput={params => (
-            <TextField
-              {...params}
-              sx={{
+          slotProps={{
+            textField: {
+              sx: {
                 maxWidth: '300px',
-                label: { color: '#1976d2' },
-                input: { color: 'white' },
-                svg: { color: '#1976d2' },
-              }}
-            />
-          )}
+                '& label': { color: '#1976d2' },
+                '& input': { color: 'white' },
+                '& svg': { color: '#1976d2' },
+              },
+            },
+          }}
         />
         <DesktopDatePicker
           inputFormat="MM/dd/yyyy"
@@ -65,17 +62,16 @@ export const CampgroundDates = (props: DateProps) => {
           maxDate={props.startDate ? add(toDate(props.startDate), { weeks: 4 }) : undefined}
           value={props.endDate}
           onChange={props.handleEndDateChange}
-          renderInput={params => (
-            <TextField
-              {...params}
-              sx={{
+          slotProps={{
+            textField: {
+              sx: {
                 maxWidth: '300px',
-                label: { color: '#1976d2' },
-                input: { color: 'white' },
-                svg: { color: '#1976d2' },
-              }}
-            />
-          )}
+                '& label': { color: '#1976d2' },
+                '& input': { color: 'white' },
+                '& svg': { color: '#1976d2' },
+              },
+            },
+          }}
         />
         <Button
           variant="contained"
@@ -90,5 +86,5 @@ export const CampgroundDates = (props: DateProps) => {
         )}
       </Box>
     </LocalizationProvider>
-  )
-}
+  );
+};
