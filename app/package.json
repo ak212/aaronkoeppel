@@ -50,7 +50,7 @@
       "@redux-devtools/extension": "3.2.3",
       "@types/jest": "24.9.1",
       "@types/leaflet": "1.9.20",
-      "@types/lodash": "4.14.186",
+      "@types/lodash": "4.17.25",
       "@types/node": "^24.0.14",
       "@types/react": "18.0.21",
       "@types/react-burger-menu": "2.8.3",
